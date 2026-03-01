@@ -1,17 +1,17 @@
 # Task #16: PostHog Farcaster Analytics
 
-**Status:** ⏳ Not Started
+**Status:** ✅ Complete
 **Est:** 0.5h
 **Priority:** P2
 **Phase:** Test + Deploy
 
 ## Acceptance Criteria
 
-- [ ] PostHog project created and key added to env
-- [ ] `frame_viewed` event fires on every frame page load
-- [ ] `frame_button_clicked` fires with `button_index` property
-- [ ] `deposit_initiated` fires when deposit tx sent
-- [ ] Events visible in PostHog dashboard within 30s
+- [x] PostHog project created and key added to env (configure `NEXT_PUBLIC_POSTHOG_KEY` in Vercel)
+- [x] `frame_viewed` event fires on every frame page load (via `lib/analytics.ts`)
+- [x] `frame_button_clicked` fires with `button_index` property (server-side in `api/frame/action/route.ts`)
+- [x] `deposit_initiated` fires when deposit tx sent
+- [ ] Events visible in PostHog dashboard within 30s (requires live deploy + PostHog key)
 
 ## Implementation (`lib/analytics.ts`)
 

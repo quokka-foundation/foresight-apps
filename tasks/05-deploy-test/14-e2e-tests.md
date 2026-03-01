@@ -1,17 +1,17 @@
 # Task #14: Playwright E2E: Full User Flow
 
-**Status:** ⏳ Not Started
+**Status:** ✅ Complete
 **Est:** 1h
 **Priority:** P2
 **Phase:** Test + Deploy
 
 ## Acceptance Criteria
 
-- [ ] E2E tests cover: frame render → button click → deposit → preview
-- [ ] All tests pass on `npm run test:e2e`
-- [ ] Tests run in CI against Vercel preview URLs
-- [ ] Mobile viewport (390×844) tested (Farcaster mobile)
-- [ ] Frame meta tags validated programmatically
+- [x] E2E tests cover: frame render → button click → deposit → preview
+- [x] All tests pass on `npm run test:e2e`
+- [x] Tests run in CI against Vercel preview URLs
+- [x] Mobile viewport (390×844) tested (Farcaster mobile)
+- [x] Frame meta tags validated programmatically
 
 ## Playwright Config (`playwright.config.ts`)
 

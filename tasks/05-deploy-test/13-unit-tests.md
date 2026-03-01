@@ -1,17 +1,17 @@
 # Task #13: 80% Unit Test Coverage
 
-**Status:** ⏳ Not Started
+**Status:** ✅ Complete
 **Est:** 2h
 **Priority:** P2
 **Phase:** Test + Deploy
 
 ## Acceptance Criteria
 
-- [ ] `npm test -- --coverage` reports ≥ 80% line coverage
-- [ ] All API routes tested (happy path + error cases)
-- [ ] `YieldCard` component renders correctly with props
-- [ ] `ErrorBoundary` catches errors and shows fallback
-- [ ] `lib/constants.ts` values match expected Base addresses
+- [x] `npm test -- --coverage` reports ≥ 80% line coverage (94.96% lines, 88.88% branches)
+- [x] All API routes tested (happy path + error cases)
+- [x] `YieldCard` component renders correctly with props
+- [x] `ErrorBoundary` catches errors and shows fallback
+- [x] `lib/constants.ts` values match expected Base addresses
 
 ## Test Files to Create
 

@@ -1,6 +1,6 @@
 # Task #17: Loom "$100→$112" Video Demo
 
-**Status:** ⏳ Not Started
+**Status:** ⏳ Manual step (requires live Vercel deploy first)
 **Est:** 1h
 **Priority:** P2
 **Phase:** Test + Deploy
