@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1772374822792" clover="3.2.0">
-  <project timestamp="1772374822792" name="All files">
+<coverage generated="1772381658067" clover="3.2.0">
+  <project timestamp="1772381658067" name="All files">
     <metrics statements="159" coveredstatements="151" conditionals="63" coveredconditionals="56" methods="20" coveredmethods="19" elements="242" coveredelements="226" complexity="0" loc="159" ncloc="159" packages="7" files="10" classes="10"/>
     <package name="app.api.deposit">
       <metrics statements="17" coveredstatements="14" conditionals="4" coveredconditionals="3" methods="3" coveredmethods="3"/>
-      <file name="route.ts" path="/var/tmp/vibe-kanban-dev/worktrees/fa0d-03-wallet-featur/foresight-apps/app/api/deposit/route.ts">
+      <file name="route.ts" path="/var/tmp/vibe-kanban-dev/worktrees/40e5-05-deploy-test/foresight-apps/app/api/deposit/route.ts">
         <metrics statements="17" coveredstatements="14" conditionals="4" coveredconditionals="3" methods="3" coveredmethods="3"/>
         <line num="5" count="4" type="stmt"/>
         <line num="6" count="4" type="stmt"/>
@@ -27,7 +27,7 @@
     </package>
     <package name="app.api.frame.action">
       <metrics statements="28" coveredstatements="24" conditionals="12" coveredconditionals="9" methods="4" coveredmethods="3"/>
-      <file name="route.ts" path="/var/tmp/vibe-kanban-dev/worktrees/fa0d-03-wallet-featur/foresight-apps/app/api/frame/action/route.ts">
+      <file name="route.ts" path="/var/tmp/vibe-kanban-dev/worktrees/40e5-05-deploy-test/foresight-apps/app/api/frame/action/route.ts">
         <metrics statements="28" coveredstatements="24" conditionals="12" coveredconditionals="9" methods="4" coveredmethods="3"/>
         <line num="6" count="4" type="stmt"/>
         <line num="8" count="4" type="stmt"/>
@@ -61,7 +61,7 @@
     </package>
     <package name="app.api.preview">
       <metrics statements="23" coveredstatements="22" conditionals="4" coveredconditionals="3" methods="1" coveredmethods="1"/>
-      <file name="route.ts" path="/var/tmp/vibe-kanban-dev/worktrees/fa0d-03-wallet-featur/foresight-apps/app/api/preview/route.ts">
+      <file name="route.ts" path="/var/tmp/vibe-kanban-dev/worktrees/40e5-05-deploy-test/foresight-apps/app/api/preview/route.ts">
         <metrics statements="23" coveredstatements="22" conditionals="4" coveredconditionals="3" methods="1" coveredmethods="1"/>
         <line num="5" count="5" type="stmt"/>
         <line num="6" count="5" type="stmt"/>
@@ -90,7 +90,7 @@
     </package>
     <package name="app.api.telegram-qr">
       <metrics statements="17" coveredstatements="17" conditionals="6" coveredconditionals="6" methods="1" coveredmethods="1"/>
-      <file name="route.ts" path="/var/tmp/vibe-kanban-dev/worktrees/fa0d-03-wallet-featur/foresight-apps/app/api/telegram-qr/route.ts">
+      <file name="route.ts" path="/var/tmp/vibe-kanban-dev/worktrees/40e5-05-deploy-test/foresight-apps/app/api/telegram-qr/route.ts">
         <metrics statements="17" coveredstatements="17" conditionals="6" coveredconditionals="6" methods="1" coveredmethods="1"/>
         <line num="6" count="5" type="stmt"/>
         <line num="8" count="5" type="stmt"/>
@@ -113,7 +113,7 @@
     </package>
     <package name="app.api.telegram-webhook">
       <metrics statements="28" coveredstatements="28" conditionals="15" coveredconditionals="14" methods="3" coveredmethods="3"/>
-      <file name="route.ts" path="/var/tmp/vibe-kanban-dev/worktrees/fa0d-03-wallet-featur/foresight-apps/app/api/telegram-webhook/route.ts">
+      <file name="route.ts" path="/var/tmp/vibe-kanban-dev/worktrees/40e5-05-deploy-test/foresight-apps/app/api/telegram-webhook/route.ts">
         <metrics statements="28" coveredstatements="28" conditionals="15" coveredconditionals="14" methods="3" coveredmethods="3"/>
         <line num="6" count="8" type="stmt"/>
         <line num="8" count="8" type="stmt"/>
@@ -147,7 +147,7 @@
     </package>
     <package name="components">
       <metrics statements="13" coveredstatements="13" conditionals="5" coveredconditionals="4" methods="5" coveredmethods="5"/>
-      <file name="ErrorBoundary.tsx" path="/var/tmp/vibe-kanban-dev/worktrees/fa0d-03-wallet-featur/foresight-apps/components/ErrorBoundary.tsx">
+      <file name="ErrorBoundary.tsx" path="/var/tmp/vibe-kanban-dev/worktrees/40e5-05-deploy-test/foresight-apps/components/ErrorBoundary.tsx">
         <metrics statements="9" coveredstatements="9" conditionals="5" coveredconditionals="4" methods="4" coveredmethods="4"/>
         <line num="6" count="1" type="stmt"/>
         <line num="18" count="1" type="stmt"/>
@@ -159,7 +159,7 @@
         <line num="34" count="8" type="cond" truecount="2" falsecount="0"/>
         <line num="54" count="9" type="stmt"/>
       </file>
-      <file name="YieldCard.tsx" path="/var/tmp/vibe-kanban-dev/worktrees/fa0d-03-wallet-featur/foresight-apps/components/YieldCard.tsx">
+      <file name="YieldCard.tsx" path="/var/tmp/vibe-kanban-dev/worktrees/40e5-05-deploy-test/foresight-apps/components/YieldCard.tsx">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="12" count="1" type="stmt"/>
         <line num="13" count="6" type="stmt"/>
@@ -169,7 +169,7 @@
     </package>
     <package name="lib">
       <metrics statements="33" coveredstatements="33" conditionals="17" coveredconditionals="17" methods="3" coveredmethods="3"/>
-      <file name="constants.ts" path="/var/tmp/vibe-kanban-dev/worktrees/fa0d-03-wallet-featur/foresight-apps/lib/constants.ts">
+      <file name="constants.ts" path="/var/tmp/vibe-kanban-dev/worktrees/40e5-05-deploy-test/foresight-apps/lib/constants.ts">
         <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="2" methods="0" coveredmethods="0"/>
         <line num="4" count="1" type="stmt"/>
         <line num="10" count="1" type="stmt"/>
@@ -177,13 +177,13 @@
         <line num="14" count="1" type="stmt"/>
         <line num="16" count="1" type="stmt"/>
       </file>
-      <file name="viem.ts" path="/var/tmp/vibe-kanban-dev/worktrees/fa0d-03-wallet-featur/foresight-apps/lib/viem.ts">
+      <file name="viem.ts" path="/var/tmp/vibe-kanban-dev/worktrees/40e5-05-deploy-test/foresight-apps/lib/viem.ts">
         <metrics statements="3" coveredstatements="3" conditionals="2" coveredconditionals="2" methods="0" coveredmethods="0"/>
         <line num="5" count="1" type="stmt"/>
         <line num="6" count="1" type="stmt"/>
         <line num="8" count="1" type="stmt"/>
       </file>
-      <file name="wallet.ts" path="/var/tmp/vibe-kanban-dev/worktrees/fa0d-03-wallet-featur/foresight-apps/lib/wallet.ts">
+      <file name="wallet.ts" path="/var/tmp/vibe-kanban-dev/worktrees/40e5-05-deploy-test/foresight-apps/lib/wallet.ts">
         <metrics statements="25" coveredstatements="25" conditionals="13" coveredconditionals="13" methods="3" coveredmethods="3"/>
         <line num="6" count="10" type="stmt"/>
         <line num="7" count="10" type="stmt"/>

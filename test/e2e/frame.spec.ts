@@ -96,7 +96,7 @@ test.describe('Farcaster Frame', () => {
     expect(res.status()).toBe(200)
     const body = await res.json()
     expect(body.deposited).toBe(100)
-    expect(body.after30Days).toBe(112)
+    expect(body.projection30Days).toBe(112)
   })
 
   test('frame shows yield chart image', async ({ page }) => {

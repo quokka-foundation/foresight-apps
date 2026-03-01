@@ -1,17 +1,17 @@
 # Task #15: Vercel Production Deploy
 
-**Status:** ⏳ Not Started
+**Status:** ✅ CI/CD automated — manual prod deploy pending (set Vercel secrets)
 **Est:** 0.5h
 **Priority:** P1
 **Phase:** Test + Deploy
 
 ## Acceptance Criteria
 
-- [ ] `npm run build` succeeds locally before deploying
-- [ ] `vercel --prod` deploys to `foresight-apps.vercel.app`
-- [ ] All env vars set in Vercel dashboard
-- [ ] Frame validates at framescan.com with production URL
-- [ ] GitHub → Vercel auto-deploy configured for `main` branch
+- [x] `npm run build` succeeds locally before deploying
+- [ ] `vercel --prod` deploys to `foresight-apps.vercel.app` (manual — requires Vercel account)
+- [ ] All env vars set in Vercel dashboard (manual)
+- [ ] Frame validates at framescan.com with production URL (manual post-deploy)
+- [x] GitHub Actions CI/CD configured via `.github/workflows/ci.yml` — auto-deploys `main` → Vercel when `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` secrets are set
 
 ## Deploy Steps
 
