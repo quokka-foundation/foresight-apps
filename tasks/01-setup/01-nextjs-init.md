@@ -1,17 +1,17 @@
 # Task #1: Next.js 15 + Tailwind + TypeScript Setup
 
-**Status:** ⏳ Not Started
+**Status:** ✅ Complete
 **Est:** 0.5h
 **Priority:** P1
 **Phase:** Setup
 
 ## Acceptance Criteria
 
-- [ ] `npx create-next-app@15 foresight-apps --ts --tailwind --app` (or this repo is already init'd)
-- [ ] TypeScript strict mode enabled in `tsconfig.json`
-- [ ] Tailwind config includes Farcaster colors (`#1DA1F2` blue, `#8A63D2` purple)
-- [ ] `npm run lint` passes with zero errors
-- [ ] `npm run dev` starts on `localhost:3000`
+- [x] `npx create-next-app@15 foresight-apps --ts --tailwind --app` (or this repo is already init'd)
+- [x] TypeScript strict mode enabled in `tsconfig.json`
+- [x] Tailwind config includes Farcaster colors (`#1DA1F2` blue, `#8A63D2` purple)
+- [x] `npm run lint` passes with zero errors
+- [x] `npm run dev` starts on `localhost:3000`
 
 ## Commands
 
@@ -42,5 +42,6 @@ npm run type-check  # zero errors after npm install
 
 - Use `moduleResolution: "bundler"` in tsconfig for Next.js 15 compatibility
 - Set `reactStrictMode: true` in `next.config.js`
+- Next.js 15: dynamic route `params` must be typed as `Promise<{ ... }>` and awaited
 
 **Next:** Task #2 — Install Core Dependencies

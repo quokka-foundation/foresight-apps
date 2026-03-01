@@ -1,16 +1,16 @@
 # Task #2: Install Core Dependencies
 
-**Status:** ⏳ Not Started
+**Status:** ✅ Complete
 **Est:** 0.25h
 **Priority:** P1
 **Phase:** Setup
 
 ## Acceptance Criteria
 
-- [ ] All production deps installed (`viem@2`, `@farcaster/frame-sdk`, `@mantine/core`, etc.)
-- [ ] All dev deps installed (`@playwright/test`, `ts-jest`, `@testing-library/react`)
-- [ ] `npm run build` succeeds
-- [ ] No peer dependency conflicts
+- [x] All production deps installed (`viem@2`, `@farcaster/frame-sdk`, `@mantine/core`, etc.)
+- [x] All dev deps installed (`@playwright/test`, `ts-jest`, `@testing-library/react`)
+- [x] `npm run build` succeeds
+- [x] No peer dependency conflicts
 
 ## Commands
 
@@ -58,5 +58,13 @@ export default config
 npm run build    # Should complete without errors
 npm run lint     # Zero warnings
 ```
+
+## Notes
+
+- Added `@types/jest` to devDependencies (missing from initial package.json)
+- Updated `tsconfig.json` target to `ES2020` for BigInt literal support
+- Added `"types": ["node", "jest", "@testing-library/jest-dom"]` to tsconfig
+- Created `.env.local` with placeholder env vars for local dev
+- Created `playwright.config.ts` with Chromium setup pointing to localhost:3000
 
 **Next:** Task #3 — Farcaster Frame Dynamic Routes

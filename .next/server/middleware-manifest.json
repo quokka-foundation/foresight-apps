@@ -1,0 +1,97 @@
+{
+  "version": 3,
+  "middleware": {},
+  "functions": {
+    "/api/frame/action/route": {
+      "files": [
+        "server/server-reference-manifest.js",
+        "server/app/api/frame/action/route_client-reference-manifest.js",
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "server/interception-route-rewrite-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/edge-chunks/53.js",
+        "server/app/api/frame/action/route.js"
+      ],
+      "name": "app/api/frame/action/route",
+      "page": "/api/frame/action/route",
+      "matchers": [
+        {
+          "regexp": "^/api/frame/action$",
+          "originalSource": "/api/frame/action"
+        }
+      ],
+      "wasm": [],
+      "assets": [],
+      "env": {
+        "__NEXT_BUILD_ID": "nVOvVXV5VNg8ItgTa2UW1",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "jtgOCCAylnXlMZTFo5o5yiUwba3ZmVhBEROmJXCH/Fo=",
+        "__NEXT_PREVIEW_MODE_ID": "23d4673a3fb95af504fea5e9b1f70c6a",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "75ba0aa8b9076647680691914e3db3ac7eebe23882abdd17d01ee91da18a38b2",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "161162869b8d4043537030904f5277d1101a56573f300b31c019e57adf23abe1"
+      }
+    },
+    "/api/deposit/route": {
+      "files": [
+        "server/server-reference-manifest.js",
+        "server/app/api/deposit/route_client-reference-manifest.js",
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "server/interception-route-rewrite-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/edge-chunks/53.js",
+        "server/app/api/deposit/route.js"
+      ],
+      "name": "app/api/deposit/route",
+      "page": "/api/deposit/route",
+      "matchers": [
+        {
+          "regexp": "^/api/deposit$",
+          "originalSource": "/api/deposit"
+        }
+      ],
+      "wasm": [],
+      "assets": [],
+      "env": {
+        "__NEXT_BUILD_ID": "nVOvVXV5VNg8ItgTa2UW1",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "jtgOCCAylnXlMZTFo5o5yiUwba3ZmVhBEROmJXCH/Fo=",
+        "__NEXT_PREVIEW_MODE_ID": "23d4673a3fb95af504fea5e9b1f70c6a",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "75ba0aa8b9076647680691914e3db3ac7eebe23882abdd17d01ee91da18a38b2",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "161162869b8d4043537030904f5277d1101a56573f300b31c019e57adf23abe1"
+      }
+    },
+    "/api/preview/route": {
+      "files": [
+        "server/server-reference-manifest.js",
+        "server/app/api/preview/route_client-reference-manifest.js",
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "server/interception-route-rewrite-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/edge-chunks/53.js",
+        "server/app/api/preview/route.js"
+      ],
+      "name": "app/api/preview/route",
+      "page": "/api/preview/route",
+      "matchers": [
+        {
+          "regexp": "^/api/preview$",
+          "originalSource": "/api/preview"
+        }
+      ],
+      "wasm": [],
+      "assets": [],
+      "env": {
+        "__NEXT_BUILD_ID": "nVOvVXV5VNg8ItgTa2UW1",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "jtgOCCAylnXlMZTFo5o5yiUwba3ZmVhBEROmJXCH/Fo=",
+        "__NEXT_PREVIEW_MODE_ID": "23d4673a3fb95af504fea5e9b1f70c6a",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "75ba0aa8b9076647680691914e3db3ac7eebe23882abdd17d01ee91da18a38b2",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "161162869b8d4043537030904f5277d1101a56573f300b31c019e57adf23abe1"
+      }
+    }
+  },
+  "sortedMiddleware": []
+}

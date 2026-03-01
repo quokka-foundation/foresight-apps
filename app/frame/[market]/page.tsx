@@ -7,11 +7,11 @@
 import type { Metadata } from 'next'
 
 interface FramePageProps {
-  params: { market: string }
+  params: Promise<{ market: string }>
 }
 
 export async function generateMetadata({ params }: FramePageProps): Promise<Metadata> {
-  const { market } = params
+  const { market } = await params
   const marketName = market.replace(/-/g, ' ').toUpperCase()
   const frameUrl = `https://foresight-apps.vercel.app/frame/${market}`
 
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: FramePageProps): Promise<Meta
 }
 
 export default async function FramePage({ params }: FramePageProps) {
-  const { market } = params
+  const { market } = await params
   const marketName = market.replace(/-/g, ' ').toUpperCase()
 
   return (

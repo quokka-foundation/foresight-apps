@@ -5,7 +5,7 @@
 
 ## Progress
 
-**0/18 tasks complete**
+**2/18 tasks complete**
 
 ```mermaid
 gantt
@@ -26,8 +26,8 @@ gantt
 ### Phase 1: Setup (Mar 5 AM)
 | # | Task | Est | Status | Priority |
 |---|------|-----|--------|----------|
-| 1 | [Next.js 15 + Tailwind + TypeScript Setup](./01-setup/01-nextjs-init.md) | 0.5h | ⏳ | P1 |
-| 2 | [Install Core Dependencies](./01-setup/02-install-deps.md) | 0.25h | ⏳ | P1 |
+| 1 | [Next.js 15 + Tailwind + TypeScript Setup](./01-setup/01-nextjs-init.md) | 0.5h | ✅ | P1 |
+| 2 | [Install Core Dependencies](./01-setup/02-install-deps.md) | 0.25h | ✅ | P1 |
 
 ### Phase 2: Frame Core (Mar 5 AM)
 | # | Task | Est | Status | Priority |
