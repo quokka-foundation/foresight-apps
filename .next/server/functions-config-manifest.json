@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "functions": {
+    "/api/preview": {},
+    "/api/deposit": {},
+    "/api/frame/action": {}
+  }
+}
