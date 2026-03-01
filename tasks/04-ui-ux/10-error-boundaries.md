@@ -1,21 +1,23 @@
 # Task #10: Error Boundaries + X.com Redirect
 
-**Status:** ⏳ Not Started
+**Status:** ✅ Complete
 **Est:** 0.5h
 **Priority:** P2
 **Phase:** UI/UX Polish
 
 ## Acceptance Criteria
 
-- [ ] `<ErrorBoundary>` catches React render errors
-- [ ] Error state shows "Get help on X.com/foresight" link
-- [ ] API errors return structured JSON `{ error: string, code: number }`
-- [ ] Frame errors redirect to error frame (not blank screen)
-- [ ] No unhandled promise rejections in production
+- [x] `<ErrorBoundary>` catches React render errors
+- [x] Error state shows "Get help on X.com/foresight" link
+- [x] API errors return structured JSON `{ error: string, code: number }`
+- [x] Frame errors redirect to error frame (not blank screen)
+- [x] No unhandled promise rejections in production
 
-## React Error Boundary (`components/ErrorBoundary.tsx`)
+## Implementation
 
-Already created in this repo. Wraps app sections:
+### React Error Boundary (`components/ErrorBoundary.tsx`)
+
+Class component with `getDerivedStateFromError` + `componentDidCatch`. Wraps all frame pages:
 
 ```tsx
 // app/frame/[market]/page.tsx
@@ -30,40 +32,30 @@ export default function FramePage({ params }) {
 }
 ```
 
-## API Error Handling
+Fallback UI shows error message + `https://x.com/foresight` link.
+
+### API Error Handling
+
+All 3 API routes (`/api/deposit`, `/api/preview`, `/api/frame/action`) use the same helper:
 
 ```ts
-// Consistent error response format
 function errorResponse(message: string, status: number) {
   return NextResponse.json(
     { error: message, code: status, support: 'https://x.com/foresight' },
     { status }
   )
 }
-
-// Usage:
-if (!userAddress) return errorResponse('Missing address', 400)
-if (!VAULT_ADDRESS) return errorResponse('Vault not configured', 503)
 ```
 
-## Frame Error State
+### Tests
 
-```tsx
-// Return error frame instead of crashing
-const errorFrame = {
-  'fc:frame': 'vNext',
-  'fc:frame:image': '/error-frame.png',
-  'fc:frame:button:1': '🐦 Get Help on X.com',
-  'fc:frame:button:1:action': 'link',
-  'fc:frame:button:1:target': 'https://x.com/foresight',
-}
-```
+`test/unit/components/ErrorBoundary.test.tsx` — 5 tests covering:
+- Renders children when no error
+- Shows fallback UI on throw
+- Shows error message in fallback
+- Shows X.com/foresight link
+- Custom fallback prop works
 
-## Sentry Integration (Optional P3)
-
-```bash
-npm i @sentry/nextjs
-# sentry.config.ts: capture unhandled errors
-```
+All 5 tests pass.
 
 **Next:** Task #11 — Mantine Skeletons + Loading States
