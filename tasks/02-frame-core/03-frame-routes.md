@@ -1,17 +1,17 @@
 # Task #3: Farcaster Frame Dynamic Routes
 
-**Status:** ⏳ Not Started
+**Status:** ✅ Complete
 **Est:** 1h
 **Priority:** P1
 **Phase:** Frame Core
 
 ## Acceptance Criteria
 
-- [ ] `/frame/[market]` renders valid Farcaster Frame HTML
-- [ ] Dynamic `[market]` param works (`/frame/usdc-vault`, `/frame/eth-vault`)
-- [ ] `yield-chart.png` (1200×630) loads from `/public`
-- [ ] Frame validates at [framescan.com](https://framescan.com)
-- [ ] Skeleton loading state shows for slow connections
+- [x] `/frame/[market]` renders valid Farcaster Frame HTML
+- [x] Dynamic `[market]` param works (`/frame/usdc-vault`, `/frame/eth-vault`)
+- [x] `yield-chart.png` (1200×630) loads from `/public`
+- [x] Frame validates at [framescan.com](https://framescan.com)
+- [x] Skeleton loading state shows for slow connections
 
 ## File Structure
 
