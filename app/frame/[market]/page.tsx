@@ -5,6 +5,11 @@
 // Usage: /frame/usdc-vault, /frame/eth-vault, etc.
 
 import type { Metadata } from 'next'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
+import { YieldImage } from '@/components/YieldImage'
+
+const BASE_URL =
+  process.env.NEXT_PUBLIC_BASE_URL ?? 'https://foresight-apps.vercel.app'
 
 interface FramePageProps {
   params: Promise<{ market: string }>
@@ -16,13 +21,14 @@ export async function generateMetadata({ params }: FramePageProps): Promise<Meta
 
   return {
     title: `Foresight: Earn on ${marketName}`,
+    description: 'Deposit $100 USDC, earn $112 in 30 days at 12% APY on Base.',
     openGraph: {
-      images: [{ url: '/yield-chart.png', width: 1200, height: 630 }],
+      images: [{ url: `${BASE_URL}/yield-chart.png`, width: 1200, height: 630 }],
     },
     other: {
       // Farcaster Frame v2 meta tags
       'fc:frame': 'vNext',
-      'fc:frame:image': '/yield-chart.png',
+      'fc:frame:image': `${BASE_URL}/yield-chart.png`,
       'fc:frame:image:aspect_ratio': '1.91:1',
       'fc:frame:button:1': '🚀 Deposit $100 → Earn 12% APY',
       'fc:frame:button:1:action': 'post',
@@ -30,8 +36,8 @@ export async function generateMetadata({ params }: FramePageProps): Promise<Meta
       'fc:frame:button:2:action': 'post',
       'fc:frame:button:3': '🔗 Open Dashboard',
       'fc:frame:button:3:action': 'link',
-      'fc:frame:button:3:target': `https://foresight-apps.vercel.app/dashboard`,
-      'fc:frame:post_url': `https://foresight-apps.vercel.app/api/frame/action`,
+      'fc:frame:button:3:target': `${BASE_URL}/dashboard`,
+      'fc:frame:post_url': `${BASE_URL}/api/frame/action`,
     },
   }
 }
@@ -41,33 +47,36 @@ export default async function FramePage({ params }: FramePageProps) {
   const marketName = market.replace(/-/g, ' ').toUpperCase()
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-base-navy">
-      <div className="max-w-lg w-full">
-        <h1 className="text-3xl font-bold text-farcaster-blue mb-2">
-          Foresight: {marketName}
-        </h1>
-        <p className="text-gray-400 mb-6">
-          Deposit USDC into this yield vault via Farcaster Frame.
-        </p>
+    <ErrorBoundary>
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[#0a0b1e]">
+        <div className="max-w-[400px] w-full">
+          <h1 className="text-2xl font-bold text-[#1DA1F2] mb-1">
+            Foresight: {marketName}
+          </h1>
+          <p className="text-gray-400 text-sm mb-4">
+            Deposit $100 USDC → earn $112 in 30 days at 12% APY on Base.
+          </p>
 
-        {/* Frame preview (shown in web browser, not in frame) */}
-        <div className="border border-farcaster-blue/30 rounded-xl p-6 bg-gray-900">
-          <div className="aspect-video bg-gray-800 rounded-lg mb-4 flex items-center justify-center">
-            <span className="text-gray-500">yield-chart.png (1200×630)</span>
-          </div>
+          {/* Yield chart image */}
+          <YieldImage className="mb-4" />
+
+          {/* Frame action buttons (web preview) */}
           <div className="grid grid-cols-3 gap-2">
-            <button className="bg-farcaster-blue/20 border border-farcaster-blue/40 rounded px-2 py-1.5 text-sm text-white">
+            <button className="bg-[#1DA1F2]/20 border border-[#1DA1F2]/40 rounded px-2 py-2 text-xs text-white">
               🚀 Deposit $100
             </button>
-            <button className="bg-farcaster-blue/20 border border-farcaster-blue/40 rounded px-2 py-1.5 text-sm text-white">
+            <button className="bg-[#1DA1F2]/20 border border-[#1DA1F2]/40 rounded px-2 py-2 text-xs text-white">
               📊 Preview Yield
             </button>
-            <button className="bg-farcaster-blue/20 border border-farcaster-blue/40 rounded px-2 py-1.5 text-sm text-white">
+            <a
+              href="/dashboard"
+              className="bg-[#1DA1F2]/20 border border-[#1DA1F2]/40 rounded px-2 py-2 text-xs text-white text-center"
+            >
               🔗 Dashboard
-            </button>
+            </a>
           </div>
         </div>
       </div>
-    </div>
+    </ErrorBoundary>
   )
 }

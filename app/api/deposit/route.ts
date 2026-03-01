@@ -8,23 +8,24 @@ import { VAULT_ABI } from '@/lib/abis/vault'
 
 export const runtime = 'edge'
 
+function errorResponse(message: string, status: number) {
+  return NextResponse.json(
+    { error: message, code: status, support: 'https://x.com/foresight' },
+    { status }
+  )
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
     const userAddress: string | undefined = body.untrustedData?.address
 
     if (!userAddress) {
-      return NextResponse.json(
-        { error: 'No user address provided' },
-        { status: 400 }
-      )
+      return errorResponse('No user address provided', 400)
     }
 
     if (!ADDRESSES.VAULT || ADDRESSES.VAULT === '0x0000000000000000000000000000000000000000') {
-      return NextResponse.json(
-        { error: 'Vault address not configured' },
-        { status: 503 }
-      )
+      return errorResponse('Vault address not configured', 503)
     }
 
     // Return Farcaster tx frame response.
@@ -45,6 +46,6 @@ export async function POST(req: NextRequest) {
     })
   } catch (err) {
     console.error('Deposit error:', err)
-    return NextResponse.json({ error: 'Deposit failed' }, { status: 500 })
+    return errorResponse('Deposit failed', 500)
   }
 }

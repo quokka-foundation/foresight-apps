@@ -1,16 +1,16 @@
 # Task #7: Static "$100→$112" PNG Embed
 
-**Status:** ⏳ Not Started
+**Status:** ✅ Complete
 **Est:** 0.5h
 **Priority:** P2
 **Phase:** Wallet Features
 
 ## Acceptance Criteria
 
-- [ ] `public/yield-chart.png` exists at exactly 1200×630px
-- [ ] Image shows "$100 → $112" bar chart with 12% APY callout
-- [ ] Next.js `<Image>` serves it with WebP optimization
-- [ ] Frame meta tags reference `/yield-chart.png`
+- [x] `public/yield-chart.png` exists at exactly 1200×630px
+- [x] Image shows "$100 → $112" bar chart with 12% APY callout
+- [x] Next.js `<Image>` serves it with WebP optimization
+- [x] Frame meta tags reference `/yield-chart.png`
 
 ## Image Spec
 

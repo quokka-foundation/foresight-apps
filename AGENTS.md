@@ -62,6 +62,9 @@ test/unit/
 - Frame action handler must **proxy** POST body (not redirect) — Frame clients don't follow 302
 - viem tests need `@jest-environment node` docblock (jsdom lacks TextEncoder)
 - ts-node devDependency required for `jest.config.ts` to be parsed by Jest
+- `jest.config.ts` key for jest-dom is `setupFilesAfterEnv` (NOT `setupFilesAfterFramework`)
+- Floating-point: `100 * 1.12 === 112.00000000000001` — always compare to literal `112`, use `toBeCloseTo` for ratio
+- Tests run slow (~60s) due to viem publicClient open handles — use `--forceExit` when needed
 
 ### Sprint Progress
 - **Phase 1 (Setup):** ✅ 2/2 complete
@@ -71,19 +74,32 @@ test/unit/
   - Task 3: `/frame/[market]` page with correct fc:frame meta tags + skeleton loading
   - Task 4: `POST /api/deposit` → `eth_sendTransaction` for vault.deposit (BigInt serialized as string)
   - Task 5: `POST /api/preview` → viem previewRedeem + demo fallback + YieldCountdown component
-- **Phase 3 (Wallet):** ⏳ 0/4 — Tasks 6, 7, 8, 9
-- **Phase 4 (UI/UX):** ⏳ 0/3 — Tasks 10, 11, 12
-- **Phase 5 (Deploy/Test):** ⏳ 0/6 — Tasks 13–18
+- **Phase 3 (Wallet):** ✅ 4/4 complete
+  - Task 6: `lib/wallet.ts` — `connectWallet()` + `depositToVault()` + `getChainId()` + `switchToBase()` via viem@2
+  - Task 7: `components/YieldImage.tsx` — Next.js `<Image>` with WebP optimization, 1.91:1 aspect ratio
+  - Task 8: Mantine v7 Provider in `app/layout.tsx` + `ColorSchemeScript` (no FOUC) + Mantine dashboard with Card/Badge/Stack
+  - Task 9: `app/api/telegram-qr/route.ts` + `app/api/telegram-webhook/route.ts` — QR proxy + /qr + /start bot commands
+- **Phase 4 (UI/UX):** ✅ 3/3 complete
+  - Task 10: `ErrorBoundary` wraps frame page; all API routes use `errorResponse()` helper with `support: 'https://x.com/foresight'`
+  - Task 11: `app/frame/[market]/loading.tsx` + `app/dashboard/loading.tsx` rebuilt with Mantine `<Skeleton>`
+  - Task 12: `next.config.js` updated with `Cache-Control: public, max-age=86400` for static images + WebP/AVIF formats
+- **Phase 5 (Deploy/Test):** ✅ 5/6 complete (Task 15 is manual Vercel deploy)
+  - Task 13: All 10 unit test suites pass (60 tests); `jest.config.ts` wired `setupFilesAfterEnv`
+  - Task 14: `test/e2e/frame.spec.ts` — 12 Playwright scenarios written
+  - Task 15: Vercel deploy — **manual step** (push to main, set env vars in Vercel dashboard)
+  - Task 16: `lib/analytics.ts` + PostHog fire-and-forget in `app/api/frame/action/route.ts`
+  - Task 17: Loom recording — **manual step**
+  - Task 18: `app/sitemap.ts` + `app/robots.ts` + full OG/Twitter/fc:frame metadata in `app/layout.tsx`
 
 ### Config Files Created
-- `jest.config.ts` — ts-jest, jsdom, 80% coverage threshold, `@/*` alias
+- `jest.config.ts` — ts-jest, jsdom, 80% coverage threshold, `@/*` alias, `setupFilesAfterEnv: ['@testing-library/jest-dom']`
 - `playwright.config.ts` — Chromium, baseURL localhost:3000, webServer auto-start
 - `.env.local` — placeholder env vars (RPC, vault address, PostHog key)
 - `.eslintrc.json` — `extends: ["next/core-web-vitals"]`
 - `tsconfig.json` — types: ["node", "jest", "@testing-library/jest-dom"]
 - `ts-node` — added to devDependencies (required by Jest for jest.config.ts)
 
-### Test Results (Phase 2 complete)
-- 14/14 unit tests pass
-- Coverage: 90% lines, 80% branches (above 80% threshold)
+### Test Results (All phases complete)
+- 60/60 unit tests pass (10 test suites)
 - TypeScript: 0 errors (`tsc --noEmit` clean)
+- Remaining manual steps: Vercel deploy (Task 15), Loom recording (Task 17)
