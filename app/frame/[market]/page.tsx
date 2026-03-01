@@ -13,7 +13,6 @@ interface FramePageProps {
 export async function generateMetadata({ params }: FramePageProps): Promise<Metadata> {
   const { market } = await params
   const marketName = market.replace(/-/g, ' ').toUpperCase()
-  const frameUrl = `https://foresight-apps.vercel.app/frame/${market}`
 
   return {
     title: `Foresight: Earn on ${marketName}`,
@@ -32,7 +31,7 @@ export async function generateMetadata({ params }: FramePageProps): Promise<Meta
       'fc:frame:button:3': '🔗 Open Dashboard',
       'fc:frame:button:3:action': 'link',
       'fc:frame:button:3:target': `https://foresight-apps.vercel.app/dashboard`,
-      'fc:frame:post_url': `${frameUrl}/api/action`,
+      'fc:frame:post_url': `https://foresight-apps.vercel.app/api/frame/action`,
     },
   }
 }

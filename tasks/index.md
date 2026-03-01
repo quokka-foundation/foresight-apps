@@ -5,7 +5,7 @@
 
 ## Progress
 
-**2/18 tasks complete**
+**5/18 tasks complete**
 
 ```mermaid
 gantt
@@ -32,9 +32,9 @@ gantt
 ### Phase 2: Frame Core (Mar 5 AM)
 | # | Task | Est | Status | Priority |
 |---|------|-----|--------|----------|
-| 3 | [Farcaster Frame Dynamic Routes](./02-frame-core/03-frame-routes.md) | 1h | ⏳ | P1 |
-| 4 | [POST /api/deposit → vault.deposit](./02-frame-core/04-deposit-action.md) | 1h | ⏳ | P1 |
-| 5 | [previewRedeem Display + Countdown](./02-frame-core/05-preview-display.md) | 0.5h | ⏳ | P1 |
+| 3 | [Farcaster Frame Dynamic Routes](./02-frame-core/03-frame-routes.md) | 1h | ✅ | P1 |
+| 4 | [POST /api/deposit → vault.deposit](./02-frame-core/04-deposit-action.md) | 1h | ✅ | P1 |
+| 5 | [previewRedeem Display + Countdown](./02-frame-core/05-preview-display.md) | 0.5h | ✅ | P1 |
 
 ### Phase 3: Wallet Features (Mar 5 PM)
 | # | Task | Est | Status | Priority |

@@ -1,16 +1,16 @@
 # Task #5: previewRedeem Display + Countdown
 
-**Status:** ⏳ Not Started
+**Status:** ✅ Complete
 **Est:** 0.5h
 **Priority:** P1
 **Phase:** Frame Core
 
 ## Acceptance Criteria
 
-- [ ] `POST /api/preview` returns yield data from `previewRedeem`
-- [ ] Shows "$100 → $112.00" after 30 days at 12% APY
-- [ ] Countdown timer shows days until next yield cycle
-- [ ] Falls back to static demo values if RPC unavailable
+- [x] `POST /api/preview` returns yield data from `previewRedeem`
+- [x] Shows "$100 → $112.00" after 30 days at 12% APY
+- [x] Countdown timer shows days until next yield cycle
+- [x] Falls back to static demo values if RPC unavailable
 
 ## Implementation
 

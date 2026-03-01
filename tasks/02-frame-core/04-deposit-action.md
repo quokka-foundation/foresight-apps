@@ -1,17 +1,17 @@
 # Task #4: POST /api/deposit → vault.deposit
 
-**Status:** ⏳ Not Started
+**Status:** ✅ Complete
 **Est:** 1h
 **Priority:** P1
 **Phase:** Frame Core
 
 ## Acceptance Criteria
 
-- [ ] `POST /api/deposit` returns valid `eth_sendTransaction` JSON
-- [ ] Transaction targets `vault.deposit(100e6, userAddress)` on Base
-- [ ] Coinbase Wallet prompts user when Frame button is clicked
-- [ ] Error state returns 400 with clear message
-- [ ] Edge runtime compatible (no Node.js-only APIs)
+- [x] `POST /api/deposit` returns valid `eth_sendTransaction` JSON
+- [x] Transaction targets `vault.deposit(100e6, userAddress)` on Base
+- [x] Coinbase Wallet prompts user when Frame button is clicked
+- [x] Error state returns 400 with clear message
+- [x] Edge runtime compatible (no Node.js-only APIs)
 
 ## Implementation
 

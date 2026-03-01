@@ -1,3 +1,6 @@
+/**
+ * @jest-environment node
+ */
 // test/unit/viem.test.ts
 // Unit tests for viem client configuration
 
