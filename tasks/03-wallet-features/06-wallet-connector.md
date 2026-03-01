@@ -1,17 +1,17 @@
 # Task #6: Coinbase Smart Wallet Connector
 
-**Status:** ⏳ Not Started
+**Status:** ✅ Complete
 **Est:** 1h
 **Priority:** P1
 **Phase:** Wallet Features
 
 ## Acceptance Criteria
 
-- [ ] Coinbase Smart Wallet connects on Base mainnet
-- [ ] viem@2 `createWalletClient` configured for Base
-- [ ] `wallet.sendTransaction` works for vault.deposit
-- [ ] No wallet connection needed for Frame tx (Frame SDK handles it)
-- [ ] Dashboard shows connected wallet address
+- [x] Coinbase Smart Wallet connects on Base mainnet
+- [x] viem@2 `createWalletClient` configured for Base
+- [x] `wallet.sendTransaction` works for vault.deposit
+- [x] No wallet connection needed for Frame tx (Frame SDK handles it)
+- [x] Dashboard shows connected wallet address
 
 ## Architecture Note
 

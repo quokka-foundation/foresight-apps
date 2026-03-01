@@ -3,7 +3,7 @@ const nextConfig = {
   // Enable React strict mode for better error detection
   reactStrictMode: true,
 
-  // Image optimization domains for Farcaster/Base assets
+  // Image optimization — WebP/AVIF served to browsers, PNG kept for Farcaster Frame meta tags
   images: {
     domains: ['foresight-apps.vercel.app', 'base.org'],
     formats: ['image/webp', 'image/avif'],
@@ -16,7 +16,7 @@ const nextConfig = {
     },
   },
 
-  // Headers for Farcaster Frame validation
+  // Headers for Farcaster Frame validation, CORS, and image caching
   async headers() {
     return [
       {
@@ -32,6 +32,13 @@ const nextConfig = {
           { key: 'Access-Control-Allow-Origin', value: '*' },
           { key: 'Access-Control-Allow-Methods', value: 'GET, POST, OPTIONS' },
           { key: 'Access-Control-Allow-Headers', value: 'Content-Type' },
+        ],
+      },
+      // Cache static images for 24h — yield-chart.png is LCP
+      {
+        source: '/:file(yield-chart\\.png|.*\\.png|.*\\.jpg|.*\\.webp)',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=3600' },
         ],
       },
     ]

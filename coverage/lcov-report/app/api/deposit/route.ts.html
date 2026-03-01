@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.25% </span>
+                <span class="strong">82.35% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>13/16</span>
+                <span class='fraction'>14/17</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.25% </span>
+                <span class="strong">82.35% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/16</span>
+                <span class='fraction'>14/17</span>
             </div>
         
             
@@ -113,7 +113,8 @@
 <a name='L48'></a><a href='#L48'>48</a>
 <a name='L49'></a><a href='#L49'>49</a>
 <a name='L50'></a><a href='#L50'>50</a>
-<a name='L51'></a><a href='#L51'>51</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -122,6 +123,13 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
@@ -132,14 +140,8 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -173,23 +175,24 @@ import { VAULT_ABI } from '@/lib/abis/vault'
 &nbsp;
 export const runtime = 'edge'
 &nbsp;
+function errorResponse(message: string, status: number) {
+  return NextResponse.json(
+    { error: message, code: status, support: 'https://x.com/foresight' },
+    { status }
+  )
+}
+&nbsp;
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
     const userAddress: string | undefined = body.untrustedData?.address
 &nbsp;
     if (!userAddress) {
-      return NextResponse.json(
-        { error: 'No user address provided' },
-        { status: 400 }
-      )
+      return errorResponse('No user address provided', 400)
     }
 &nbsp;
     <span class="missing-if-branch" title="if path not taken" >I</span>if (!ADDRESSES.VAULT || ADDRESSES.VAULT === '0x0000000000000000000000000000000000000000') {
-<span class="cstat-no" title="statement not covered" >      return NextResponse.json(</span>
-        { error: 'Vault address not configured' },
-        { status: 503 }
-      )
+<span class="cstat-no" title="statement not covered" >      return errorResponse('Vault address not configured', 503)</span>
     }
 &nbsp;
     // Return Farcaster tx frame response.
@@ -210,7 +213,7 @@ export async function POST(req: NextRequest) {
     })
   } catch (err) {
 <span class="cstat-no" title="statement not covered" >    console.error('Deposit error:', err)</span>
-<span class="cstat-no" title="statement not covered" >    return NextResponse.json({ error: 'Deposit failed' }, { status: 500 })</span>
+<span class="cstat-no" title="statement not covered" >    return errorResponse('Deposit failed', 500)</span>
   }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -220,7 +223,7 @@ export async function POST(req: NextRequest) {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-03-01T11:59:35.301Z
+                at 2026-03-01T14:20:22.779Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
