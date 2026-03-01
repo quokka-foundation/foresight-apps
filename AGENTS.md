@@ -80,9 +80,9 @@ test/unit/
   - Task 8: Mantine v7 Provider in `app/layout.tsx` + `ColorSchemeScript` (no FOUC) + Mantine dashboard with Card/Badge/Stack
   - Task 9: `app/api/telegram-qr/route.ts` + `app/api/telegram-webhook/route.ts` — QR proxy + /qr + /start bot commands
 - **Phase 4 (UI/UX):** ✅ 3/3 complete
-  - Task 10: `ErrorBoundary` wraps frame page; all API routes use `errorResponse()` helper with `support: 'https://x.com/foresight'`
-  - Task 11: `app/frame/[market]/loading.tsx` + `app/dashboard/loading.tsx` rebuilt with Mantine `<Skeleton>`
-  - Task 12: `next.config.js` updated with `Cache-Control: public, max-age=86400` for static images + WebP/AVIF formats
+  - Task 10: `ErrorBoundary` wraps frame page; all API routes use `errorResponse()` helper with `support: 'https://x.com/foresight'`; 5 unit tests in `test/unit/components/ErrorBoundary.test.tsx`
+  - Task 11: `app/frame/[market]/loading.tsx` + `app/dashboard/loading.tsx` use Mantine `<Skeleton>` — dimensions match final layout to prevent CLS; Next.js App Router auto-uses `loading.tsx` as Suspense fallback
+  - Task 12: `next.config.js` — `images.formats: ['image/webp','image/avif']` + `Cache-Control: public, max-age=86400, stale-while-revalidate=3600` header for all PNG/JPG/WebP; `components/YieldImage.tsx` uses `<Image fill priority sizes>` for LCP optimization; fc:frame:image meta tag stays as direct `.png` URL (Farcaster spec requires PNG)
 - **Phase 5 (Deploy/Test):** ✅ 5/6 complete (Task 15 is manual Vercel deploy)
   - Task 13: All 10 unit test suites pass (60 tests); `jest.config.ts` wired `setupFilesAfterEnv`
   - Task 14: `test/e2e/frame.spec.ts` — 12 Playwright scenarios written

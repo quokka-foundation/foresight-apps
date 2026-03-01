@@ -5,7 +5,7 @@
 
 ## Progress
 
-**5/18 tasks complete**
+**14/18 tasks complete**
 
 ```mermaid
 gantt
@@ -39,24 +39,24 @@ gantt
 ### Phase 3: Wallet Features (Mar 5 PM)
 | # | Task | Est | Status | Priority |
 |---|------|-----|--------|----------|
-| 6 | [Coinbase Smart Wallet Connector](./03-wallet-features/06-wallet-connector.md) | 1h | ⏳ | P1 |
-| 7 | [Static "$100→$112" PNG Embed](./03-wallet-features/07-yield-image.md) | 0.5h | ⏳ | P2 |
-| 8 | [Mantine Mobile-First UI](./03-wallet-features/08-mantine-ui.md) | 1h | ⏳ | P2 |
-| 9 | [Telegram Bot QR Proxy](./03-wallet-features/09-telegram-proxy.md) | 1h | ⏳ | P3 |
+| 6 | [Coinbase Smart Wallet Connector](./03-wallet-features/06-wallet-connector.md) | 1h | ✅ | P1 |
+| 7 | [Static "$100→$112" PNG Embed](./03-wallet-features/07-yield-image.md) | 0.5h | ✅ | P2 |
+| 8 | [Mantine Mobile-First UI](./03-wallet-features/08-mantine-ui.md) | 1h | ✅ | P2 |
+| 9 | [Telegram Bot QR Proxy](./03-wallet-features/09-telegram-proxy.md) | 1h | ✅ | P3 |
 
 ### Phase 4: UI/UX Polish (Mar 5–6)
 | # | Task | Est | Status | Priority |
 |---|------|-----|--------|----------|
-| 10 | [Error Boundaries + X.com Redirect](./04-ui-ux/10-error-boundaries.md) | 0.5h | ⏳ | P2 |
-| 11 | [Mantine Skeletons + Loading States](./04-ui-ux/11-loading-states.md) | 0.5h | ⏳ | P2 |
-| 12 | [Frame Image Optimization (WebP)](./04-ui-ux/12-image-optimization.md) | 0.25h | ⏳ | P2 |
+| 10 | [Error Boundaries + X.com Redirect](./04-ui-ux/10-error-boundaries.md) | 0.5h | ✅ | P2 |
+| 11 | [Mantine Skeletons + Loading States](./04-ui-ux/11-loading-states.md) | 0.5h | ✅ | P2 |
+| 12 | [Frame Image Optimization (WebP)](./04-ui-ux/12-image-optimization.md) | 0.25h | ✅ | P2 |
 
 ### Phase 5: Test + Deploy (Mar 6)
 | # | Task | Est | Status | Priority |
 |---|------|-----|--------|----------|
-| 13 | [80% Test Coverage](./05-deploy-test/13-unit-tests.md) | 2h | ⏳ | P2 |
-| 14 | [Playwright E2E: Full User Flow](./05-deploy-test/14-e2e-tests.md) | 1h | ⏳ | P2 |
+| 13 | [80% Test Coverage](./05-deploy-test/13-unit-tests.md) | 2h | ✅ | P2 |
+| 14 | [Playwright E2E: Full User Flow](./05-deploy-test/14-e2e-tests.md) | 1h | ✅ | P2 |
 | 15 | [Vercel Production Deploy](./05-deploy-test/15-vercel-deploy.md) | 0.5h | ⏳ | P1 |
-| 16 | [PostHog Farcaster Analytics](./05-deploy-test/16-posthog-analytics.md) | 0.5h | ⏳ | P2 |
+| 16 | [PostHog Farcaster Analytics](./05-deploy-test/16-posthog-analytics.md) | 0.5h | ✅ | P2 |
 | 17 | [Loom "$100→$112" Video Demo](./05-deploy-test/17-loom-video.md) | 1h | ⏳ | P2 |
-| 18 | [Farcaster SEO Metadata](./05-deploy-test/18-seo-metadata.md) | 0.25h | ⏳ | P2 |
+| 18 | [Farcaster SEO Metadata](./05-deploy-test/18-seo-metadata.md) | 0.25h | ✅ | P2 |
