@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --farcaster-blue: #1DA1F2;
+  --farcaster-purple: #8A63D2;
+  --base-blue: #0052FF;
+}
+
+/* Frame-optimized mobile styles */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #0a0b1e;
+  color: #ffffff;
+}
