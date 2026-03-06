@@ -1,9 +1,0 @@
-{
-  "/_not-found/page": "/_not-found",
-  "/page": "/",
-  "/frame/[market]/page": "/frame/[market]",
-  "/dashboard/page": "/dashboard",
-  "/api/frame/action/route": "/api/frame/action",
-  "/api/deposit/route": "/api/deposit",
-  "/api/preview/route": "/api/preview"
-}

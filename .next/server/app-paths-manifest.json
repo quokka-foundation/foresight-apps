@@ -1,9 +1,0 @@
-{
-  "/_not-found/page": "app/_not-found/page.js",
-  "/page": "app/page.js",
-  "/frame/[market]/page": "app/frame/[market]/page.js",
-  "/dashboard/page": "app/dashboard/page.js",
-  "/api/frame/action/route": "app/api/frame/action/route.js",
-  "/api/deposit/route": "app/api/deposit/route.js",
-  "/api/preview/route": "app/api/preview/route.js"
-}
