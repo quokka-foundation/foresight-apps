@@ -55,3 +55,9 @@ next-env.d.ts
 
 # examples
 /examples/
+
+# plans
+/plans/
+
+# tasks
+/tasks/
