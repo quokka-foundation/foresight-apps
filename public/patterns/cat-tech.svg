@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+  <rect width="120" height="120" fill="#0A0B0D"/>
+  <!-- Circuit/chip shape via dot-matrix -->
+  <g fill="#8B5CF6">
+    <!-- Central chip square -->
+    <circle cx="45" cy="40" r="3" opacity="0.8"/><circle cx="55" cy="40" r="3" opacity="0.8"/>
+    <circle cx="65" cy="40" r="3" opacity="0.8"/><circle cx="75" cy="40" r="3" opacity="0.8"/>
+    <circle cx="45" cy="50" r="3" opacity="0.8"/><circle cx="75" cy="50" r="3" opacity="0.8"/>
+    <circle cx="45" cy="60" r="3" opacity="0.8"/><circle cx="75" cy="60" r="3" opacity="0.8"/>
+    <circle cx="45" cy="70" r="3" opacity="0.8"/><circle cx="55" cy="70" r="3" opacity="0.8"/>
+    <circle cx="65" cy="70" r="3" opacity="0.8"/><circle cx="75" cy="70" r="3" opacity="0.8"/>
+    <!-- Core -->
+    <circle cx="55" cy="50" r="3" opacity="0.9"/><circle cx="65" cy="50" r="3" opacity="0.9"/>
+    <circle cx="55" cy="60" r="3" opacity="0.9"/><circle cx="65" cy="60" r="3" opacity="0.9"/>
+    <circle cx="60" cy="55" r="3.5" opacity="1.0"/>
+    <!-- Pins top -->
+    <circle cx="50" cy="30" r="2.5" opacity="0.5"/><circle cx="60" cy="30" r="2.5" opacity="0.5"/>
+    <circle cx="70" cy="30" r="2.5" opacity="0.5"/>
+    <circle cx="50" cy="22" r="2" opacity="0.3"/><circle cx="60" cy="22" r="2" opacity="0.3"/>
+    <circle cx="70" cy="22" r="2" opacity="0.3"/>
+    <!-- Pins bottom -->
+    <circle cx="50" cy="80" r="2.5" opacity="0.5"/><circle cx="60" cy="80" r="2.5" opacity="0.5"/>
+    <circle cx="70" cy="80" r="2.5" opacity="0.5"/>
+    <circle cx="50" cy="88" r="2" opacity="0.3"/><circle cx="60" cy="88" r="2" opacity="0.3"/>
+    <circle cx="70" cy="88" r="2" opacity="0.3"/>
+    <!-- Pins left -->
+    <circle cx="35" cy="48" r="2.5" opacity="0.5"/><circle cx="35" cy="58" r="2.5" opacity="0.5"/>
+    <circle cx="27" cy="48" r="2" opacity="0.3"/><circle cx="27" cy="58" r="2" opacity="0.3"/>
+    <!-- Pins right -->
+    <circle cx="85" cy="48" r="2.5" opacity="0.5"/><circle cx="85" cy="58" r="2.5" opacity="0.5"/>
+    <circle cx="93" cy="48" r="2" opacity="0.3"/><circle cx="93" cy="58" r="2" opacity="0.3"/>
+    <!-- Traces -->
+    <circle cx="50" cy="15" r="1.5" opacity="0.15"/><circle cx="70" cy="15" r="1.5" opacity="0.15"/>
+    <circle cx="20" cy="48" r="1.5" opacity="0.1"/><circle cx="100" cy="58" r="1.5" opacity="0.1"/>
+    <circle cx="50" cy="95" r="1.5" opacity="0.15"/><circle cx="70" cy="95" r="1.5" opacity="0.15"/>
+  </g>
+</svg>

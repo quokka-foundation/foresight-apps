@@ -1,81 +1,102 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import { MantineProvider, createTheme, ColorSchemeScript } from '@mantine/core'
-import '@mantine/core/styles.css'
-import './globals.css'
+import type { Metadata, Viewport } from 'next';
+import { Inter } from 'next/font/google';
+import localFont from 'next/font/local';
+import { Providers } from '@/components/providers';
+import { APP_URL } from '@/lib/constants';
+import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
-const theme = createTheme({
-  primaryColor: 'blue',
-  colors: {
-    brand: [
-      '#e8f4fd',
-      '#bde0fa',
-      '#91ccf7',
-      '#65b8f4',
-      '#38a4f0',
-      '#1DA1F2',
-      '#1890da',
-      '#147fc2',
-      '#106daa',
-      '#0c5c92',
-    ],
+const coinbaseDisplay = localFont({
+  src: [
+    { path: '../public/fonts/CoinbaseDisplay-Regular.woff2', weight: '400', style: 'normal' },
+    { path: '../public/fonts/CoinbaseDisplay-Medium.woff2', weight: '500', style: 'normal' },
+  ],
+  variable: '--font-coinbase-display',
+  display: 'swap',
+});
+
+const coinbaseSans = localFont({
+  src: [
+    { path: '../public/fonts/CoinbaseSans-Regular.woff2', weight: '400', style: 'normal' },
+    { path: '../public/fonts/CoinbaseSans-Medium.woff2', weight: '500', style: 'normal' },
+  ],
+  variable: '--font-coinbase-sans',
+  display: 'swap',
+});
+
+const coinbaseMono = localFont({
+  src: [
+    { path: '../public/fonts/CoinbaseMono-Regular.woff2', weight: '400', style: 'normal' },
+    { path: '../public/fonts/CoinbaseMono-Medium.woff2', weight: '500', style: 'normal' },
+  ],
+  variable: '--font-coinbase-mono',
+  display: 'swap',
+});
+
+const frame = {
+  version: 'next',
+  imageUrl: `${APP_URL}/og-image.png`,
+  button: {
+    title: 'Trade Curves',
+    action: {
+      type: 'launch_frame',
+      name: 'Foresight',
+      url: APP_URL,
+      splashImageUrl: `${APP_URL}/splash.png`,
+      splashBackgroundColor: '#0052FF',
+    },
   },
-  fontFamily: 'Inter, system-ui, sans-serif',
-})
+};
 
 export const metadata: Metadata = {
   title: {
-    default: 'Foresight Apps',
+    default: 'Foresight — Continuous Outcome Markets',
     template: '%s | Foresight',
   },
-  description: 'Earn 12% APY on USDC via Farcaster Frames on Base. Deposit $100, earn $112 in 30 days.',
-  keywords: ['Farcaster', 'DeFi', 'yield', 'USDC', 'Base', 'ERC-4626', 'APY'],
+  description: 'Trade continuous outcome curves with 1-click leverage on Base. Prediction markets evolved.',
+  keywords: ['Farcaster', 'prediction markets', 'Base', 'DeFi', 'curves', 'leverage'],
   authors: [{ name: 'Foresight' }],
   openGraph: {
     type: 'website',
-    siteName: 'Foresight Apps',
-    title: 'Foresight Apps — Earn Yield on Base',
-    description: 'Deposit USDC, earn 12% APY — directly from Farcaster Frames.',
-    images: [{
-      url: 'https://foresight-apps.vercel.app/yield-chart.png',
-      width: 1200,
-      height: 630,
-      alt: '$100 → $112 yield projection at 12% APY',
-    }],
+    siteName: 'Foresight',
+    title: 'Foresight — Trade Outcome Curves on Base',
+    description: 'Trade continuous outcome curves with 1-click leverage. Live P&L in Farcaster.',
+    images: [{ url: `${APP_URL}/og-image.png`, width: 1200, height: 630, alt: 'Foresight - Continuous Outcome Markets' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Foresight Apps',
-    description: 'Earn 12% APY via Farcaster Frames on Base',
-    images: ['https://foresight-apps.vercel.app/yield-chart.png'],
+    title: 'Foresight',
+    description: 'Trade continuous outcome curves on Base',
+    images: [`${APP_URL}/og-image.png`],
     site: '@foresight',
   },
   other: {
-    // Farcaster Frame meta tags (v2)
-    'fc:frame': 'vNext',
-    'fc:frame:image': 'https://foresight-apps.vercel.app/yield-chart.png',
-    'fc:frame:button:1': 'View Yield Dashboard',
-    'fc:frame:post_url': 'https://foresight-apps.vercel.app/api/frame/action',
+    'fc:frame': JSON.stringify(frame),
   },
-}
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: '#FFFFFF',
+  colorScheme: 'light',
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
-      <head>
-        <ColorSchemeScript defaultColorScheme="dark" />
-      </head>
-      <body className={inter.className}>
-        <MantineProvider theme={theme} defaultColorScheme="dark">
+      <body className={`${inter.variable} ${coinbaseDisplay.variable} ${coinbaseSans.variable} ${coinbaseMono.variable} font-sans antialiased bg-ios-bg text-ios-text`}>
+        <Providers>
           {children}
-        </MantineProvider>
+        </Providers>
       </body>
     </html>
-  )
+  );
 }

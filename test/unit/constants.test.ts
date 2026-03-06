@@ -1,70 +1,40 @@
 /**
  * @jest-environment node
  */
-// test/unit/constants.test.ts
-// Validates lib/constants.ts values match expected Base mainnet addresses
-
-import { ADDRESSES, CHAIN_ID, DEFAULT_DEPOSIT_AMOUNT, TARGET_APY, DEMO_PROJECTION } from '../../lib/constants'
+import { APP_URL, CHAIN_ID, ADDRESSES, DEFAULT_TRADE_AMOUNT, MAX_TRADE_AMOUNT, MIN_TRADE_AMOUNT, MAX_LEVERAGE, SAFE_LEVERAGE_THRESHOLD, IS_DEMO } from '../../lib/constants';
 
 describe('constants', () => {
-  describe('ADDRESSES', () => {
-    it('USDC address matches Base mainnet contract', () => {
-      expect(ADDRESSES.USDC).toBe('0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913')
-    })
+  it('APP_URL is a valid HTTPS URL', () => {
+    expect(APP_URL).toMatch(/^https:\/\//);
+  });
 
-    it('USDC address starts with 0x', () => {
-      expect(ADDRESSES.USDC).toMatch(/^0x[0-9a-fA-F]{40}$/)
-    })
+  it('CHAIN_ID is Base mainnet', () => {
+    expect(CHAIN_ID).toBe(8453);
+  });
 
-    it('VAULT address is a valid hex address', () => {
-      expect(ADDRESSES.VAULT).toMatch(/^0x[0-9a-fA-F]{40}$/)
-    })
-  })
+  it('USDC address is correct', () => {
+    expect(ADDRESSES.USDC).toBe('0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913');
+  });
 
-  describe('CHAIN_ID', () => {
-    it('is Base mainnet (8453)', () => {
-      expect(CHAIN_ID).toBe(8453)
-    })
-  })
+  it('FORESIGHT_MARKET address is a valid hex address', () => {
+    expect(ADDRESSES.FORESIGHT_MARKET).toMatch(/^0x[0-9a-fA-F]{40}$/);
+  });
 
-  describe('DEFAULT_DEPOSIT_AMOUNT', () => {
-    it('is 100 USDC in 6-decimal units', () => {
-      expect(DEFAULT_DEPOSIT_AMOUNT).toBe(100_000_000n)
-    })
+  it('trade amount limits are sensible', () => {
+    expect(DEFAULT_TRADE_AMOUNT).toBe(10);
+    expect(MIN_TRADE_AMOUNT).toBe(1);
+    expect(MAX_TRADE_AMOUNT).toBe(10_000);
+    expect(MIN_TRADE_AMOUNT).toBeLessThan(DEFAULT_TRADE_AMOUNT);
+    expect(DEFAULT_TRADE_AMOUNT).toBeLessThan(MAX_TRADE_AMOUNT);
+  });
 
-    it('is a BigInt', () => {
-      expect(typeof DEFAULT_DEPOSIT_AMOUNT).toBe('bigint')
-    })
-  })
+  it('leverage limits are set', () => {
+    expect(MAX_LEVERAGE).toBe(5);
+    expect(SAFE_LEVERAGE_THRESHOLD).toBe(85);
+  });
 
-  describe('TARGET_APY', () => {
-    it('is 12 percent', () => {
-      expect(TARGET_APY).toBe(12)
-    })
-  })
-
-  describe('DEMO_PROJECTION', () => {
-    it('deposited is 100', () => {
-      expect(DEMO_PROJECTION.deposited).toBe(100)
-    })
-
-    it('after30Days is 112', () => {
-      expect(DEMO_PROJECTION.after30Days).toBe(112)
-    })
-
-    it('days is 30', () => {
-      expect(DEMO_PROJECTION.days).toBe(30)
-    })
-
-    it('apy matches TARGET_APY', () => {
-      expect(DEMO_PROJECTION.apy).toBe(TARGET_APY)
-    })
-
-    it('yield math is consistent (100 * 1.12 = 112)', () => {
-      const { deposited, after30Days } = DEMO_PROJECTION
-      // Demo uses simplified flat 12% on 100 = 112 (hardcoded, not floating-point)
-      expect(after30Days).toBe(112)
-      expect(after30Days / deposited).toBeCloseTo(1.12, 5)
-    })
-  })
-})
+  it('IS_DEMO is true when no market address is set', () => {
+    // In test env, NEXT_PUBLIC_FORESIGHT_MARKET_ADDRESS is not set or is zero address
+    expect(IS_DEMO).toBe(true);
+  });
+});
