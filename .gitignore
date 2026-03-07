@@ -3,15 +3,15 @@
 # dependencies
 /node_modules
 /.pnp
-.pnp.js
-.yarn/install-state.gz
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
 
 # testing
 /coverage
-/test-results
-/playwright-report
-/blob-report
-/playwright/.cache
 
 # next.js
 /.next/
@@ -21,21 +21,22 @@
 /build
 
 # misc
+.DS_Store
 *.pem
-Thumbs.db
 
 # debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
 
-# local env files
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# package files
+yarn.lock
+package-lock.json
+# bun.lock should be committed for Vercel builds
+
+# env files (can opt-in for committing if needed)
+.env*
+!.env.example
 
 # vercel
 .vercel
@@ -43,21 +44,3 @@ pnpm-debug.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# editor
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS
-.DS_Store
-
-# examples
-/examples/
-
-# plans
-/plans/
-
-# tasks
-/tasks/
