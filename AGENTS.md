@@ -8,106 +8,145 @@
 
 ## Project: Foresight Apps
 
-**Goal:** Farcaster Frame + "$100→$112" yield vault demo by Mar 6, 2026.
-**Sprint:** 18 tasks across 5 phases.
+**Goal:** Farcaster Mini App for continuous outcome prediction markets on Base L2.
+**Product:** Trade probability curves with 1-click leverage; live P&L inside Farcaster.
 
 ### Tech Stack
-- **Framework:** Next.js 15 (App Router) + TypeScript strict + Tailwind
+- **Framework:** Next.js 16 (App Router) + TypeScript strict + Tailwind
+- **Runtime:** React 19, `bun` as package manager (NOT npm/pnpm)
 - **Chain:** Base L2 (chainId 8453), viem@2 for contract reads
-- **Wallet:** Coinbase Smart Wallet via Farcaster Frame SDK
-- **UI:** Mantine v7 + Tailwind (mobile-first, 400px frame width)
-- **Testing:** Jest + ts-jest + @testing-library/react (unit), Playwright (E2E)
-- **Analytics:** PostHog (client + server-side)
+- **Wallet:** wagmi@3 + @farcaster/miniapp-wagmi-connector + @base-org/account
+- **UI:** Tailwind + Framer Motion + Three.js/R3F (@react-three/fiber) + @worldcoin/mini-apps-ui-kit-react
+- **Charts:** lightweight-charts v5 (TradingView) — ESM-only, requires mock in Jest
+- **Linter:** Biome (`@biomejs/biome`) — NOT ESLint
+- **Testing:** Jest + ts-jest + @testing-library/react
 - **Deploy:** Vercel → foresight-apps.vercel.app
 
-### Key Constants
-- USDC on Base: `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`
-- Vault: `process.env.NEXT_PUBLIC_VAULT_ADDRESS` (TBD after deploy)
-- Demo: deposit 100 USDC → 112 USDC in 30 days @ 12% APY
+### Key Constants (`src/lib/constants.ts`)
+- `APP_URL` — from `NEXT_PUBLIC_URL` env var
+- `CHAIN_ID` — `8453` (Base mainnet)
+- `ADDRESSES.USDC` — `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`
+- `ADDRESSES.FORESIGHT_MARKET` — from `NEXT_PUBLIC_FORESIGHT_MARKET` env var
+- `DEFAULT_TRADE_AMOUNT` — `10`
+- `MAX_LEVERAGE` — `5`
+- `IS_DEMO` — `true` when `NEXT_PUBLIC_DEMO === 'true'`
 
 ### File Structure
 ```
-app/
-├── frame/[market]/page.tsx        ← Farcaster Frame (fc:frame meta tags)
-├── frame/[market]/loading.tsx     ← Tailwind skeleton
-├── api/deposit/route.ts           ← Returns eth_sendTransaction for vault.deposit
-├── api/preview/route.ts           ← previewRedeem from viem + demo fallback
-├── api/frame/action/route.ts      ← Proxies frame button POSTs to deposit/preview
-└── dashboard/page.tsx             ← Yield metrics dashboard
-lib/
-├── viem.ts      ← publicClient for Base mainnet
-├── constants.ts ← ADDRESSES, CHAIN_ID, DEFAULT_DEPOSIT_AMOUNT (100e6n)
-└── abis/vault.ts ← ERC-4626 ABI (deposit, redeem, previewRedeem, etc.)
-components/
-├── YieldCard.tsx        ← Shows deposited/currentValue/apy/days
-├── YieldCountdown.tsx   ← Client component: days until full yield cycle
-├── ErrorBoundary.tsx    ← Fallback → x.com/foresight
-└── FrameContainer.tsx   ← max-w-[400px] wrapper
+src/
+├── app/
+│   ├── layout.tsx                    ← Root layout: localFont (Coinbase fonts), Providers
+│   ├── page.tsx                      ← Home feed: HeroNumber + FilterChips + MarketCard list
+│   ├── globals.css
+│   ├── sitemap.ts
+│   ├── robots.ts
+│   ├── .well-known/farcaster.json/route.ts  ← Farcaster Mini App manifest
+│   ├── curve/[id]/page.tsx           ← Market detail: TradingViewChart + ProbabilitySlider + TradeButton
+│   ├── portfolio/page.tsx            ← Open positions: PortfolioCard list with P&L
+│   ├── wallet/page.tsx               ← Wagmi wallet connect + balance display
+│   ├── create/page.tsx               ← Create new prediction market form
+│   └── api/
+│       ├── trade/route.ts            ← POST: validate & return demo trade result
+│       ├── og/curve/[id]/route.ts    ← GET: SVG OG image with probability/payout
+│       ├── notify/route.ts           ← POST: send push notification via Farcaster token
+│       └── webhook/route.ts          ← POST: frame_added/removed/notifications events → KV
+├── components/
+│   ├── providers.tsx                 ← Root providers wrapper
+│   ├── providers/
+│   │   ├── frame-provider.tsx        ← Farcaster Mini App SDK context
+│   │   ├── wagmi-provider.tsx        ← WagmiProvider + QueryClientProvider
+│   │   └── eruda-provider.tsx        ← Dev-only mobile console
+│   ├── MarketCard.tsx                ← Dark card: YES/NO buttons, payout, CardScene 3D art
+│   ├── TradingViewChart.tsx          ← lightweight-charts v5: area, volume, P&L overlay
+│   ├── CurveChart.tsx                ← SVG probability chart (uses curve-math paths)
+│   ├── ProbabilitySlider.tsx         ← Range input for trade sizing
+│   ├── TradeButton.tsx               ← Framer Motion animated submit button
+│   ├── TradeConfirmModal.tsx         ← Trade confirmation bottom sheet
+│   ├── PortfolioCard.tsx             ← Position card: direction, leverage, entry prob, P&L
+│   ├── TabBar.tsx                    ← 4-tab bottom nav (Home/Portfolio/Wallet/Create)
+│   ├── CardScene.tsx                 ← R3F Canvas: icosahedron → FBO → GLSL halftone shader
+│   ├── DynamicWebGLCanvas.tsx        ← Dynamic import of WebGLCanvas (SSR-safe)
+│   ├── FilterChips.tsx               ← Market category filter chips
+│   ├── HeroNumber.tsx                ← Animated hero stat display
+│   ├── AnimatedButton.tsx / AnimatedText.tsx
+│   ├── AssetRow.tsx / BackArrow.tsx / MarketRowCompact.tsx
+│   ├── PillCTA.tsx / PromoBanner.tsx / PromoSplash.tsx
+│   ├── SafeAreaContainer.tsx / Section.tsx / StatusBadge.tsx / Typography.tsx
+│   ├── top-bar.tsx / bottom-navigation.tsx
+│   ├── wallet-connect-prompt.tsx / wallet-detail.tsx / wallet-list.tsx
+│   ├── ui/button.tsx / ui/input.tsx / ui/label.tsx
+│   ├── wallet/base-pay.tsx / wallet/sign-manifest.tsx / wallet/wallet-actions.tsx
+│   └── actions/                      ← 16 Farcaster SDK demo action components
+│       └── (add-miniapp, close-miniapp, compose-cast, get-capabilities,
+│            get-chains, haptics, open-miniapp, openurl, quick-auth,
+│            request-camera-microphone, send-token, signin, swap-token,
+│            view-cast, view-profile, view-token)
+├── lib/
+│   ├── constants.ts                  ← APP_URL, CHAIN_ID, ADDRESSES, trade params
+│   ├── types.ts                      ← Market, Position, TradeDirection, etc.
+│   ├── curve-math.ts                 ← calculatePayout/Cost/PnL, estimateSlippage,
+│   │                                    generateCurvePath/AreaPath (SVG)
+│   ├── mock-data.ts                  ← 7 demo markets, generateCurveHistory,
+│   │                                    chart data converters, filterByTimeRange
+│   ├── viem.ts                       ← publicClient for Base mainnet
+│   ├── foresight-abi.ts              ← Foresight market contract ABI
+│   ├── kv.ts                         ← Upstash Redis: notification token CRUD
+│   ├── notifs.ts                     ← sendFrameNotification via stored token
+│   ├── utils.ts                      ← cn() (clsx + tailwind-merge)
+│   ├── truncateAddress.ts
+│   └── webgl/                        ← DOM-synchronized WebGL overlay system
+│       ├── WebGLCanvas.tsx           ← Single global R3F Canvas (pointer-events:none)
+│       ├── WebGLShader.tsx           ← R3F mesh: DOM rect → NDC uniforms
+│       ├── WebGLView.tsx             ← Registers DOM div into Zustand store
+│       ├── RenderTexture.tsx         ← Off-screen FBO via R3F createPortal
+│       ├── store.ts                  ← Zustand: elements[] + setElements
+│       ├── useFbo.ts                 ← THREE.WebGLRenderTarget with auto-resize
+│       ├── useWebGLInteraction.ts    ← Mouse UV, hover/press/grab uniforms
+│       ├── useScrollPosition.ts      ← scroll + resize tracking
+│       ├── saveGlState.ts            ← Save/restore WebGL state for multi-pass
+│       └── index.ts                  ← Re-exports
+└── test/
+    ├── __mocks__/lightweight-charts.ts  ← ESM mock: createChart, series types, ColorType
+    └── unit/
+        ├── constants.test.ts
+        ├── curve-math.test.ts
+        ├── mock-data.test.ts
+        ├── api-trade.test.ts
+        ├── api-notify.test.ts
+        ├── api-og.test.ts
+        ├── api-webhook.test.ts
+        └── components/
+            ├── MarketCard.test.tsx
+            ├── PortfolioCard.test.tsx
+            ├── TabBar.test.tsx
+            ├── TradeButton.test.tsx
+            └── TradingViewChart.test.tsx
 public/
-└── yield-chart.png      ← 1200×630 PNG (bar chart: $100 → $112)
-test/unit/
-├── viem.test.ts            ← publicClient chain/id check (@jest-environment node)
-├── api-deposit.test.ts     ← POST /api/deposit tests
-├── api-preview.test.ts     ← POST /api/preview tests (demo + live vault paths)
-└── api-frame-action.test.ts ← POST /api/frame/action routing tests
+└── fonts/
+    ├── CoinbaseDisplay-Regular.woff2 / CoinbaseDisplay-Medium.woff2
+    ├── CoinbaseSans-Regular.woff2    / CoinbaseSans-Medium.woff2
+    └── CoinbaseMono-Regular.woff2    / CoinbaseMono-Medium.woff2
 ```
 
-### Key Gotchas (Next.js 15)
-- Dynamic route `params` must be `Promise<{ market: string }>` and awaited
-- tsconfig `target` must be `ES2020` for BigInt literals (`100_000_000n`)
-- All API routes use `export const runtime = 'edge'`
-- Edge runtime disables static generation for those pages (expected warning)
-- BigInt CANNOT be JSON.stringify'd — convert to `.toString()` before returning from API
-- `fc:frame:post_url` must be absolute URL (`https://foresight-apps.vercel.app/api/frame/action`)
-- Frame action handler must **proxy** POST body (not redirect) — Frame clients don't follow 302
-- viem tests need `@jest-environment node` docblock (jsdom lacks TextEncoder)
-- ts-node devDependency required for `jest.config.ts` to be parsed by Jest
-- `jest.config.ts` key for jest-dom is `setupFilesAfterEnv` (NOT `setupFilesAfterFramework`)
-- Floating-point: `100 * 1.12 === 112.00000000000001` — always compare to literal `112`, use `toBeCloseTo` for ratio
-- Tests run slow (~60s) due to viem publicClient open handles — use `--forceExit` when needed
+### Key Gotchas
+- **`bun` only** — never use `npm ci` or `pnpm install`; package manager is `bun@1.3.4`
+- **Source root is `src/`** — `@/*` alias maps to `src/*` (tsconfig `paths`)
+- **`jest.config.ts` path alias bug** — `moduleNameMapper` currently maps `^@/(.*)$` → `<rootDir>/$1` (wrong); should be `<rootDir>/src/$1` — fix this before running tests
+- **`jest.config.ts` testMatch** — `**/test/unit/**/*.test.{ts,tsx}` matches files under `src/test/unit/`
+- **`lightweight-charts` is ESM-only** — must be mocked in Jest via `moduleNameMapper` → `src/test/__mocks__/lightweight-charts.ts`
+- **`@upstash/redis` missing from package.json** — `lib/kv.ts` imports it; add to dependencies before deploying
+- **`WagmiProvider` wiring** — `components/providers/wagmi-provider.tsx` exists but must be included in `components/providers.tsx` root tree for wallet page to work
+- **Local fonts use relative paths** — `next/font/local` absolute paths resolve from the project root (NOT `public/`), so from `src/app/layout.tsx` use `../../public/fonts/CoinbaseDisplay-Regular.woff2`
+- **Dynamic route `params`** — must be `Promise<{ id: string }>` and awaited (Next.js 15+)
+- **`CardScene` / WebGL** — requires `dynamic(() => import(...), { ssr: false })` wrapper; never render R3F Canvas on server
+- **Biome linter** — run `bunx biome check .` / `bunx biome format --write .`; no `.eslintrc`
+- **No `test` / `type-check` scripts in package.json** — add before running CI; current scripts: `dev`, `build`, `start`, `lint`
+- **CI disabled** — `.github/workflows/ci.yml` trigger is `workflow_dispatch` only
 
-### Sprint Progress
-- **Phase 1 (Setup):** ✅ 2/2 complete
-  - Task 1: Next.js 15 + Tailwind + TypeScript (strict, Farcaster colors)
-  - Task 2: Dependencies installed, jest.config.ts + playwright.config.ts created
-- **Phase 2 (Frame Core):** ✅ 3/3 complete
-  - Task 3: `/frame/[market]` page with correct fc:frame meta tags + skeleton loading
-  - Task 4: `POST /api/deposit` → `eth_sendTransaction` for vault.deposit (BigInt serialized as string)
-  - Task 5: `POST /api/preview` → viem previewRedeem + demo fallback + YieldCountdown component
-- **Phase 3 (Wallet):** ✅ 4/4 complete
-  - Task 6: `lib/wallet.ts` — `connectWallet()` + `depositToVault()` + `getChainId()` + `switchToBase()` via viem@2
-  - Task 7: `components/YieldImage.tsx` — Next.js `<Image>` with WebP optimization, 1.91:1 aspect ratio
-  - Task 8: Mantine v7 Provider in `app/layout.tsx` + `ColorSchemeScript` (no FOUC) + Mantine dashboard with Card/Badge/Stack
-  - Task 9: `app/api/telegram-qr/route.ts` + `app/api/telegram-webhook/route.ts` — QR proxy + /qr + /start bot commands
-- **Phase 4 (UI/UX):** ✅ 3/3 complete
-  - Task 10: `ErrorBoundary` wraps frame page; all API routes use `errorResponse()` helper with `support: 'https://x.com/foresight'`; 5 unit tests in `test/unit/components/ErrorBoundary.test.tsx`
-  - Task 11: `app/frame/[market]/loading.tsx` + `app/dashboard/loading.tsx` use Mantine `<Skeleton>` — dimensions match final layout to prevent CLS; Next.js App Router auto-uses `loading.tsx` as Suspense fallback
-  - Task 12: `next.config.js` — `images.formats: ['image/webp','image/avif']` + `Cache-Control: public, max-age=86400, stale-while-revalidate=3600` header for all PNG/JPG/WebP; `components/YieldImage.tsx` uses `<Image fill priority sizes>` for LCP optimization; fc:frame:image meta tag stays as direct `.png` URL (Farcaster spec requires PNG)
-- **Phase 5 (Deploy/Test):** ✅ 5/6 automated (Task 15 prod deploy + Task 17 Loom are manual)
-  - Task 13: 60/60 unit tests pass (10 suites); 94.96% lines, 88.88% branches — run: `npm test -- --forceExit`
-  - Task 14: `test/e2e/frame.spec.ts` — 12 Playwright scenarios; fixed bug: E2E used `after30Days` but API returns `projection30Days`
-  - Task 15: `.github/workflows/ci.yml` — CI (lint+typecheck+tests) on every push; auto-deploys `main` → Vercel when `VERCEL_TOKEN`/`VERCEL_ORG_ID`/`VERCEL_PROJECT_ID` secrets set. Prod deploy = **manual** (push to main + set env vars in Vercel dashboard)
-  - Task 16: `lib/analytics.ts` + PostHog fire-and-forget via Edge fetch to `app.posthog.com/batch/` in `app/api/frame/action/route.ts`
-  - Task 17: Loom recording — **manual step** (requires live Vercel deploy first)
-  - Task 18: `app/sitemap.ts` + `app/robots.ts` + full OG/Twitter/fc:frame metadata in `app/layout.tsx`
-
-### Config Files Created
-- `jest.config.ts` — ts-jest, jsdom, 80% coverage threshold, `@/*` alias, `setupFilesAfterEnv: ['@testing-library/jest-dom']`
+### Config Files
+- `tsconfig.json` — strict, ES2020 target, `moduleResolution: bundler`, `@/*` → `./src/*`
+- `jest.config.ts` — ts-jest, jsdom, 80% coverage threshold, lightweight-charts mock
 - `playwright.config.ts` — Chromium, baseURL localhost:3000, webServer auto-start
-- `.github/workflows/ci.yml` — CI + Vercel auto-deploy on main push
-- `.env.local` — placeholder env vars (RPC, vault address, PostHog key)
-- `.eslintrc.json` — `extends: ["next/core-web-vitals"]`
-- `tsconfig.json` — types: ["node", "jest", "@testing-library/jest-dom"]
-- `ts-node` — added to devDependencies (required by Jest for jest.config.ts)
-
-### Test Results (Verified — Mar 1 2026)
-- 60/60 unit tests pass (10 test suites) — `npm test -- --forceExit`
-- Coverage: 94.96% lines / 88.88% branches / 95% functions (all above 80% threshold)
-- TypeScript: 0 errors (`tsc --noEmit` clean)
-- E2E tests written (12 scenarios in `test/e2e/frame.spec.ts`) — run: `npm run test:e2e`
-- Remaining manual steps: Vercel prod deploy (Task 15), Loom recording (Task 17)
-
-### Additional Key Gotchas
-- API `/api/preview` response shape: `{ deposited, currentValue, apy, daysActive, projection30Days, demo }` — NOT `after30Days`
-- PostHog server-side tracking uses Edge-compatible direct fetch to `https://app.posthog.com/batch/` (no posthog-node SDK needed)
-- GitHub Actions secrets needed for Vercel auto-deploy: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`
+- `next.config.js` — WebP/AVIF image formats, Cache-Control headers
+- `tailwind.config.js` — Coinbase/Farcaster color tokens, custom fonts
+- `.github/workflows/ci.yml` — disabled (workflow_dispatch only)

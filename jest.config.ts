@@ -1,18 +1,18 @@
-import type { Config } from 'jest'
+import type { JestConfigWithTsJest } from "ts-jest";
 
-const config: Config = {
-  preset: 'ts-jest',
-  testEnvironment: 'jsdom',
-  setupFilesAfterEnv: ['@testing-library/jest-dom'],
+const config: JestConfigWithTsJest = {
+  preset: "ts-jest",
+  testEnvironment: "jsdom",
+  setupFilesAfterEnv: ["@testing-library/jest-dom"],
   coverageThreshold: { global: { lines: 80 } },
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/$1',
-    '^lightweight-charts$': '<rootDir>/test/__mocks__/lightweight-charts.ts',
+    "^@/(.*)$": "<rootDir>/src/$1",
+    "^lightweight-charts$": "<rootDir>/src/test/__mocks__/lightweight-charts.ts",
   },
-  testMatch: ['**/test/unit/**/*.test.ts', '**/test/unit/**/*.test.tsx'],
+  testMatch: ["**/test/unit/**/*.test.ts", "**/test/unit/**/*.test.tsx"],
   transform: {
-    '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: { jsx: 'react-jsx' } }],
+    "^.+\\.(ts|tsx)$": ["ts-jest", { tsconfig: { jsx: "react-jsx" } }],
   },
-}
+};
 
-export default config
+export default config;
