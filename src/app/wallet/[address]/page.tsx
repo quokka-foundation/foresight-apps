@@ -1,0 +1,105 @@
+"use client";
+
+import { useParams, useRouter } from "next/navigation";
+import { SmartScoreBadge } from "@/components/SmartScoreBadge";
+import { TopBar } from "@/components/TopBar";
+import { getWalletByAddress } from "@/lib/mock-data";
+import { formatCompactUSD, truncateAddress } from "@/lib/utils";
+
+export default function WalletDetailPage() {
+  const params = useParams<{ address: string }>();
+  const router = useRouter();
+  const wallet = getWalletByAddress(params.address);
+
+  if (!wallet) {
+    return (
+      <div className="flex items-center justify-center min-h-screen max-w-[430px] mx-auto bg-white">
+        <div className="text-center p-8">
+          <p className="text-[1rem] font-medium text-ios-text mb-3">Wallet not found</p>
+          <button
+            onClick={() => router.push("/wallets")}
+            className="text-ios-blue text-sm font-medium"
+          >
+            Back to Wallets
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-white">
+      <TopBar title="Wallet" back={() => router.back()} />
+
+      <div className="flex-1 px-4 py-4 space-y-6">
+        {/* Header */}
+        <div className="text-center">
+          <div className="w-16 h-16 mx-auto bg-ios-card rounded-full flex items-center justify-center mb-3">
+            <span className="text-[1.25rem] font-mono text-white/70">
+              {wallet.clusterType?.[0]?.toUpperCase() ?? "?"}
+            </span>
+          </div>
+          <p className="font-mono text-[0.875rem] text-ios-text">
+            {truncateAddress(wallet.address)}
+          </p>
+          <div className="flex items-center justify-center gap-2 mt-2">
+            {wallet.labels?.map((label) => (
+              <span
+                key={label}
+                className="text-[0.6875rem] bg-ios-bg-secondary px-2 py-0.5 rounded-md text-ios-text-secondary"
+              >
+                {label}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-3">
+          <div className="bg-ios-bg-secondary rounded-xl p-3 text-center">
+            <p className="text-[0.6875rem] text-ios-text-secondary uppercase tracking-[0.05em]">
+              Score
+            </p>
+            <div className="mt-1 flex justify-center">
+              <SmartScoreBadge score={wallet.smartScore} />
+            </div>
+          </div>
+          <div className="bg-ios-bg-secondary rounded-xl p-3 text-center">
+            <p className="text-[0.6875rem] text-ios-text-secondary uppercase tracking-[0.05em]">
+              Volume
+            </p>
+            <p className="text-[0.875rem] font-mono tabular-nums text-ios-text mt-1">
+              {formatCompactUSD(wallet.totalVolumeUSD ?? 0)}
+            </p>
+          </div>
+          <div className="bg-ios-bg-secondary rounded-xl p-3 text-center">
+            <p className="text-[0.6875rem] text-ios-text-secondary uppercase tracking-[0.05em]">
+              Trades
+            </p>
+            <p className="text-[0.875rem] font-mono tabular-nums text-ios-text mt-1">
+              {(wallet.tradeCount ?? 0).toLocaleString()}
+            </p>
+          </div>
+        </div>
+
+        {/* Cluster type */}
+        <div className="border border-ios-separator rounded-xl p-4">
+          <p className="text-[0.6875rem] text-ios-text-secondary uppercase tracking-[0.05em] mb-1">
+            Cluster Type
+          </p>
+          <p className="text-[0.875rem] font-medium text-ios-text capitalize">
+            {wallet.clusterType ?? "Unknown"}
+          </p>
+        </div>
+
+        {/* Full address */}
+        <div className="bg-ios-card rounded-xl p-4">
+          <p className="text-[0.6875rem] text-white/50 uppercase tracking-[0.05em] mb-1">
+            Full Address
+          </p>
+          <p className="font-mono text-[0.75rem] text-white/80 break-all">{wallet.address}</p>
+        </div>
+      </div>
+    </div>
+  );
+}

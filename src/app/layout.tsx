@@ -1,11 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import { Providers } from "@/components/providers";
 import { APP_ID, APP_URL } from "@/lib/constants";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 const coinbaseDisplay = localFont({
   src: [
@@ -58,48 +55,34 @@ const coinbaseMono = localFont({
   display: "swap",
 });
 
-// const frame = {
-//   version: "next",
-//   imageUrl: `${APP_URL}/og-image.png`,
-//   button: {
-//     title: "Trade Curves",
-//     action: {
-//       type: "launch_frame",
-//       name: "Foresight",
-//       url: APP_URL,
-//       splashImageUrl: `${APP_URL}/splash.png`,
-//       splashBackgroundColor: "#0052FF",
-//     },
-//   },
-// };
-
 export const metadata: Metadata = {
   title: {
-    default: "Foresight — Continuous Outcome Markets",
+    default: "Foresight — Alpha Intelligence on Base",
     template: "%s | Foresight",
   },
   description:
-    "Trade continuous outcome curves with 1-click leverage on Base. Prediction markets evolved.",
-  keywords: ["Farcaster", "prediction markets", "Base", "DeFi", "curves", "leverage"],
+    "Real-time on-chain alpha signals from Base L2. Smart wallet tracking, token analytics, and AI-powered insights.",
+  keywords: ["Farcaster", "alpha", "Base", "DeFi", "smart wallets", "on-chain analytics"],
   authors: [{ name: "Foresight" }],
   openGraph: {
     type: "website",
     siteName: "Foresight",
-    title: "Foresight — Trade Outcome Curves on Base",
-    description: "Trade continuous outcome curves with 1-click leverage. Live P&L in Farcaster.",
+    title: "Foresight — Alpha Intelligence on Base",
+    description:
+      "Real-time on-chain alpha signals from Base L2. Smart wallet tracking and AI insights.",
     images: [
       {
         url: `${APP_URL}/og-image.png`,
         width: 1200,
         height: 630,
-        alt: "Foresight - Continuous Outcome Markets",
+        alt: "Foresight - Alpha Intelligence",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Foresight",
-    description: "Trade continuous outcome curves on Base",
+    description: "Alpha intelligence on Base L2",
     images: [`${APP_URL}/og-image.png`],
     site: "@foresight",
   },
@@ -124,7 +107,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${coinbaseDisplay.variable} ${coinbaseSans.variable} ${coinbaseMono.variable} font-sans antialiased bg-ios-bg text-ios-text`}
+        className={`${coinbaseDisplay.variable} ${coinbaseSans.variable} ${coinbaseMono.variable} font-sans antialiased bg-ios-bg text-ios-text`}
       >
         <Providers>{children}</Providers>
       </body>

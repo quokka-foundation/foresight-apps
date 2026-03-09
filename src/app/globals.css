@@ -3,42 +3,49 @@
 @tailwind utilities;
 
 :root {
-  --ios-blue: #0052FF;
-  --ios-green: #00D395;
-  --ios-red: #FF6B6B;
-  --ios-orange: #FF9F0A;
-  --ios-bg: #FFFFFF;
-  --ios-bg-secondary: #F5F8FA;
-  --ios-card: #0A0B0D;
-  --ios-card-border: #2A2B2F;
-  --ios-card-light: #F5F8FA;
-  --ios-card-light-border: #E8ECF0;
+  --ios-blue: #0052ff;
+  --ios-green: #00d395;
+  --ios-red: #ff6b6b;
+  --ios-orange: #ff9f0a;
+  --ios-yellow: #ffd60a;
+  --ios-purple: #bf5af2;
+  --ios-pink: #ff375f;
+  --ios-teal: #30d5c8;
+  --ios-bg: #ffffff;
+  --ios-bg-secondary: #f5f8fa;
+  --ios-bg-tertiary: #f0f2f5;
+  --ios-card: #0a0b0d;
+  --ios-card-border: #2a2b2f;
+  --ios-card-light: #f5f8fa;
+  --ios-card-light-border: #e8ecf0;
   --ios-text: #000000;
-  --ios-text-secondary: #6B7280;
-  --ios-text-tertiary: #9CA3AF;
-  --ios-separator: #E8ECF0;
+  --ios-text-secondary: #6b7280;
+  --ios-text-tertiary: #9ca3af;
+  --ios-text-on-dark: #ffffff;
+  --ios-text-on-dark-secondary: #9ca3af;
+  --ios-separator: #e8ecf0;
   /* Legacy aliases */
-  --base-blue: #0052FF;
-  --foresight-bg: #FFFFFF;
-  --foresight-bg-alt: #F5F8FA;
-  --foresight-surface: #FFFFFF;
-  --foresight-border: #E8ECF0;
+  --base-blue: #0052ff;
+  --foresight-bg: #ffffff;
+  --foresight-bg-alt: #f5f8fa;
+  --foresight-surface: #ffffff;
+  --foresight-border: #e8ecf0;
   --foresight-text: #000000;
-  --foresight-text-secondary: #6B7280;
-  --foresight-text-tertiary: #9CA3AF;
-  --foresight-success: #00D395;
-  --foresight-danger: #FF6B6B;
-  --foresight-warning: #FF9F0A;
-  --foresight-accent: #0052FF;
-  --foresight-card-dark: #0A0B0D;
-  --foresight-card-dark-border: #2A2B2F;
+  --foresight-text-secondary: #6b7280;
+  --foresight-text-tertiary: #9ca3af;
+  --foresight-success: #00d395;
+  --foresight-danger: #ff6b6b;
+  --foresight-warning: #ff9f0a;
+  --foresight-accent: #0052ff;
+  --foresight-card-dark: #0a0b0d;
+  --foresight-card-dark-border: #2a2b2f;
 }
 
 /* Base body styles — Premium light */
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   color: #000000;
   overscroll-behavior: none;
   overflow-x: hidden;
@@ -47,7 +54,7 @@ body {
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 
 /* Custom scrollbar — minimal */
@@ -58,7 +65,7 @@ html {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D1D5DB;
+  background: #d1d5db;
   border-radius: 4px;
 }
 
@@ -72,7 +79,7 @@ html {
 }
 
 /* Range input styling — thicker track, pill handle */
-input[type='range'] {
+input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
@@ -82,36 +89,44 @@ input[type='range'] {
   outline: none;
 }
 
-input[type='range']::-webkit-slider-thumb {
+input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #FFFFFF;
+  background: #ffffff;
   cursor: pointer;
   border: none;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15), 0 0 0 2px rgba(0, 82, 255, 0.1);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(0, 82, 255, 0.1);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
-input[type='range']::-webkit-slider-thumb:active {
+input[type="range"]::-webkit-slider-thumb:active {
   transform: scale(1.2);
-  box-shadow: 0 2px 16px rgba(0, 82, 255, 0.3), 0 0 0 3px rgba(0, 82, 255, 0.15);
+  box-shadow:
+    0 2px 16px rgba(0, 82, 255, 0.3),
+    0 0 0 3px rgba(0, 82, 255, 0.15);
 }
 
-input[type='range']::-moz-range-thumb {
+input[type="range"]::-moz-range-thumb {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #FFFFFF;
+  background: #ffffff;
   cursor: pointer;
   border: none;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15), 0 0 0 2px rgba(0, 82, 255, 0.1);
+  box-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(0, 82, 255, 0.1);
 }
 
 /* Date input light mode */
-input[type='date'] {
+input[type="date"] {
   color-scheme: light;
 }
 
@@ -135,23 +150,44 @@ input[type='date'] {
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 82, 255, 0.4); }
-  50% { box-shadow: 0 0 20px 4px rgba(0, 82, 255, 0.2); }
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 82, 255, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px 4px rgba(0, 82, 255, 0.2);
+  }
 }
 
 /* Safe area insets for Farcaster client */
@@ -189,13 +225,13 @@ input[type='date'] {
 
 /* Dark card text utilities */
 .dark-card-text {
-  color: #FFFFFF;
+  color: #ffffff;
 }
 .dark-card-text-secondary {
-  color: #9CA3AF;
+  color: #9ca3af;
 }
 .dark-card-text-tertiary {
-  color: #6B7280;
+  color: #6b7280;
 }
 
 /* Dot glow effect */

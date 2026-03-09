@@ -2,42 +2,42 @@
  * @jest-environment node
  */
 
-jest.mock('../../lib/notifs', () => ({
+jest.mock("../../lib/notifs", () => ({
   sendFrameNotification: jest.fn(),
 }));
 
-import { NextRequest } from 'next/server';
+import { NextRequest } from "next/server";
 
-describe('POST /api/notify', () => {
+describe("POST /api/notify", () => {
   let POST: (req: NextRequest) => Promise<Response>;
 
   beforeEach(async () => {
     jest.clearAllMocks();
-    const mod = await import('../../app/api/notify/route');
+    const mod = await import("../../app/api/notify/route");
     POST = mod.POST;
   });
 
-  it('returns 400 for missing required fields', async () => {
-    const req = new NextRequest('http://localhost/api/notify', {
-      method: 'POST',
-      body: JSON.stringify({ fid: '123' }),
+  it("returns 400 for missing required fields", async () => {
+    const req = new NextRequest("http://localhost/api/notify", {
+      method: "POST",
+      body: JSON.stringify({ fid: "123" }),
     });
     const res = await POST(req);
     expect(res.status).toBe(400);
     const data = await res.json();
-    expect(data.error).toContain('Missing required fields');
+    expect(data.error).toContain("Missing required fields");
   });
 
-  it('sends notification successfully', async () => {
-    const { sendFrameNotification } = require('../../lib/notifs');
-    sendFrameNotification.mockResolvedValue({ state: 'success' });
+  it("sends notification successfully", async () => {
+    const { sendFrameNotification } = require("../../lib/notifs");
+    sendFrameNotification.mockResolvedValue({ state: "success" });
 
-    const req = new NextRequest('http://localhost/api/notify', {
-      method: 'POST',
+    const req = new NextRequest("http://localhost/api/notify", {
+      method: "POST",
       body: JSON.stringify({
-        fid: '12345',
-        title: 'Market Alert',
-        body: 'BTC > $150K probability moved +5%',
+        fid: "12345",
+        title: "Signal Alert",
+        body: "Whale movement detected: $2.1M USDC deposited",
       }),
     });
     const res = await POST(req);
@@ -46,39 +46,39 @@ describe('POST /api/notify', () => {
     expect(data.success).toBe(true);
     expect(sendFrameNotification).toHaveBeenCalledWith({
       fid: 12345,
-      title: 'Market Alert',
-      body: 'BTC > $150K probability moved +5%',
+      title: "Signal Alert",
+      body: "Whale movement detected: $2.1M USDC deposited",
     });
   });
 
-  it('returns 404 when user has no token', async () => {
-    const { sendFrameNotification } = require('../../lib/notifs');
-    sendFrameNotification.mockResolvedValue({ state: 'no_token' });
+  it("returns 404 when user has no token", async () => {
+    const { sendFrameNotification } = require("../../lib/notifs");
+    sendFrameNotification.mockResolvedValue({ state: "no_token" });
 
-    const req = new NextRequest('http://localhost/api/notify', {
-      method: 'POST',
+    const req = new NextRequest("http://localhost/api/notify", {
+      method: "POST",
       body: JSON.stringify({
-        fid: '999',
-        title: 'Test',
-        body: 'Test notification',
+        fid: "999",
+        title: "Test",
+        body: "Test notification",
       }),
     });
     const res = await POST(req);
     expect(res.status).toBe(404);
     const data = await res.json();
-    expect(data.error).toContain('not enabled');
+    expect(data.error).toContain("not enabled");
   });
 
-  it('returns 500 for notification errors', async () => {
-    const { sendFrameNotification } = require('../../lib/notifs');
-    sendFrameNotification.mockResolvedValue({ state: 'error', error: 'Network error' });
+  it("returns 500 for notification errors", async () => {
+    const { sendFrameNotification } = require("../../lib/notifs");
+    sendFrameNotification.mockResolvedValue({ state: "error", error: "Network error" });
 
-    const req = new NextRequest('http://localhost/api/notify', {
-      method: 'POST',
+    const req = new NextRequest("http://localhost/api/notify", {
+      method: "POST",
       body: JSON.stringify({
-        fid: '123',
-        title: 'Test',
-        body: 'Test',
+        fid: "123",
+        title: "Test",
+        body: "Test",
       }),
     });
     const res = await POST(req);

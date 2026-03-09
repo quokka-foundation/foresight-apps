@@ -1,72 +1,204 @@
 import type { Config } from "tailwindcss";
 
 export default {
-    darkMode: ["class"],
-    content: [
+  darkMode: ["class"],
+  content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-  	extend: {
-      fontFamily: {
-        sans: ['DM Sans', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-      },
-  		colors: {
-        background: 'var(--background)',
-        foreground: 'var(--foreground)',
+    extend: {
+      colors: {
+        background: "var(--background)",
+        foreground: "var(--foreground)",
         card: {
-          DEFAULT: 'var(--card)',
-          foreground: 'var(--card-foreground)'
+          DEFAULT: "var(--card)",
+          foreground: "var(--card-foreground)",
         },
         popover: {
-          DEFAULT: 'var(--popover)',
-          foreground: 'var(--popover-foreground)'
+          DEFAULT: "var(--popover)",
+          foreground: "var(--popover-foreground)",
         },
         primary: {
-          DEFAULT: 'var(--primary)',
-          foreground: 'var(--primary-foreground)'
+          DEFAULT: "var(--primary)",
+          foreground: "var(--primary-foreground)",
         },
         secondary: {
-          DEFAULT: 'var(--secondary)',
-          foreground: 'var(--secondary-foreground)'
+          DEFAULT: "var(--secondary)",
+          foreground: "var(--secondary-foreground)",
         },
         muted: {
-          DEFAULT: 'var(--muted)',
-          foreground: 'var(--muted-foreground)'
+          DEFAULT: "var(--muted)",
+          foreground: "var(--muted-foreground)",
         },
         accent: {
-          DEFAULT: 'var(--accent)',
-          foreground: 'var(--accent-foreground)'
+          DEFAULT: "var(--accent)",
+          foreground: "var(--accent-foreground)",
         },
         destructive: {
-          DEFAULT: 'var(--destructive)',
-          foreground: 'var(--destructive-foreground)'
+          DEFAULT: "var(--destructive)",
+          foreground: "var(--destructive-foreground)",
         },
-        border: 'var(--border)',
-        input: 'var(--input)',
-        ring: 'var(--ring)',
-        // Base-inspired color palette
-        'base-blue': {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6',
-          600: '#0052ff',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
-          950: '#172554',
-        }
-  		},
-  		borderRadius: {
-  			lg: 'var(--radius)',
-  			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
-  		}
-  	}
+        border: "var(--border)",
+        input: "var(--input)",
+        ring: "var(--ring)",
+        illoblack: "#0A0B0D",
+        ios: {
+          blue: "#0052FF",
+          "blue-light": "#3377FF",
+          "blue-dark": "#0043D6",
+          green: "#00D395",
+          "green-dark": "#00B37E",
+          red: "#FF6B6B",
+          "red-muted": "#C4C4C4",
+          orange: "#FF9F0A",
+          yellow: "#FFD60A",
+          purple: "#BF5AF2",
+          pink: "#FF375F",
+          teal: "#64D2FF",
+          bg: "#FFFFFF",
+          "bg-secondary": "#F5F8FA",
+          "bg-tertiary": "#EDF0F4",
+          card: "#0A0B0D",
+          "card-hover": "#1A1B1F",
+          "card-border": "#2A2B2F",
+          "card-border-light": "#3A3B3F",
+          "card-light": "#F5F8FA",
+          "card-light-hover": "#EDF0F4",
+          "card-light-border": "#E8ECF0",
+          text: "#000000",
+          "text-secondary": "#6B7280",
+          "text-tertiary": "#9CA3AF",
+          "text-on-dark": "#FFFFFF",
+          "text-on-dark-secondary": "#9CA3AF",
+          "text-on-dark-tertiary": "#6B7280",
+          separator: "#E8ECF0",
+          "separator-light": "#F0F3F7",
+        },
+        base: {
+          blue: "#0052FF",
+          "blue-light": "#3377FF",
+          "blue-dark": "#0043D6",
+        },
+        foresight: {
+          bg: "#FFFFFF",
+          "bg-alt": "#F5F8FA",
+          surface: "#FFFFFF",
+          "surface-hover": "#F5F8FA",
+          border: "#E8ECF0",
+          "border-light": "#F0F3F7",
+          text: "#000000",
+          "text-secondary": "#6B7280",
+          "text-tertiary": "#9CA3AF",
+          accent: "#0052FF",
+          success: "#00D395",
+          danger: "#FF6B6B",
+          warning: "#FF9F0A",
+          "card-dark": "#0A0B0D",
+          "card-dark-inner": "#1A1B1F",
+          "card-dark-border": "#2A2B2F",
+          "card-dark-border-light": "#3A3B3F",
+        },
+        politics: "#FF6B6B",
+        crypto: "#0052FF",
+        economics: "#FF9F0A",
+        sports: "#00D395",
+        tech: "#BF5AF2",
+        culture: "#FF375F",
+        "base-gray": {
+          25: "#FAFAFA",
+          50: "#F2F2F2",
+          100: "#D1D5DB",
+          200: "rgba(113, 120, 134, 1)",
+        },
+      },
+      fontFamily: {
+        display: [
+          "var(--font-coinbase-display)",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "system-ui",
+          "sans-serif",
+        ],
+        sans: [
+          "var(--font-coinbase-sans)",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "system-ui",
+          "sans-serif",
+        ],
+        "sans-text": [
+          "var(--font-coinbase-sans)",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "system-ui",
+          "sans-serif",
+        ],
+        mono: ["var(--font-coinbase-mono)", "SF Mono", "JetBrains Mono", "monospace"],
+        inter: ["var(--font-inter)", "Inter", "system-ui", "sans-serif"],
+      },
+      animation: {
+        "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "slide-up": "slideUp 0.3s ease-out",
+        "fade-in": "fadeIn 0.4s ease-out",
+        "scale-in": "scaleIn 0.2s ease-out",
+        "pulse-glow": "pulseGlow 2s ease-in-out infinite",
+        shimmer: "shimmer 2s ease-in-out infinite",
+        glow: "glow 2s ease-in-out infinite",
+      },
+      keyframes: {
+        slideUp: {
+          from: { opacity: "0", transform: "translateY(20px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        fadeIn: {
+          from: { opacity: "0" },
+          to: { opacity: "1" },
+        },
+        scaleIn: {
+          from: { opacity: "0", transform: "scale(0.95)" },
+          to: { opacity: "1", transform: "scale(1)" },
+        },
+        pulseGlow: {
+          "0%, 100%": { boxShadow: "0 0 0 0 rgba(0, 82, 255, 0.4)" },
+          "50%": { boxShadow: "0 0 20px 4px rgba(0, 82, 255, 0.2)" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
+        },
+        glow: {
+          "0%, 100%": { boxShadow: "0 0 6px 2px rgba(0, 211, 149, 0.3)" },
+          "50%": { boxShadow: "0 0 14px 4px rgba(0, 211, 149, 0.5)" },
+        },
+      },
+      screens: {
+        miniapp: "400px",
+        "miniapp-lg": "430px",
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+        "2xl": "16px",
+        "3xl": "24px",
+        "4xl": "32px",
+        pill: "50px",
+      },
+      spacing: {
+        "safe-top": "env(safe-area-inset-top)",
+        "safe-bottom": "env(safe-area-inset-bottom)",
+      },
+      boxShadow: {
+        card: "0 2px 16px rgba(0, 0, 0, 0.06)",
+        "card-row": "0 2px 12px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.03)",
+        "card-hover": "0 4px 24px rgba(0, 0, 0, 0.10)",
+        "card-lg": "0 8px 32px rgba(0, 0, 0, 0.08)",
+        "blue-glow": "0 4px 20px rgba(0, 82, 255, 0.25)",
+        "green-glow": "0 4px 20px rgba(0, 211, 149, 0.25)",
+      },
+    },
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;

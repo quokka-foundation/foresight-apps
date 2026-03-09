@@ -1,117 +1,105 @@
 // ========================================
-// Foresight Mini App — Type Definitions
+// Foresight Alpha Intelligence — Type Definitions
 // ========================================
 
-/** Continuous Outcome Market */
-export interface Market {
+export type SignalType =
+  | "SMART_MONEY_ENTRY"
+  | "WHALE_ENTRY"
+  | "LIQUIDITY_SURGE"
+  | "EARLY_MOMENTUM"
+  | "COORDINATED_CLUSTER";
+
+export type AlertPriority = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
+export type SubscriptionTier = "FREE" | "PRO_TRADER" | "QUANT_RESEARCH" | "INSTITUTIONAL";
+export type WalletClusterType = "whale" | "fund" | "bot" | "market_maker" | "unknown";
+
+export interface AlphaSignal {
   id: string;
-  title: string;
+  type: SignalType;
+  tokenAddress: string;
+  tokenSymbol?: string;
   description: string;
-  category: MarketCategory;
-  probability: number; // 0-100
-  volume24h: number; // USD
-  totalVolume: number; // USD
-  liquidity: number; // USD
-  change24h: number; // percentage change
-  createdAt: string; // ISO date
-  resolutionDate: string; // ISO date
-  status: MarketStatus;
-  imageUrl?: string;
-  tags: string[];
+  confidenceScore: number; // 0-100
+  valueUSD?: number;
+  walletCount?: number;
+  blockNumber?: number;
+  detectedAt: string; // ISO 8601
+  chain: "base";
 }
 
-export type MarketCategory =
-  | 'politics'
-  | 'crypto'
-  | 'economics'
-  | 'sports'
-  | 'tech'
-  | 'culture';
-
-export type MarketStatus = 'active' | 'resolved' | 'paused';
-
-/** Curve data point for chart rendering */
-export interface CurvePoint {
-  timestamp: number; // unix ms
-  probability: number; // 0-100
-  volume: number;
-}
-
-/** Leverage option */
-export interface LeverageOption {
-  multiplier: number; // 1, 3, 5
-  label: string;
-  risk: 'safe' | 'moderate' | 'high';
-  safetyScore: number; // 0-100
-}
-
-/** Trade parameters */
-export interface TradeParams {
-  marketId: string;
-  probability: number;
-  amount: number; // USD
-  leverage: number;
-  direction: 'yes' | 'no';
-  slippage: number; // percentage
-}
-
-/** Trade result */
-export interface TradeResult {
-  hash: string;
-  tradeId: number;
-  entryPrice: number;
-  potentialPayout: number;
-  gasUsed: number;
-  timestamp: number;
-}
-
-/** Portfolio position */
-export interface Position {
+export interface SmartWallet {
   id: string;
-  marketId: string;
-  marketTitle: string;
-  direction: 'yes' | 'no';
-  entryProbability: number;
-  currentProbability: number;
-  amount: number; // USD invested
-  leverage: number;
-  currentValue: number;
-  pnl: number; // absolute
-  pnlPercent: number;
-  entryDate: string;
-  status: PositionStatus;
+  address: string;
+  smartScore: number; // 0-100
+  clusterType?: WalletClusterType;
+  labels?: string[];
+  totalVolumeUSD?: number;
+  tradeCount?: number;
 }
 
-export type PositionStatus = 'open' | 'closed' | 'liquidated';
-
-/** Portfolio summary */
-export interface PortfolioSummary {
-  totalInvested: number;
-  totalValue: number;
-  totalPnl: number;
-  totalPnlPercent: number;
-  openPositions: number;
-  winRate: number; // 0-100
+export interface WalletDetail extends SmartWallet {
+  recentTransactions?: WalletTransaction[];
+  clusterSize?: number;
 }
 
-/** Notification for P&L alerts */
-export interface PnlNotification {
-  marketId: string;
-  marketTitle: string;
-  pnlPercent: number;
-  timestamp: number;
+export interface WalletTransaction {
+  id: string;
+  tokenAddress: string;
+  tokenSymbol?: string;
+  type: "buy" | "sell";
+  amountUSD: number;
+  blockNumber: number;
+  timestamp: string;
 }
 
-/** Safe area insets from Farcaster client */
-export interface SafeAreaInsets {
-  top: number;
-  bottom: number;
-  left: number;
-  right: number;
+export interface Token {
+  id: string;
+  address: string;
+  symbol: string;
+  name: string;
+  decimals: number;
+  firstSeenAt: string;
+  totalLiquidityUSD?: number;
+  priceUSD?: number;
+  change24h?: number;
+  volume24hUSD?: number;
+  txCount?: number;
 }
 
-/** Tab navigation items */
-export type TabId = 'home' | 'portfolio' | 'wallet' | 'create';
+export interface AlertSubscription {
+  id: string;
+  userId: string;
+  signalTypes: SignalType[];
+  minConfidence: number;
+  isActive: boolean;
+  triggeredCount: number;
+}
+
+export interface AlertSubscriptionInput {
+  signalTypes: SignalType[];
+  minConfidence: number;
+}
+
+export interface AlertHistoryItem {
+  id: string;
+  signalType: SignalType;
+  message: string;
+  triggeredAt: string;
+}
+
+export interface AiInsight {
+  id: string;
+  summary: string;
+  keyDrivers: string[];
+  riskFactors: string[];
+  confidenceScore: number;
+  timeHorizon: string;
+  signalId?: string;
+  tokenAddress?: string;
+  generatedAt: string;
+}
+
+export type TabId = "feed" | "wallets" | "tokens" | "alerts" | "profile";
 
 export interface TabItem {
   id: TabId;
@@ -119,11 +107,16 @@ export interface TabItem {
   href: string;
 }
 
-/** Contract call interface (pluggable for real contracts) */
-export interface ForesightContract {
-  tradeCurve: (params: TradeParams) => Promise<TradeResult>;
-  getMarketData: (marketId: string) => Promise<Market>;
-  getCurveHistory: (marketId: string) => Promise<CurvePoint[]>;
-  getPositions: (address: string) => Promise<Position[]>;
-  getPortfolioSummary: (address: string) => Promise<PortfolioSummary>;
+export interface SafeAreaInsets {
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+}
+
+export interface AuthState {
+  isAuthenticated: boolean;
+  userId: string | null;
+  walletAddress: string | null;
+  jwt: string | null;
 }

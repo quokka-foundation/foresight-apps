@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { TabBar } from '@/components/TabBar';
-import { PillCTA } from '@/components/PillCTA';
-import { AssetRow } from '@/components/AssetRow';
-import { AnimatedText } from '@/components/AnimatedText';
-import Title, { Text, TitleLevel, TextVariant } from '@/components/Typography';
-import { useAccount, useConnect, useDisconnect, useBalance } from 'wagmi';
-import { base } from 'wagmi/chains';
-import { formatEther } from 'viem';
+import { motion } from "framer-motion";
+import { formatEther } from "viem";
+import { useAccount, useBalance, useConnect, useDisconnect } from "wagmi";
+import { base } from "wagmi/chains";
+import { AnimatedText } from "@/components/AnimatedText";
+import { AssetRow } from "@/components/AssetRow";
+import { PillCTA } from "@/components/PillCTA";
+import { TabBar } from "@/components/TabBar";
+import Title, { Text, TextVariant, TitleLevel } from "@/components/Typography";
 
 const sectionVariants = {
   hidden: {},
@@ -33,21 +33,19 @@ export default function WalletPage() {
     chainId: base.id,
   });
 
-  const shortAddress = address
-    ? `${address.slice(0, 6)}...${address.slice(-4)}`
-    : '';
+  const shortAddress = address ? `${address.slice(0, 6)}...${address.slice(-4)}` : "";
 
   const isOnBase = chainId === base.id;
-  const formattedBalance = balance
-    ? parseFloat(formatEther(balance.value)).toFixed(4)
-    : '0.0000';
+  const formattedBalance = balance ? parseFloat(formatEther(balance.value)).toFixed(4) : "0.0000";
 
   return (
     <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-white">
       {/* Header */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-lg safe-area-top border-b border-base-gray-50">
         <div className="px-5 py-4">
-          <Title level={TitleLevel.H2Medium} className="text-illoblack">Wallet</Title>
+          <Title level={TitleLevel.H2Medium} className="text-illoblack">
+            Wallet
+          </Title>
         </div>
       </header>
 
@@ -73,15 +71,20 @@ export default function WalletPage() {
                   delay={0.1}
                 />
               </motion.div>
-              <motion.div variants={itemVariants} className="flex items-center justify-center gap-1.5 mt-3">
-                <div className={`w-1.5 h-1.5 rounded-full ${isOnBase ? 'bg-ios-green' : 'bg-ios-orange'}`} />
+              <motion.div
+                variants={itemVariants}
+                className="flex items-center justify-center gap-1.5 mt-3"
+              >
+                <div
+                  className={`w-1.5 h-1.5 rounded-full ${isOnBase ? "bg-ios-green" : "bg-ios-orange"}`}
+                />
                 <Text variant={TextVariant.CaptionMono} className="text-base-gray-200">
-                  {isOnBase ? 'Base Mainnet' : `Chain ${chainId}`}
+                  {isOnBase ? "Base Mainnet" : `Chain ${chainId}`}
                 </Text>
               </motion.div>
               <motion.div variants={itemVariants}>
                 <Text variant={TextVariant.Caption} className="text-base-gray-100 mt-1">
-                  USDC on Base
+                  ETH on Base
                 </Text>
               </motion.div>
             </motion.div>
@@ -107,7 +110,14 @@ export default function WalletPage() {
               <motion.div variants={itemVariants}>
                 <AssetRow
                   icon={
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    >
                       <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
                     </svg>
                   }
@@ -118,23 +128,19 @@ export default function WalletPage() {
               <motion.div variants={itemVariants}>
                 <AssetRow
                   icon={
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    >
                       <circle cx="12" cy="12" r="10" />
                       <path d="M12 6v12M8 10h8M8 14h8" />
                     </svg>
                   }
-                  label="Cash"
-                  value="$0.00"
-                />
-              </motion.div>
-              <motion.div variants={itemVariants}>
-                <AssetRow
-                  icon={
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <polyline points="22,12 18,12 15,21 9,3 6,12 2,12" />
-                    </svg>
-                  }
-                  label="Predictions"
+                  label="Stablecoins"
                   value="$0.00"
                 />
               </motion.div>
@@ -150,7 +156,14 @@ export default function WalletPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="white"
+                      strokeWidth="1.5"
+                    >
                       <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
                       <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
                       <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
@@ -159,7 +172,7 @@ export default function WalletPage() {
                   <div>
                     <p className="font-mono text-sm text-white font-medium">{shortAddress}</p>
                     <Text variant={TextVariant.CaptionMono} className="text-white/50 mt-0.5">
-                      {isOnBase ? 'Base Mainnet' : `Chain ${chainId}`}
+                      {isOnBase ? "Base Mainnet" : `Chain ${chainId}`}
                     </Text>
                   </div>
                 </div>
@@ -182,7 +195,14 @@ export default function WalletPage() {
           >
             <motion.div variants={itemVariants}>
               <div className="w-20 h-20 mx-auto bg-base-gray-25 rounded-3xl flex items-center justify-center mb-6">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0A0B0D" strokeWidth="1.5">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#0A0B0D"
+                  strokeWidth="1.5"
+                >
                   <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
                   <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
                   <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
@@ -190,11 +210,16 @@ export default function WalletPage() {
               </div>
             </motion.div>
             <motion.div variants={itemVariants}>
-              <Title level={TitleLevel.H3Medium} className="text-illoblack mb-2">Connect Wallet</Title>
+              <Title level={TitleLevel.H3Medium} className="text-illoblack mb-2">
+                Connect Wallet
+              </Title>
             </motion.div>
             <motion.div variants={itemVariants}>
-              <Text variant={TextVariant.Body} className="text-base-gray-200 max-w-[280px] mx-auto mb-8 leading-relaxed">
-                Connect your wallet to view balances and start trading prediction markets.
+              <Text
+                variant={TextVariant.Body}
+                className="text-base-gray-200 max-w-[280px] mx-auto mb-8 leading-relaxed"
+              >
+                Connect your wallet to unlock personalized alpha signals and smart wallet tracking.
               </Text>
             </motion.div>
             <motion.div variants={itemVariants}>
