@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import { getSignalById } from "@/lib/mock-data";
+import type { AlphaSignal } from "@/lib/types";
 
 export const runtime = "edge";
 
@@ -9,7 +10,23 @@ export const runtime = "edge";
  */
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const signal = getSignalById(id);
+
+  let signal: AlphaSignal | undefined;
+
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (apiUrl) {
+    try {
+      const res = await fetch(`${apiUrl}/alpha/feed?limit=100`);
+      if (res.ok) {
+        const signals = (await res.json()) as AlphaSignal[];
+        signal = signals.find((s) => s.id === id);
+      }
+    } catch {
+      // fall through to mock
+    }
+  }
+
+  if (!signal) signal = getSignalById(id);
 
   if (!signal) {
     return new Response("Signal not found", { status: 404 });

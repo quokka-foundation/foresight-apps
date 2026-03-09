@@ -3,13 +3,41 @@
 import { useParams, useRouter } from "next/navigation";
 import { SmartScoreBadge } from "@/components/SmartScoreBadge";
 import { TopBar } from "@/components/TopBar";
-import { getWalletByAddress } from "@/lib/mock-data";
+import { useApiData } from "@/hooks/useApiData";
+import { api } from "@/lib/api";
+import { getWalletByAddress, MOCK_WALLETS } from "@/lib/mock-data";
+import type { WalletDetail } from "@/lib/types";
 import { formatCompactUSD, truncateAddress } from "@/lib/utils";
 
 export default function WalletDetailPage() {
   const params = useParams<{ address: string }>();
   const router = useRouter();
-  const wallet = getWalletByAddress(params.address);
+
+  const { data: wallet, loading } = useApiData<WalletDetail | null>(
+    () => api.wallet(params.address),
+    (getWalletByAddress(params.address) as WalletDetail) ?? null,
+    [params.address],
+  );
+
+  if (loading) {
+    return (
+      <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-white">
+        <TopBar title="Wallet" back={() => router.back()} />
+        <div className="flex-1 px-4 py-4 space-y-6">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-16 h-16 rounded-full bg-ios-bg-secondary animate-pulse" />
+            <div className="h-4 w-40 rounded bg-ios-bg-secondary animate-pulse" />
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: skeleton placeholders
+              <div key={i} className="h-[72px] rounded-xl bg-ios-bg-secondary animate-pulse" />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!wallet) {
     return (
@@ -91,6 +119,37 @@ export default function WalletDetailPage() {
             {wallet.clusterType ?? "Unknown"}
           </p>
         </div>
+
+        {/* Recent transactions (WalletDetail-only field) */}
+        {wallet.recentTransactions && wallet.recentTransactions.length > 0 && (
+          <div>
+            <p className="text-[0.6875rem] text-ios-text-secondary uppercase tracking-[0.05em] mb-2">
+              Recent Transactions
+            </p>
+            <div className="space-y-2">
+              {wallet.recentTransactions.map((tx) => (
+                <div
+                  key={tx.id}
+                  className="bg-ios-bg-secondary rounded-xl p-3 flex items-center justify-between"
+                >
+                  <div>
+                    <span className="text-[0.75rem] font-medium text-ios-text capitalize">
+                      {tx.type}
+                    </span>
+                    {tx.tokenSymbol && (
+                      <span className="text-[0.75rem] text-ios-text-secondary ml-1">
+                        {tx.tokenSymbol}
+                      </span>
+                    )}
+                  </div>
+                  <span className="font-mono tabular-nums text-[0.75rem] text-ios-text">
+                    {formatCompactUSD(tx.amountUSD)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Full address */}
         <div className="bg-ios-card rounded-xl p-4">

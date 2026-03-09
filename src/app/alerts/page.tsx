@@ -2,12 +2,23 @@
 
 import { AlertCard } from "@/components/AlertCard";
 import { AnimatedButton } from "@/components/AnimatedButton";
+import { useAuth } from "@/components/providers/auth-provider";
 import { Section } from "@/components/Section";
 import { TabBar } from "@/components/TabBar";
 import { TopBar } from "@/components/TopBar";
+import { useApiData } from "@/hooks/useApiData";
+import { api } from "@/lib/api";
 import { MOCK_ALERT_HISTORY } from "@/lib/mock-data";
 
 export default function AlertsPage() {
+  const { userId } = useAuth();
+
+  const { data: alerts, loading } = useApiData(
+    () => (userId ? api.alertHistory(userId) : Promise.resolve(MOCK_ALERT_HISTORY)),
+    MOCK_ALERT_HISTORY,
+    [userId],
+  );
+
   return (
     <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-white">
       <TopBar title="Alerts" />
@@ -30,9 +41,16 @@ export default function AlertsPage() {
 
         {/* Alert history */}
         <Section title="Recent Alerts">
-          {MOCK_ALERT_HISTORY.length > 0 ? (
+          {loading ? (
+            <div className="space-y-1 px-4">
+              {Array.from({ length: 4 }).map((_, i) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: skeleton placeholders
+                <div key={i} className="h-[72px] rounded-xl bg-ios-bg-secondary animate-pulse" />
+              ))}
+            </div>
+          ) : alerts.length > 0 ? (
             <div className="space-y-1">
-              {MOCK_ALERT_HISTORY.map((alert) => (
+              {alerts.map((alert) => (
                 <AlertCard key={alert.id} alert={alert} />
               ))}
             </div>

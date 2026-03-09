@@ -2,13 +2,37 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { TopBar } from "@/components/TopBar";
-import { getTokenByAddress } from "@/lib/mock-data";
+import { useApiData } from "@/hooks/useApiData";
+import { api } from "@/lib/api";
+import { MOCK_TOKENS } from "@/lib/mock-data";
 import { formatCompactUSD, formatPercent } from "@/lib/utils";
 
 export default function TokenDetailPage() {
   const params = useParams<{ address: string }>();
   const router = useRouter();
-  const token = getTokenByAddress(params.address);
+
+  const { data: tokens, loading } = useApiData(() => api.newTokens(100), MOCK_TOKENS);
+  const token = tokens.find((t) => t.address === params.address);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-white">
+        <TopBar title="Token" back={() => router.back()} />
+        <div className="flex-1 px-4 py-4 space-y-6">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-16 h-16 rounded-full bg-ios-bg-secondary animate-pulse" />
+            <div className="h-8 w-32 rounded bg-ios-bg-secondary animate-pulse" />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            {Array.from({ length: 4 }).map((_, i) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: skeleton placeholders
+              <div key={i} className="h-[72px] rounded-xl bg-ios-bg-secondary animate-pulse" />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!token) {
     return (

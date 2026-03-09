@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Providers } from "@/components/providers";
+import { TickerBar } from "@/components/TickerBar";
 import { APP_ID, APP_URL } from "@/lib/constants";
 import "./globals.css";
 
@@ -109,7 +110,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body
         className={`${coinbaseDisplay.variable} ${coinbaseSans.variable} ${coinbaseMono.variable} font-sans antialiased bg-ios-bg text-ios-text`}
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          <TickerBar />
+          {children}
+        </Providers>
       </body>
     </html>
   );

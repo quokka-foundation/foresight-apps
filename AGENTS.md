@@ -44,8 +44,8 @@
 ```
 src/
 ├── app/
-│   ├── layout.tsx                    ← Root layout: localFont (Coinbase fonts), Providers
-│   ├── page.tsx                      ← Alpha signal feed: AI insight banner + FilterChips + SignalCards
+│   ├── layout.tsx                    ← Root layout: localFont (Coinbase fonts), Providers + TickerBar
+│   ├── page.tsx                      ← Alpha signal feed: AI insight banner + FilterChips + SignalCards + earthquake on mount
 │   ├── globals.css
 │   ├── sitemap.ts
 │   ├── robots.ts
@@ -86,12 +86,16 @@ src/
 │   ├── AnimatedButton.tsx            ← Framer Motion button with variants
 │   ├── StatusBadge.tsx               ← Color-variant badge with pulse/glow
 │   ├── CardScene.tsx                 ← R3F Canvas: icosahedron → FBO → GLSL halftone shader
+│   ├── TickerBar.tsx                 ← Global dark ticker bar: top tokens by volume, CSS infinite marquee, pauses on hover
 │   ├── DynamicWebGLCanvas.tsx        ← Dynamic import of WebGLCanvas (SSR-safe)
 │   ├── HeroNumber.tsx / AnimatedText.tsx
 │   ├── AssetRow.tsx / BackArrow.tsx
 │   ├── PillCTA.tsx / PromoBanner.tsx / PromoSplash.tsx
 │   ├── SafeAreaContainer.tsx / Typography.tsx
 │   └── ui/button.tsx / ui/input.tsx / ui/label.tsx
+├── hooks/
+│   ├── useApiData.ts                 ← Generic fetch hook: returns { data, loading, error }, falls back to mock when API_URL unset
+│   └── useEarthquake.ts              ← Shake animation hook: toggles boolean for 700ms, double-trigger guard
 ├── lib/
 │   ├── constants.ts                  ← APP_URL, APP_ID, API_URL, CHAIN_ID, ADDRESSES
 │   ├── types.ts                      ← AlphaSignal, SmartWallet, Token, AiInsight, etc.

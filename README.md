@@ -1,70 +1,50 @@
-# Foresight Apps
+# Foresight
 
-A Farcaster-first dApp enabling users to deposit USDC into yield-bearing vaults directly from Farcaster Frames on Base.
+Real-time on-chain alpha intelligence, delivered inside Farcaster.
 
-## Overview
+## What it does
 
-Foresight Apps is a Farcaster-native DeFi interface built with Next.js 15. Users interact with ERC-4626 vaults entirely within the Farcaster social feed — no app switching required.
+Foresight watches Base L2 24/7 and surfaces the signals that matter before they hit the crowd:
 
-**Demo Goal:** Live Frame → deposit $100 USDC → earn 12% APY → show "$100→$112" in 30 days.
+- **Smart Money Tracking** — follow wallets with a proven edge. See what they're buying, their cluster type, and their all-time volume in one tap.
+- **Live Alpha Feed** — every signal (whale entries, liquidity surges, early momentum, coordinated clusters) scored by confidence and ranked by value. Tap any signal for the full breakdown.
+- **Token Intelligence** — new tokens on Base ranked by volume, price change, and liquidity. Spot what's moving before it trends.
+- **AI Insights** — a single-sentence take on the current market narrative, updated continuously by the AI layer.
+- **Live Ticker** — a persistent price ribbon at the top of the app showing real-time prices and 24h changes for the top tokens. The app shakes to life when you open the feed.
+- **Alert Subscriptions** — get Farcaster push notifications when a signal matches your criteria.
 
-## Tech Stack
+## Who it's for
 
-| Layer | Tech |
-|-------|------|
-| Framework | Next.js 15 (App Router) |
-| UI | Mantine UI v7 + Tailwind CSS |
-| Chain | Base (L2) |
-| Wallet | Coinbase Smart Wallet via viem@2 |
-| Frame SDK | @farcaster/frame-sdk@0.1.2 |
-| Testing | Playwright E2E + Jest |
-| Deploy | Vercel |
-| Analytics | PostHog (Farcaster events) |
+Farcaster users who trade on Base and want an edge without leaving their feed. Foresight is a Mini App — it opens inside Farcaster with no install, no wallet setup friction, and Base wallet support built in.
 
-## Quick Start
+## Key screens
+
+| Screen | What you see |
+|--------|-------------|
+| Feed | Live alpha signals with type badges, confidence scores, and USD values |
+| Wallets | Smart wallet leaderboard with smart scores and cluster labels |
+| Tokens | New tokens on Base, sortable by volume / price / change / liquidity |
+| Alerts | Notification history and alert setup |
+| Profile | Wallet connection and subscription tier |
+
+## Quick start
 
 ```bash
-npm install
-npm run dev       # localhost:3000
-npm run build     # production build
-npm test          # unit + E2E
+cp .env.example .env.local   # add your API URL + Upstash credentials
+bun install
+bun dev                       # http://localhost:3000
 ```
 
-## Structure
+The app works offline-first — every screen falls back to curated mock data when `NEXT_PUBLIC_API_URL` is not set, so you can develop without a backend.
 
-```
-foresight-apps/
-├── app/              # Next.js App Router
-│   ├── frame/        # Farcaster Frame routes
-│   ├── dashboard/    # Yield dashboard
-│   └── api/          # Edge API routes
-├── components/       # Mantine UI + Frame components
-├── lib/              # viem config, ABIs, utilities
-├── public/           # Static assets (yield-chart.png, loom.mp4)
-├── test/             # Unit + E2E tests
-├── tasks/            # Sprint task breakdowns (18 tasks)
-├── plans/            # Strategic implementation plans
-├── docs/             # Frame spec, ABI documentation
-└── .github/          # CI/CD workflows
-```
+## Environment
 
-## Sprint
+See `.env.example` for all variables. The only one required to go live with real data is `NEXT_PUBLIC_API_URL`.
 
-**Sprint:** Mar 5–6, 2026 (2 days)
+## Deployment
 
-- Day 1 (Mar 5): Frame live on Farcaster
-- Day 2 (Mar 6): "$100→$112" demo ready for Batch 003
+Deploys to Vercel. Set env vars in the Vercel dashboard. The Farcaster manifest is auto-served at `/.well-known/farcaster.json`.
 
-See [tasks/index.md](./tasks/index.md) and [plans/index.md](./plans/index.md) for full breakdown.
+## Stack
 
-## Frame URL
-
-```
-https://foresight-apps.vercel.app/frame/[market]
-```
-
-Validate at [framescan.com](https://framescan.com)
-
-## License
-
-MIT
+Next.js 16 · React 19 · TypeScript · Tailwind · Framer Motion · wagmi v3 · viem v2 · Base L2 · Upstash Redis · Bun

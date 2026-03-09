@@ -146,6 +146,8 @@ export default {
         "pulse-glow": "pulseGlow 2s ease-in-out infinite",
         shimmer: "shimmer 2s ease-in-out infinite",
         glow: "glow 2s ease-in-out infinite",
+        ticker: "tickerScroll var(--ticker-speed, 30s) linear infinite",
+        earthquake: "earthquake 0.7s ease-in-out",
       },
       keyframes: {
         slideUp: {
@@ -171,6 +173,22 @@ export default {
         glow: {
           "0%, 100%": { boxShadow: "0 0 6px 2px rgba(0, 211, 149, 0.3)" },
           "50%": { boxShadow: "0 0 14px 4px rgba(0, 211, 149, 0.5)" },
+        },
+        tickerScroll: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
+        earthquake: {
+          "0%, 100%": { transform: "translate(0, 0) rotate(0deg)" },
+          "10%": { transform: "translate(-5px, -2px) rotate(-0.4deg)" },
+          "20%": { transform: "translate(5px, 2px) rotate(0.4deg)" },
+          "30%": { transform: "translate(-5px, 2px) rotate(0deg)" },
+          "40%": { transform: "translate(5px, -2px) rotate(0.4deg)" },
+          "50%": { transform: "translate(-4px, -1px) rotate(-0.4deg)" },
+          "60%": { transform: "translate(4px, 1px) rotate(0deg)" },
+          "70%": { transform: "translate(-3px, 2px) rotate(-0.3deg)" },
+          "80%": { transform: "translate(3px, -1px) rotate(0.3deg)" },
+          "90%": { transform: "translate(-2px, 1px) rotate(0deg)" },
         },
       },
       screens: {

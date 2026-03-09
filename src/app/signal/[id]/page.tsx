@@ -4,13 +4,35 @@ import { useParams, useRouter } from "next/navigation";
 import { ConfidenceBadge } from "@/components/ConfidenceBadge";
 import { SignalTypeBadge } from "@/components/SignalTypeBadge";
 import { TopBar } from "@/components/TopBar";
-import { getSignalById } from "@/lib/mock-data";
+import { useApiData } from "@/hooks/useApiData";
+import { api } from "@/lib/api";
+import { MOCK_SIGNALS } from "@/lib/mock-data";
 import { formatCompactUSD, timeAgo, truncateAddress } from "@/lib/utils";
 
 export default function SignalDetailPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
-  const signal = getSignalById(params.id);
+
+  const { data: signals, loading } = useApiData(() => api.feed(100), MOCK_SIGNALS);
+  const signal = signals.find((s) => s.id === params.id);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-white">
+        <TopBar title="Signal" back={() => router.back()} />
+        <div className="flex-1 px-4 py-4 space-y-4">
+          <div className="h-6 w-32 rounded-lg bg-ios-bg-secondary animate-pulse" />
+          <div className="h-20 rounded-xl bg-ios-bg-secondary animate-pulse" />
+          <div className="grid grid-cols-2 gap-3">
+            {Array.from({ length: 4 }).map((_, i) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: skeleton placeholders
+              <div key={i} className="h-[72px] rounded-xl bg-ios-bg-secondary animate-pulse" />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!signal) {
     return (
