@@ -1,33 +1,34 @@
-import { NextResponse } from 'next/server';
-import { APP_URL } from '@/lib/constants';
+import { NextResponse } from "next/server";
+import { APP_URL } from "@/lib/constants";
 
 export async function GET() {
   const manifest = {
     accountAssociation: {
       // TODO: Sign manifest at https://www.base.dev/preview?tab=account
-      header: '',
-      payload: '',
-      signature: '',
+      header: "",
+      payload: "",
+      signature: "",
     },
     frame: {
-      version: '1',
-      name: 'Foresight',
-      subtitle: 'Continuous Outcome Markets',
-      description: 'Trade continuous outcome curves with 1-click leverage on Base.',
+      version: "1",
+      name: "Foresight",
+      subtitle: "Alpha Intelligence on Base",
+      description:
+        "Real-time on-chain alpha signals, smart wallet tracking, and AI-powered insights on Base L2.",
       iconUrl: `${APP_URL}/icon.png`,
       homeUrl: APP_URL,
       imageUrl: `${APP_URL}/og-image.png`,
       screenshotUrls: [],
-      tags: ['prediction-markets', 'defi', 'trading', 'base'],
-      primaryCategory: 'finance',
-      buttonTitle: 'Trade Curves',
+      tags: ["alpha", "defi", "analytics", "base", "on-chain"],
+      primaryCategory: "finance",
+      buttonTitle: "View Alpha",
       splashImageUrl: `${APP_URL}/splash.png`,
-      splashBackgroundColor: '#FFFFFF',
+      splashBackgroundColor: "#FFFFFF",
       webhookUrl: `${APP_URL}/api/webhook`,
       heroImageUrl: `${APP_URL}/og-image.png`,
-      tagline: 'Trade outcome curves',
-      ogTitle: 'Foresight - Outcome Markets',
-      ogDescription: 'Trade continuous outcome curves with leverage on Base.',
+      tagline: "On-chain alpha intelligence",
+      ogTitle: "Foresight — Alpha Intelligence on Base",
+      ogDescription: "Real-time on-chain alpha signals and smart wallet tracking on Base L2.",
       ogImageUrl: `${APP_URL}/og-image.png`,
     },
   };

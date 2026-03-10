@@ -2,104 +2,96 @@
  * @jest-environment node
  */
 
-jest.mock('../../lib/mock-data', () => ({
-  getMarketById: jest.fn(),
+jest.mock("../../lib/mock-data", () => ({
+  getSignalById: jest.fn(),
 }));
 
-import { NextRequest } from 'next/server';
+import { NextRequest } from "next/server";
 
-describe('GET /api/og/curve/[id]', () => {
+describe("GET /api/og/signal/[id]", () => {
   let GET: (req: NextRequest, ctx: { params: Promise<{ id: string }> }) => Promise<Response>;
 
   beforeEach(async () => {
     jest.clearAllMocks();
-    const mod = await import('../../app/api/og/curve/[id]/route');
+    const mod = await import("../../app/api/og/signal/[id]/route");
     GET = mod.GET;
   });
 
-  it('returns 404 for unknown market', async () => {
-    const { getMarketById } = require('../../lib/mock-data');
-    getMarketById.mockReturnValue(undefined);
+  it("returns 404 for unknown signal", async () => {
+    const { getSignalById } = require("../../lib/mock-data");
+    getSignalById.mockReturnValue(undefined);
 
-    const req = new NextRequest('http://localhost/api/og/curve/nonexistent');
-    const res = await GET(req, { params: Promise.resolve({ id: 'nonexistent' }) });
+    const req = new NextRequest("http://localhost/api/og/signal/nonexistent");
+    const res = await GET(req, { params: Promise.resolve({ id: "nonexistent" }) });
     expect(res.status).toBe(404);
   });
 
-  it('returns SVG image for valid market', async () => {
-    const { getMarketById } = require('../../lib/mock-data');
-    getMarketById.mockReturnValue({
-      id: 'btc-150k',
-      title: 'BTC > $150K by July',
-      description: 'Will Bitcoin exceed $150,000 USD before July 1, 2026?',
-      probability: 62.1,
-      volume24h: 890_000,
-      liquidity: 2_800_000,
+  it("returns SVG image for valid signal", async () => {
+    const { getSignalById } = require("../../lib/mock-data");
+    getSignalById.mockReturnValue({
+      id: "sig-001",
+      signalType: "WHALE_ENTRY",
+      tokenAddress: "0x1234",
+      tokenSymbol: "USDC",
+      description: "Large USDC transfer detected",
+      confidenceScore: 85,
+      valueUSD: 500000,
+      walletAddresses: ["0xabc"],
+      blockNumber: 12345678,
+      metadata: {},
+      detectedAt: "2026-03-01T12:00:00Z",
     });
 
-    const req = new NextRequest('http://localhost/api/og/curve/btc-150k');
-    const res = await GET(req, { params: Promise.resolve({ id: 'btc-150k' }) });
+    const req = new NextRequest("http://localhost/api/og/signal/sig-001");
+    const res = await GET(req, { params: Promise.resolve({ id: "sig-001" }) });
     expect(res.status).toBe(200);
-    expect(res.headers.get('Content-Type')).toBe('image/svg+xml');
+    expect(res.headers.get("Content-Type")).toBe("image/svg+xml");
 
     const svg = await res.text();
-    expect(svg).toContain('BTC');
-    expect(svg).toContain('62');
-    expect(svg).toContain('FORESIGHT');
-    expect(svg).toContain('LIVE');
+    expect(svg).toContain("FORESIGHT ALPHA");
+    expect(svg).toContain("85");
+    expect(svg).toContain("USDC");
   });
 
-  it('sets cache headers', async () => {
-    const { getMarketById } = require('../../lib/mock-data');
-    getMarketById.mockReturnValue({
-      id: 'test',
-      title: 'Test',
-      description: 'Test market',
-      probability: 50,
-      volume24h: 100_000,
-      liquidity: 500_000,
+  it("sets cache headers", async () => {
+    const { getSignalById } = require("../../lib/mock-data");
+    getSignalById.mockReturnValue({
+      id: "sig-001",
+      signalType: "SMART_MONEY_ENTRY",
+      tokenAddress: "0x1234",
+      description: "Test signal",
+      confidenceScore: 50,
+      walletAddresses: [],
+      blockNumber: 12345678,
+      metadata: {},
+      detectedAt: "2026-03-01T12:00:00Z",
     });
 
-    const req = new NextRequest('http://localhost/api/og/curve/test');
-    const res = await GET(req, { params: Promise.resolve({ id: 'test' }) });
-    expect(res.headers.get('Cache-Control')).toContain('public');
+    const req = new NextRequest("http://localhost/api/og/signal/sig-001");
+    const res = await GET(req, { params: Promise.resolve({ id: "sig-001" }) });
+    expect(res.headers.get("Cache-Control")).toContain("public");
   });
 
-  it('calculates correct payouts', async () => {
-    const { getMarketById } = require('../../lib/mock-data');
-    getMarketById.mockReturnValue({
-      id: 'test',
-      title: 'Test',
-      description: 'Test market',
-      probability: 50,
-      volume24h: 100_000,
-      liquidity: 500_000,
+  it("escapes XML special characters in description", async () => {
+    const { getSignalById } = require("../../lib/mock-data");
+    getSignalById.mockReturnValue({
+      id: "sig-001",
+      signalType: "EARLY_MOMENTUM",
+      tokenAddress: "0x1234",
+      description: "Transfer > $1M & <script>",
+      confidenceScore: 50,
+      walletAddresses: [],
+      blockNumber: 12345678,
+      metadata: {},
+      detectedAt: "2026-03-01T12:00:00Z",
     });
 
-    const req = new NextRequest('http://localhost/api/og/curve/test');
-    const res = await GET(req, { params: Promise.resolve({ id: 'test' }) });
+    const req = new NextRequest("http://localhost/api/og/signal/sig-001");
+    const res = await GET(req, { params: Promise.resolve({ id: "sig-001" }) });
     const svg = await res.text();
-    // At 50%, YES payout = $100/0.5 = $200, NO payout = $100/0.5 = $200
-    expect(svg).toContain('$200');
-  });
-
-  it('escapes XML special characters in market title', async () => {
-    const { getMarketById } = require('../../lib/mock-data');
-    getMarketById.mockReturnValue({
-      id: 'test',
-      title: 'Will BTC > $150K & ETH > $10K?',
-      description: 'Test <script> injection',
-      probability: 50,
-      volume24h: 100_000,
-      liquidity: 500_000,
-    });
-
-    const req = new NextRequest('http://localhost/api/og/curve/test');
-    const res = await GET(req, { params: Promise.resolve({ id: 'test' }) });
-    const svg = await res.text();
-    expect(svg).toContain('&amp;');
-    expect(svg).toContain('&gt;');
-    expect(svg).toContain('&lt;');
-    expect(svg).not.toContain('<script>');
+    expect(svg).toContain("&amp;");
+    expect(svg).toContain("&gt;");
+    expect(svg).toContain("&lt;");
+    expect(svg).not.toContain("<script>");
   });
 });

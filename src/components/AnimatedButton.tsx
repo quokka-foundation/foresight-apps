@@ -1,39 +1,44 @@
-'use client';
+"use client";
 
-type AnimatedButtonProps = {
-  text?: string;
-  backgroundColor?: string;
-  textColor?: string;
-  ghost?: boolean;
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+
+interface AnimatedButtonProps {
+  children: React.ReactNode;
   onClick?: () => void;
+  variant?: "primary" | "secondary" | "outline";
+  size?: "sm" | "md" | "lg";
+  disabled?: boolean;
   className?: string;
-};
+}
 
 export function AnimatedButton({
-  text = 'Button',
-  backgroundColor = '#0052FF',
-  textColor = '#ffffff',
-  ghost = false,
+  children,
   onClick,
-  className = '',
+  variant = "primary",
+  size = "md",
+  disabled = false,
+  className,
 }: AnimatedButtonProps) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      style={{ color: textColor }}
-      className={`group relative flex h-[2.5rem] w-fit items-center gap-2 overflow-hidden rounded-lg px-4 py-1 font-sans font-medium transition-all duration-200 active:scale-95 ${className}`}
+    <motion.button
+      whileTap={{ scale: disabled ? 1 : 0.97 }}
+      onClick={disabled ? undefined : onClick}
+      disabled={disabled}
+      className={cn(
+        "rounded-xl font-sans font-medium transition-colors",
+        size === "sm" && "px-3 py-1.5 text-[0.75rem]",
+        size === "md" && "px-4 py-2.5 text-[0.875rem]",
+        size === "lg" && "px-6 py-3.5 text-[1rem] w-full",
+        variant === "primary" && "bg-ios-blue text-white hover:bg-ios-blue/90",
+        variant === "secondary" && "bg-ios-card text-white hover:bg-ios-card/90",
+        variant === "outline" &&
+          "bg-transparent border border-ios-separator text-ios-text hover:bg-ios-bg-secondary",
+        disabled && "opacity-50 cursor-not-allowed",
+        className,
+      )}
     >
-      <div
-        style={{ backgroundColor }}
-        className={`pointer-events-none absolute inset-0 h-full w-full ${
-          ghost ? 'opacity-0' : 'opacity-100'
-        } transition-opacity duration-200 group-hover:opacity-100`}
-      />
-      <div className="z-10 whitespace-nowrap text-[0.9375rem]">{text}</div>
-      <div className="flex z-10 justify-start items-center w-5 h-5 opacity-100 transition-all duration-300">
-        <span className="flex-shrink-0">&#8594;</span>
-      </div>
-    </button>
+      {children}
+    </motion.button>
   );
 }
