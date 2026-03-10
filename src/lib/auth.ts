@@ -41,7 +41,7 @@ export function buildSiweMessage(address: string, nonce: string): string {
     `${domain} wants you to sign in with your Ethereum account:`,
     address,
     "",
-    `Sign in to Foresight Alpha Intelligence`,
+    `Sign in to Foresight Machine`,
     "",
     `URI: ${APP_URL}`,
     `Version: 1`,

@@ -8,14 +8,14 @@ import { TabBar } from "@/components/TabBar";
 import { TopBar } from "@/components/TopBar";
 import { useApiData } from "@/hooks/useApiData";
 import { api } from "@/lib/api";
-import { MOCK_ALERT_HISTORY } from "@/lib/mock-data";
+import type { AlertHistoryItem } from "@/lib/types";
 
 export default function AlertsPage() {
   const { userId } = useAuth();
 
-  const { data: alerts, loading } = useApiData(
-    () => (userId ? api.alertHistory(userId) : Promise.resolve(MOCK_ALERT_HISTORY)),
-    MOCK_ALERT_HISTORY,
+  const { data: alerts, loading } = useApiData<AlertHistoryItem[]>(
+    () => (userId ? api.alertHistory(userId) : Promise.resolve([])),
+    [],
     [userId],
   );
 

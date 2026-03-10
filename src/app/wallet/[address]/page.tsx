@@ -5,7 +5,7 @@ import { SmartScoreBadge } from "@/components/SmartScoreBadge";
 import { TopBar } from "@/components/TopBar";
 import { useApiData } from "@/hooks/useApiData";
 import { api } from "@/lib/api";
-import { getWalletByAddress, MOCK_WALLETS } from "@/lib/mock-data";
+import { getWalletByAddress } from "@/lib/mock-data";
 import type { WalletDetail } from "@/lib/types";
 import { formatCompactUSD, truncateAddress } from "@/lib/utils";
 
@@ -16,6 +16,14 @@ export default function WalletDetailPage() {
   const { data: wallet, loading } = useApiData<WalletDetail | null>(
     () => api.wallet(params.address),
     (getWalletByAddress(params.address) as WalletDetail) ?? null,
+    [params.address],
+  );
+
+  const { data: portfolio } = useApiData<{
+    tokens: { address: string; symbol: string; valueUSD: number }[];
+  } | null>(
+    () => (params.address ? api.walletPortfolio(params.address) : Promise.resolve(null)),
+    null,
     [params.address],
   );
 
@@ -144,6 +152,30 @@ export default function WalletDetailPage() {
                   </div>
                   <span className="font-mono tabular-nums text-[0.75rem] text-ios-text">
                     {formatCompactUSD(tx.amountUSD)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Portfolio holdings */}
+        {portfolio && portfolio.tokens.length > 0 && (
+          <div>
+            <p className="text-[0.6875rem] text-ios-text-secondary uppercase tracking-[0.05em] mb-2">
+              Portfolio
+            </p>
+            <div className="space-y-2">
+              {portfolio.tokens.slice(0, 5).map((holding) => (
+                <div
+                  key={holding.address}
+                  className="bg-ios-bg-secondary rounded-xl p-3 flex items-center justify-between"
+                >
+                  <span className="text-[0.875rem] font-medium text-ios-text">
+                    {holding.symbol}
+                  </span>
+                  <span className="font-mono tabular-nums text-[0.875rem] text-ios-text">
+                    {formatCompactUSD(holding.valueUSD)}
                   </span>
                 </div>
               ))}

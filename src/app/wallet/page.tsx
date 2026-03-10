@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 import { formatEther } from "viem";
 import { useAccount, useBalance, useConnect, useDisconnect } from "wagmi";
 import { base } from "wagmi/chains";
-import { AnimatedText } from "@/components/AnimatedText";
-import { AssetRow } from "@/components/AssetRow";
-import { PillCTA } from "@/components/PillCTA";
+import { AnimatedButton } from "@/components/AnimatedButton";
+import { useFrameContext } from "@/components/providers/frame-provider";
 import { TabBar } from "@/components/TabBar";
-import Title, { Text, TextVariant, TitleLevel } from "@/components/Typography";
+import { TopBar } from "@/components/TopBar";
+import { formatCompactUSD, truncateAddress } from "@/lib/utils";
 
 const sectionVariants = {
   hidden: {},
@@ -28,28 +28,20 @@ export default function WalletPage() {
   const { isConnected, address, chainId } = useAccount();
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
+  const { isInMiniApp } = useFrameContext();
   const { data: balance } = useBalance({
     address,
     chainId: base.id,
   });
-
-  const shortAddress = address ? `${address.slice(0, 6)}...${address.slice(-4)}` : "";
 
   const isOnBase = chainId === base.id;
   const formattedBalance = balance ? parseFloat(formatEther(balance.value)).toFixed(4) : "0.0000";
 
   return (
     <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-white">
-      {/* Header */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-lg safe-area-top border-b border-base-gray-50">
-        <div className="px-5 py-4">
-          <Title level={TitleLevel.H2Medium} className="text-illoblack">
-            Wallet
-          </Title>
-        </div>
-      </header>
+      <TopBar title="Wallet" />
 
-      <div className="flex-1 px-5 pb-24">
+      <div className="flex-1 px-4 pb-24">
         {isConnected ? (
           <>
             {/* Balance hero */}
@@ -60,16 +52,14 @@ export default function WalletPage() {
               className="mt-8 text-center"
             >
               <motion.div variants={itemVariants}>
-                <Text variant={TextVariant.CaptionMono} className="text-base-gray-200 mb-3">
+                <p className="text-[0.6875rem] font-mono uppercase tracking-[0.05em] text-ios-text-secondary mb-3">
                   Balance
-                </Text>
+                </p>
               </motion.div>
-              <motion.div variants={itemVariants} className="flex justify-center">
-                <AnimatedText
-                  text={`$${formattedBalance}`}
-                  titleLevel={TitleLevel.H0Medium}
-                  delay={0.1}
-                />
+              <motion.div variants={itemVariants}>
+                <p className="text-[2rem] font-mono tabular-nums font-medium text-ios-text">
+                  ${formattedBalance}
+                </p>
               </motion.div>
               <motion.div
                 variants={itemVariants}
@@ -78,14 +68,14 @@ export default function WalletPage() {
                 <div
                   className={`w-1.5 h-1.5 rounded-full ${isOnBase ? "bg-ios-green" : "bg-ios-orange"}`}
                 />
-                <Text variant={TextVariant.CaptionMono} className="text-base-gray-200">
+                <span className="text-[0.6875rem] font-mono uppercase tracking-[0.05em] text-ios-text-secondary">
                   {isOnBase ? "Base Mainnet" : `Chain ${chainId}`}
-                </Text>
+                </span>
               </motion.div>
               <motion.div variants={itemVariants}>
-                <Text variant={TextVariant.Caption} className="text-base-gray-100 mt-1">
+                <span className="text-[0.75rem] text-ios-text-tertiary mt-1 inline-block">
                   ETH on Base
-                </Text>
+                </span>
               </motion.div>
             </motion.div>
 
@@ -96,8 +86,12 @@ export default function WalletPage() {
               transition={{ delay: 0.1 }}
               className="mt-6 flex gap-3"
             >
-              <PillCTA label="Transfer" variant="outline" size="md" />
-              <PillCTA label="Buy & sell" variant="blue" size="md" />
+              <AnimatedButton variant="outline" size="md" className="flex-1">
+                Transfer
+              </AnimatedButton>
+              <AnimatedButton variant="primary" size="md" className="flex-1">
+                Buy &amp; sell
+              </AnimatedButton>
             </motion.div>
 
             {/* Asset list */}
@@ -105,44 +99,52 @@ export default function WalletPage() {
               variants={sectionVariants}
               initial="hidden"
               animate="visible"
-              className="mt-8 space-y-2.5"
+              className="mt-8 space-y-2"
             >
               <motion.div variants={itemVariants}>
-                <AssetRow
-                  icon={
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                    >
-                      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                    </svg>
-                  }
-                  label="Crypto"
-                  value={`$${formattedBalance}`}
-                />
+                <div className="flex items-center justify-between py-3 px-4 hover:bg-ios-bg-secondary rounded-xl transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-ios-blue/10 flex items-center justify-center text-ios-blue">
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                      </svg>
+                    </div>
+                    <span className="text-[0.875rem] font-medium text-ios-text">Crypto</span>
+                  </div>
+                  <span className="text-[0.875rem] font-mono tabular-nums text-ios-text">
+                    ${formattedBalance}
+                  </span>
+                </div>
               </motion.div>
               <motion.div variants={itemVariants}>
-                <AssetRow
-                  icon={
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                    >
-                      <circle cx="12" cy="12" r="10" />
-                      <path d="M12 6v12M8 10h8M8 14h8" />
-                    </svg>
-                  }
-                  label="Stablecoins"
-                  value="$0.00"
-                />
+                <div className="flex items-center justify-between py-3 px-4 hover:bg-ios-bg-secondary rounded-xl transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-ios-blue/10 flex items-center justify-center text-ios-blue">
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 6v12M8 10h8M8 14h8" />
+                      </svg>
+                    </div>
+                    <span className="text-[0.875rem] font-medium text-ios-text">Stablecoins</span>
+                  </div>
+                  <span className="text-[0.875rem] font-mono tabular-nums text-ios-text">
+                    $0.00
+                  </span>
+                </div>
               </motion.div>
             </motion.div>
 
@@ -151,7 +153,7 @@ export default function WalletPage() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="mt-8 bg-illoblack rounded-2xl p-5"
+              className="mt-8 bg-ios-card rounded-2xl p-5"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -170,15 +172,17 @@ export default function WalletPage() {
                     </svg>
                   </div>
                   <div>
-                    <p className="font-mono text-sm text-white font-medium">{shortAddress}</p>
-                    <Text variant={TextVariant.CaptionMono} className="text-white/50 mt-0.5">
+                    <p className="font-mono text-[0.875rem] text-white font-medium">
+                      {address ? truncateAddress(address) : "-"}
+                    </p>
+                    <span className="text-[0.6875rem] font-mono text-white/50 mt-0.5 inline-block">
                       {isOnBase ? "Base Mainnet" : `Chain ${chainId}`}
-                    </Text>
+                    </span>
                   </div>
                 </div>
                 <button
                   onClick={() => disconnect()}
-                  className="text-xs text-white/50 hover:text-white/70 font-medium transition-colors"
+                  className="text-[0.75rem] text-white/50 hover:text-white/70 font-medium transition-colors"
                 >
                   Disconnect
                 </button>
@@ -194,13 +198,13 @@ export default function WalletPage() {
             className="mt-20 text-center"
           >
             <motion.div variants={itemVariants}>
-              <div className="w-20 h-20 mx-auto bg-base-gray-25 rounded-3xl flex items-center justify-center mb-6">
+              <div className="w-16 h-16 mx-auto bg-ios-bg-secondary rounded-full flex items-center justify-center mb-6">
                 <svg
-                  width="32"
-                  height="32"
+                  width="28"
+                  height="28"
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="#0A0B0D"
+                  stroke="#6B7280"
                   strokeWidth="1.5"
                 >
                   <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
@@ -210,24 +214,28 @@ export default function WalletPage() {
               </div>
             </motion.div>
             <motion.div variants={itemVariants}>
-              <Title level={TitleLevel.H3Medium} className="text-illoblack mb-2">
+              <h2 className="font-sans text-[1.25rem] font-medium text-ios-text mb-2">
                 Connect Wallet
-              </Title>
+              </h2>
             </motion.div>
             <motion.div variants={itemVariants}>
-              <Text
-                variant={TextVariant.Body}
-                className="text-base-gray-200 max-w-[280px] mx-auto mb-8 leading-relaxed"
-              >
+              <p className="text-[0.875rem] text-ios-text-secondary mb-8 max-w-[280px] mx-auto leading-relaxed">
                 Connect your wallet to unlock personalized alpha signals and smart wallet tracking.
-              </Text>
+              </p>
             </motion.div>
             <motion.div variants={itemVariants}>
-              <PillCTA
-                label="Connect Wallet"
-                variant="blue"
-                onClick={() => connectors[0] && connect({ connector: connectors[0] })}
-              />
+              <AnimatedButton
+                variant="primary"
+                size="lg"
+                onClick={() => {
+                  const connector = isInMiniApp
+                    ? (connectors.find((c) => c.id === "farcasterMiniApp") ?? connectors[0])
+                    : (connectors.find((c) => c.id === "coinbaseWalletSDK") ?? connectors[1]);
+                  if (connector) connect({ connector });
+                }}
+              >
+                Connect Wallet
+              </AnimatedButton>
             </motion.div>
           </motion.div>
         )}

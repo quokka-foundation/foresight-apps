@@ -32,7 +32,7 @@
 
 ### Core Types (`src/lib/types.ts`)
 - `SignalType` — `SMART_MONEY_ENTRY | WHALE_ENTRY | LIQUIDITY_SURGE | EARLY_MOMENTUM | COORDINATED_CLUSTER`
-- `AlphaSignal` — id, type, tokenAddress, tokenSymbol, description, confidenceScore, valueUSD, walletCount, detectedAt
+- `AlphaSignal` — id, **signalType**, tokenAddress, confidenceScore, **walletAddresses** (string[]), blockNumber, metadata, detectedAt; optional enriched fields: description, tokenSymbol, valueUSD
 - `SmartWallet` — id, address, smartScore, clusterType, labels, totalVolumeUSD, tradeCount
 - `Token` — id, address, symbol, name, decimals, priceUSD, change24h, volume24hUSD
 - `AiInsight` — id, summary, keyDrivers, riskFactors, confidenceScore, timeHorizon
@@ -154,7 +154,9 @@ public/
 - **`jest.config.ts` testMatch** — `**/test/unit/**/*.test.{ts,tsx}` matches files under `src/test/unit/`
 - **80% coverage threshold** — jest.config.ts enforces 80% on branches/functions/lines/statements
 - **`lightweight-charts` is ESM-only** — must be mocked in Jest via `moduleNameMapper` → `src/test/__mocks__/lightweight-charts.ts`
-- **`@upstash/redis` missing from package.json** — `lib/kv.ts` imports it; add to dependencies before deploying
+- **`kv.ts` uses in-memory Map** — `src/lib/kv.ts` stores Farcaster notification tokens in a `Map<number, NotificationDetails>`. NOT persistent across cold starts. For production replace with a persistent store.
+- **No Upstash dependency** — `@upstash/redis` is NOT used. `lib/kv.ts` is pure in-memory.
+- **SIWE response shape** — `POST /auth/siwe/verify` returns `{ accessToken: string }` (NOT `{ token }`). `auth.ts` and `api.ts` reflect this.
 - **Local fonts use relative paths** — `next/font/local` paths resolve from the file location, so from `src/app/layout.tsx` use `../../public/fonts/...`
 - **Dynamic route `params`** — must be `Promise<{ id: string }>` and awaited (Next.js 15+)
 - **`CardScene` / WebGL** — requires `dynamic(() => import(...), { ssr: false })` wrapper; never render R3F Canvas on server

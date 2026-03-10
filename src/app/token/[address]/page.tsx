@@ -1,10 +1,13 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
+import { InsightCard } from "@/components/InsightCard";
+import { SignalCard } from "@/components/SignalCard";
 import { TopBar } from "@/components/TopBar";
 import { useApiData } from "@/hooks/useApiData";
 import { api } from "@/lib/api";
 import { MOCK_TOKENS } from "@/lib/mock-data";
+import type { AiInsight, AlphaSignal, Token } from "@/lib/types";
 import { formatCompactUSD, formatPercent } from "@/lib/utils";
 
 export default function TokenDetailPage() {
@@ -13,6 +16,27 @@ export default function TokenDetailPage() {
 
   const { data: tokens, loading } = useApiData(() => api.newTokens(100), MOCK_TOKENS);
   const token = tokens.find((t) => t.address === params.address);
+
+  // Enrich with research data once we have the address
+  const { data: research } = useApiData<{
+    address: string;
+    signals: AlphaSignal[];
+    insight: AiInsight;
+  } | null>(
+    () => (params.address ? api.researchToken(params.address) : Promise.resolve(null)),
+    null,
+    [params.address],
+  );
+
+  // Liquidity chart data
+  const { data: liquidityData } = useApiData<{
+    liquidityUSD: number;
+    dataPoints: { timestamp: string; value: number }[];
+  } | null>(
+    () => (params.address ? api.tokenLiquidity(params.address) : Promise.resolve(null)),
+    null,
+    [params.address],
+  );
 
   if (loading) {
     return (
@@ -51,6 +75,9 @@ export default function TokenDetailPage() {
   }
 
   const isPositive = (token.change24h ?? 0) >= 0;
+  const liveLiquidity = liquidityData?.liquidityUSD ?? token.totalLiquidityUSD ?? 0;
+  const researchSignals = research?.signals?.slice(0, 3) ?? [];
+  const researchInsight = research?.insight ?? null;
 
   return (
     <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-white">
@@ -92,7 +119,7 @@ export default function TokenDetailPage() {
               Liquidity
             </p>
             <p className="text-[0.875rem] font-mono tabular-nums text-ios-text mt-1">
-              {formatCompactUSD(token.totalLiquidityUSD ?? 0)}
+              {formatCompactUSD(liveLiquidity)}
             </p>
           </div>
           <div className="bg-ios-bg-secondary rounded-xl p-3">
@@ -115,6 +142,30 @@ export default function TokenDetailPage() {
             </p>
           </div>
         </div>
+
+        {/* AI Insight */}
+        {researchInsight && (
+          <div>
+            <p className="text-[0.75rem] font-medium uppercase tracking-[0.05em] text-ios-text-secondary mb-2">
+              AI Insight
+            </p>
+            <InsightCard insight={researchInsight} />
+          </div>
+        )}
+
+        {/* Alpha Signals */}
+        {researchSignals.length > 0 && (
+          <div>
+            <p className="text-[0.75rem] font-medium uppercase tracking-[0.05em] text-ios-text-secondary mb-2">
+              Alpha Signals
+            </p>
+            <div className="space-y-3">
+              {researchSignals.map((s) => (
+                <SignalCard key={s.id} signal={s} />
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Contract */}
         <div className="bg-ios-card rounded-xl p-4">

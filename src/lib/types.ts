@@ -15,16 +15,17 @@ export type WalletClusterType = "whale" | "fund" | "bot" | "market_maker" | "unk
 
 export interface AlphaSignal {
   id: string;
-  type: SignalType;
   tokenAddress: string;
-  tokenSymbol?: string;
-  description: string;
+  signalType: SignalType;
   confidenceScore: number; // 0-100
-  valueUSD?: number;
-  walletCount?: number;
-  blockNumber?: number;
+  walletAddresses: string[];
+  blockNumber: number;
+  metadata: Record<string, unknown>;
   detectedAt: string; // ISO 8601
-  chain: "base";
+  // Optional enriched fields — may be returned directly by the API or extracted from metadata
+  description?: string;
+  tokenSymbol?: string;
+  valueUSD?: number;
 }
 
 export interface SmartWallet {

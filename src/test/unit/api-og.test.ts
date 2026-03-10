@@ -30,14 +30,16 @@ describe("GET /api/og/signal/[id]", () => {
     const { getSignalById } = require("../../lib/mock-data");
     getSignalById.mockReturnValue({
       id: "sig-001",
-      type: "whale_move",
+      signalType: "WHALE_ENTRY",
       tokenAddress: "0x1234",
       tokenSymbol: "USDC",
       description: "Large USDC transfer detected",
       confidenceScore: 85,
       valueUSD: 500000,
+      walletAddresses: ["0xabc"],
+      blockNumber: 12345678,
+      metadata: {},
       detectedAt: "2026-03-01T12:00:00Z",
-      chain: "base",
     });
 
     const req = new NextRequest("http://localhost/api/og/signal/sig-001");
@@ -55,12 +57,14 @@ describe("GET /api/og/signal/[id]", () => {
     const { getSignalById } = require("../../lib/mock-data");
     getSignalById.mockReturnValue({
       id: "sig-001",
-      type: "whale_move",
+      signalType: "SMART_MONEY_ENTRY",
       tokenAddress: "0x1234",
       description: "Test signal",
       confidenceScore: 50,
+      walletAddresses: [],
+      blockNumber: 12345678,
+      metadata: {},
       detectedAt: "2026-03-01T12:00:00Z",
-      chain: "base",
     });
 
     const req = new NextRequest("http://localhost/api/og/signal/sig-001");
@@ -72,12 +76,14 @@ describe("GET /api/og/signal/[id]", () => {
     const { getSignalById } = require("../../lib/mock-data");
     getSignalById.mockReturnValue({
       id: "sig-001",
-      type: "whale_move",
+      signalType: "EARLY_MOMENTUM",
       tokenAddress: "0x1234",
       description: "Transfer > $1M & <script>",
       confidenceScore: 50,
+      walletAddresses: [],
+      blockNumber: 12345678,
+      metadata: {},
       detectedAt: "2026-03-01T12:00:00Z",
-      chain: "base",
     });
 
     const req = new NextRequest("http://localhost/api/og/signal/sig-001");

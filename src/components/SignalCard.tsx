@@ -23,8 +23,8 @@ export function SignalCard({ signal, index = 0 }: SignalCardProps) {
         <div className="bg-ios-card rounded-2xl p-4 space-y-3">
           {/* Header row */}
           <div className="flex items-center justify-between">
-            <SignalTypeBadge type={signal.type} />
-            <span className="text-[0.6875rem] text-ios-text-tertiary font-mono tabular-nums">
+            <SignalTypeBadge type={signal.signalType} />
+            <span className="text-[0.6875rem] text-white/40 font-mono tabular-nums">
               {timeAgo(signal.detectedAt)}
             </span>
           </div>
@@ -47,9 +47,10 @@ export function SignalCard({ signal, index = 0 }: SignalCardProps) {
                   {formatCompactUSD(signal.valueUSD)}
                 </span>
               )}
-              {signal.walletCount != null && (
+              {signal.walletAddresses != null && signal.walletAddresses.length > 0 && (
                 <span className="text-[0.6875rem] text-white/50">
-                  {signal.walletCount} wallet{signal.walletCount !== 1 ? "s" : ""}
+                  {signal.walletAddresses.length} wallet
+                  {signal.walletAddresses.length !== 1 ? "s" : ""}
                 </span>
               )}
             </div>

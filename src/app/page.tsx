@@ -44,7 +44,7 @@ export default function FeedPage() {
   const filteredSignals = useMemo(() => {
     const filterType = FILTER_MAP[activeFilter];
     if (!filterType) return signals;
-    return signals.filter((s) => s.type === filterType);
+    return signals.filter((s) => s.signalType === filterType);
   }, [activeFilter, signals]);
 
   return (

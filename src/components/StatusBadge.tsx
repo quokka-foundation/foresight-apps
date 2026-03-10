@@ -1,5 +1,7 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+
 interface StatusBadgeProps {
   label: string;
   variant?: "green" | "blue" | "red" | "orange" | "purple";
@@ -64,7 +66,13 @@ export function StatusBadge({
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 ${bgClass} ${textClass} ${sizeClasses} rounded-pill font-bold uppercase tracking-wider ${glow ? "animate-glow" : ""}`}
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-pill font-bold uppercase tracking-wider",
+        bgClass,
+        textClass,
+        sizeClasses,
+        glow && "animate-glow",
+      )}
     >
       {pulse && (
         <span

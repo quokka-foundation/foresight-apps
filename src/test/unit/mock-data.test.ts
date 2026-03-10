@@ -22,12 +22,12 @@ describe("mock-data", () => {
     it("all signals have required fields", () => {
       for (const s of MOCK_SIGNALS) {
         expect(s.id).toBeTruthy();
-        expect(s.type).toBeTruthy();
+        expect(s.signalType).toBeTruthy();
         expect(s.tokenAddress).toBeTruthy();
         expect(s.description).toBeTruthy();
         expect(s.confidenceScore).toBeGreaterThanOrEqual(0);
         expect(s.confidenceScore).toBeLessThanOrEqual(100);
-        expect(s.chain).toBe("base");
+        expect(s.walletAddresses).toBeInstanceOf(Array);
         expect(s.detectedAt).toBeTruthy();
       }
     });
@@ -120,7 +120,7 @@ describe("mock-data", () => {
 
   describe("SIGNAL_TYPE_CONFIG", () => {
     it("has config for all signal types used in mock data", () => {
-      const types = new Set(MOCK_SIGNALS.map((s) => s.type));
+      const types = new Set(MOCK_SIGNALS.map((s) => s.signalType));
       for (const t of types) {
         expect(SIGNAL_TYPE_CONFIG[t]).toBeDefined();
         expect(SIGNAL_TYPE_CONFIG[t].label).toBeTruthy();

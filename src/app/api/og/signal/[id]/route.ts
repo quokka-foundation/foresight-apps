@@ -54,12 +54,12 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
 
       <!-- Signal type -->
       <text x="60" y="130" font-family="system-ui, sans-serif" font-size="20" font-weight="600" fill="#6B7280">
-        ${escapeXml(signal.type.replace("_", " ").toUpperCase())}
+        ${escapeXml(signal.signalType.replace("_", " ").toUpperCase())}
       </text>
 
       <!-- Description -->
       <text x="60" y="220" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="700" fill="#1A1B1E">
-        ${escapeXml(signal.description.slice(0, 50))}${signal.description.length > 50 ? "..." : ""}
+        ${escapeXml((signal.description ?? "").slice(0, 50))}${(signal.description?.length ?? 0) > 50 ? "..." : ""}
       </text>
 
       <!-- Token -->
