@@ -10,6 +10,7 @@ export type SignalType =
   | "COORDINATED_CLUSTER";
 
 export type AlertPriority = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
+/** @deprecated Use SubscriptionTierKey instead */
 export type SubscriptionTier = "FREE" | "PRO_TRADER" | "QUANT_RESEARCH" | "INSTITUTIONAL";
 export type WalletClusterType = "whale" | "fund" | "bot" | "market_maker" | "unknown";
 
@@ -26,6 +27,10 @@ export interface AlphaSignal {
   description?: string;
   tokenSymbol?: string;
   valueUSD?: number;
+  /** Farcaster mention count for this token in the detection window */
+  socialMentions?: number;
+  /** AI-generated plain-English summary */
+  aiSummary?: string;
 }
 
 export interface SmartWallet {
@@ -98,6 +103,59 @@ export interface AiInsight {
   signalId?: string;
   tokenAddress?: string;
   generatedAt: string;
+}
+
+// ── New Types ─────────────────────────────────────────────
+
+export interface OHLCVBar {
+  /** Unix timestamp in SECONDS (required by lightweight-charts) */
+  time: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume?: number;
+}
+
+export type OHLCVResolution = "1H" | "1D" | "1W" | "1M" | "ALL";
+
+export interface SocialSignal {
+  id: string;
+  tokenAddress: string | null;
+  tokenSymbol: string | null;
+  mentionCount: number;
+  castHashes: string[];
+  sentiment: "positive" | "neutral" | "negative" | null;
+  windowStart: string | null;
+  windowEnd: string | null;
+  createdAt: string;
+}
+
+export type SubscriptionTierKey = "free" | "pro" | "elite";
+
+export interface UserProfile {
+  id: string;
+  fid: number | null;
+  walletAddress: string | null;
+  subscriptionTier: SubscriptionTierKey;
+  createdAt: string;
+}
+
+/** Extended Token with real-time fields from database */
+export interface TokenDetail extends Token {
+  liquidityUSD?: number;
+  marketCapUSD?: number;
+  isClanker?: boolean;
+  poolAddress?: string;
+  signals?: AlphaSignal[];
+  aiInsight?: AiInsight | null;
+  socialMentions?: number;
+}
+
+/** Wallet with win rate + avg PnL from database */
+export interface WalletStats extends SmartWallet {
+  winRate?: number;
+  avgPnlPercent?: number;
 }
 
 export type TabId = "feed" | "wallets" | "tokens" | "alerts" | "profile";

@@ -6,6 +6,7 @@ import type { AlphaSignal } from "@/lib/types";
 import { formatCompactUSD, timeAgo } from "@/lib/utils";
 import { ConfidenceBadge } from "./ConfidenceBadge";
 import { SignalTypeBadge } from "./SignalTypeBadge";
+import { SocialSignalBadge } from "./SocialSignalBadge";
 
 interface SignalCardProps {
   signal: AlphaSignal;
@@ -52,6 +53,9 @@ export function SignalCard({ signal, index = 0 }: SignalCardProps) {
                   {signal.walletAddresses.length} wallet
                   {signal.walletAddresses.length !== 1 ? "s" : ""}
                 </span>
+              )}
+              {signal.socialMentions != null && signal.socialMentions > 0 && (
+                <SocialSignalBadge mentionCount={signal.socialMentions} />
               )}
             </div>
             <ConfidenceBadge score={signal.confidenceScore} />

@@ -7,16 +7,22 @@ import { useAuth } from "@/components/providers/auth-provider";
 import { useFrameContext } from "@/components/providers/frame-provider";
 import { TabBar } from "@/components/TabBar";
 import { TopBar } from "@/components/TopBar";
-import { useApiData } from "@/hooks/useApiData";
-import { api } from "@/lib/api";
+import { SUBSCRIPTION_TIERS } from "@/lib/constants";
 import { truncateAddress } from "@/lib/utils";
 
-// Fallback plan list shown when API is unreachable
-const FALLBACK_PLANS = [
-  { id: "free", name: "Free", price: 0, limits: { signalsPerDay: 5 } },
-  { id: "pro", name: "Pro Trader", price: 29, limits: { signalsPerDay: -1 } },
-  { id: "quant", name: "Quant Research", price: 99, limits: { signalsPerDay: -1 } },
-];
+// Convert SUBSCRIPTION_TIERS const to an array suitable for rendering
+const PLANS = (
+  Object.entries(SUBSCRIPTION_TIERS) as [
+    string,
+    (typeof SUBSCRIPTION_TIERS)[keyof typeof SUBSCRIPTION_TIERS],
+  ][]
+).map(([id, tier]) => ({
+  id,
+  name: tier.name,
+  price: tier.price,
+  limits: { signalsPerDay: tier.aiSummariesPerDay },
+  ohlcvRanges: tier.ohlcvRanges,
+}));
 
 function formatPrice(price: number): string {
   if (price === 0) return "$0";
@@ -27,15 +33,15 @@ function planFeatures(plan: { name: string; limits: Record<string, number> }): s
   const features: string[] = [];
   const daily = plan.limits.signalsPerDay;
   if (daily === -1 || daily === undefined) {
-    features.push("Unlimited signals");
+    features.push("Unlimited AI summaries");
   } else {
-    features.push(`${daily} signals/day`);
+    features.push(`${daily} AI summaries/day`);
   }
-  if (plan.name.toLowerCase().includes("pro") || plan.name.toLowerCase().includes("quant")) {
-    features.push("AI insights");
+  if (plan.name.toLowerCase() === "pro" || plan.name.toLowerCase() === "elite") {
+    features.push("Real-time signals");
     features.push("Alert customization");
   }
-  if (plan.name.toLowerCase().includes("quant")) {
+  if (plan.name.toLowerCase() === "elite") {
     features.push("API access");
     features.push("Cluster analysis");
   }
@@ -43,8 +49,6 @@ function planFeatures(plan: { name: string; limits: Record<string, number> }): s
 }
 
 export default function ProfilePage() {
-  const { data: plans, loading: plansLoading } = useApiData(() => api.plans(), FALLBACK_PLANS);
-
   const { isConnected, address } = useAccount();
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
@@ -146,44 +150,32 @@ export default function ProfilePage() {
           <h3 className="text-[0.75rem] font-medium uppercase tracking-[0.05em] text-ios-text-secondary mb-3">
             Plans
           </h3>
-          {plansLoading ? (
-            <div className="space-y-3">
-              {Array.from({ length: 3 }).map((_, i) => (
-                // biome-ignore lint/suspicious/noArrayIndexKey: skeleton placeholders
-                <div key={i} className="h-[88px] rounded-2xl bg-ios-bg-secondary animate-pulse" />
-              ))}
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {plans.map((plan) => {
-                const features = planFeatures(plan);
-                return (
-                  <div
-                    key={plan.id ?? plan.name}
-                    className="border border-ios-separator rounded-2xl p-4"
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-[0.875rem] font-medium text-ios-text">{plan.name}</span>
-                      <span className="text-[0.875rem] font-mono tabular-nums text-ios-blue">
-                        {formatPrice(plan.price)}
-                      </span>
-                    </div>
-                    <ul className="space-y-1">
-                      {features.map((f) => (
-                        <li
-                          key={f}
-                          className="text-[0.75rem] text-ios-text-secondary flex items-center gap-2"
-                        >
-                          <span className="text-ios-green">&#10003;</span>
-                          {f}
-                        </li>
-                      ))}
-                    </ul>
+          <div className="space-y-3">
+            {PLANS.map((plan) => {
+              const features = planFeatures(plan);
+              return (
+                <div key={plan.id} className="border border-ios-separator rounded-2xl p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[0.875rem] font-medium text-ios-text">{plan.name}</span>
+                    <span className="text-[0.875rem] font-mono tabular-nums text-ios-blue">
+                      {formatPrice(plan.price)}
+                    </span>
                   </div>
-                );
-              })}
-            </div>
-          )}
+                  <ul className="space-y-1">
+                    {features.map((f) => (
+                      <li
+                        key={f}
+                        className="text-[0.75rem] text-ios-text-secondary flex items-center gap-2"
+                      >
+                        <span className="text-ios-green">&#10003;</span>
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 

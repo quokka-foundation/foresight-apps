@@ -1,38 +1,48 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { ConfidenceBadge } from "@/components/ConfidenceBadge";
 import { InsightCard } from "@/components/InsightCard";
 import { SignalCard } from "@/components/SignalCard";
 import { SignalTypeBadge } from "@/components/SignalTypeBadge";
 import { TopBar } from "@/components/TopBar";
-import { useApiData } from "@/hooks/useApiData";
-import { api } from "@/lib/api";
 import { MOCK_INSIGHTS, MOCK_SIGNALS } from "@/lib/mock-data";
 import type { AiInsight, AlphaSignal } from "@/lib/types";
 import { formatCompactUSD, timeAgo, truncateAddress } from "@/lib/utils";
+
+async function fetchSignalDetail(id: string): Promise<{
+  signal: AlphaSignal;
+  aiInsight: AiInsight | null;
+  relatedSignals: AlphaSignal[];
+} | null> {
+  const res = await fetch(`/api/signals/${id}`);
+  if (!res.ok) return null;
+  return res.json();
+}
 
 export default function SignalDetailPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
 
-  const { data: signals, loading } = useApiData(() => api.feed(100), MOCK_SIGNALS);
-  const signal = signals.find((s) => s.id === params.id);
+  const { data, isLoading } = useQuery({
+    queryKey: ["signal", params.id],
+    queryFn: () => fetchSignalDetail(params.id),
+    // Fall back to mock while API unavailable
+    placeholderData: () => {
+      const found = MOCK_SIGNALS.find((s) => s.id === params.id) ?? MOCK_SIGNALS[0] ?? null;
+      return found
+        ? { signal: found, aiInsight: MOCK_INSIGHTS[0] ?? null, relatedSignals: [] }
+        : null;
+    },
+    staleTime: 60_000,
+  });
 
-  // Once we know the token address, fetch related signals and an AI insight
-  const tokenAddress = signal?.tokenAddress ?? "";
-  const { data: relatedSignals } = useApiData<AlphaSignal[]>(
-    () => (tokenAddress ? api.tokenSignals(tokenAddress) : Promise.resolve([])),
-    [],
-    [tokenAddress],
-  );
-  const { data: insight } = useApiData<AiInsight | null>(
-    () => (tokenAddress ? api.tokenInsight(tokenAddress) : Promise.resolve(null)),
-    MOCK_INSIGHTS[0] ?? null,
-    [tokenAddress],
-  );
+  const signal = data?.signal;
+  const insight = data?.aiInsight ?? null;
+  const relatedSignals = (data?.relatedSignals ?? []).filter((s) => s.id !== params.id).slice(0, 3);
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-white">
         <TopBar title="Signal" back={() => router.back()} />
@@ -62,9 +72,6 @@ export default function SignalDetailPage() {
       </div>
     );
   }
-
-  // Other signals for the same token, excluding the current one
-  const otherSignals = relatedSignals.filter((s) => s.id !== signal.id).slice(0, 3);
 
   return (
     <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-white">
@@ -155,13 +162,13 @@ export default function SignalDetailPage() {
         )}
 
         {/* Other signals for this token */}
-        {otherSignals.length > 0 && (
+        {relatedSignals.length > 0 && (
           <div>
             <p className="text-[0.75rem] font-medium uppercase tracking-[0.05em] text-ios-text-secondary mb-2">
               More Signals for This Token
             </p>
             <div className="space-y-3">
-              {otherSignals.map((s) => (
+              {relatedSignals.map((s) => (
                 <SignalCard key={s.id} signal={s} />
               ))}
             </div>

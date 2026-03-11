@@ -2,6 +2,23 @@
   "buildCommand": "bun run build",
   "devCommand": "bun run dev",
   "installCommand": "bun install",
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "crons": [
+    {
+      "path": "/api/cron/detect-signals",
+      "schedule": "* * * * *"
+    },
+    {
+      "path": "/api/cron/update-tokens",
+      "schedule": "*/2 * * * *"
+    },
+    {
+      "path": "/api/cron/score-wallets",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/generate-summaries",
+      "schedule": "* * * * *"
+    }
+  ]
 }
-

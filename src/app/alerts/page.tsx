@@ -6,18 +6,11 @@ import { useAuth } from "@/components/providers/auth-provider";
 import { Section } from "@/components/Section";
 import { TabBar } from "@/components/TabBar";
 import { TopBar } from "@/components/TopBar";
-import { useApiData } from "@/hooks/useApiData";
-import { api } from "@/lib/api";
-import type { AlertHistoryItem } from "@/lib/types";
+import { useAlertHistory } from "@/hooks/useAlertHistory";
 
 export default function AlertsPage() {
   const { userId } = useAuth();
-
-  const { data: alerts, loading } = useApiData<AlertHistoryItem[]>(
-    () => (userId ? api.alertHistory(userId) : Promise.resolve([])),
-    [],
-    [userId],
-  );
+  const { data: alerts = [], isLoading } = useAlertHistory(userId);
 
   return (
     <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-white">
@@ -41,7 +34,7 @@ export default function AlertsPage() {
 
         {/* Alert history */}
         <Section title="Recent Alerts">
-          {loading ? (
+          {isLoading ? (
             <div className="space-y-1 px-4">
               {Array.from({ length: 4 }).map((_, i) => (
                 // biome-ignore lint/suspicious/noArrayIndexKey: skeleton placeholders

@@ -4,41 +4,27 @@ import { useParams, useRouter } from "next/navigation";
 import { InsightCard } from "@/components/InsightCard";
 import { SignalCard } from "@/components/SignalCard";
 import { TopBar } from "@/components/TopBar";
-import { useApiData } from "@/hooks/useApiData";
-import { api } from "@/lib/api";
+import { useTokenDetail } from "@/hooks/useTokens";
 import { MOCK_TOKENS } from "@/lib/mock-data";
-import type { AiInsight, AlphaSignal, Token } from "@/lib/types";
+import type { AiInsight, AlphaSignal, TokenDetail } from "@/lib/types";
 import { formatCompactUSD, formatPercent } from "@/lib/utils";
 
 export default function TokenDetailPage() {
   const params = useParams<{ address: string }>();
   const router = useRouter();
 
-  const { data: tokens, loading } = useApiData(() => api.newTokens(100), MOCK_TOKENS);
-  const token = tokens.find((t) => t.address === params.address);
+  const { data, isLoading } = useTokenDetail(params.address);
+  const detail = data as TokenDetail | null | undefined;
 
-  // Enrich with research data once we have the address
-  const { data: research } = useApiData<{
-    address: string;
-    signals: AlphaSignal[];
-    insight: AiInsight;
-  } | null>(
-    () => (params.address ? api.researchToken(params.address) : Promise.resolve(null)),
-    null,
-    [params.address],
-  );
+  // Fall back to mock while loading
+  const mockToken = MOCK_TOKENS.find((t) => t.address === params.address) ?? null;
+  const token = detail ?? mockToken;
 
-  // Liquidity chart data
-  const { data: liquidityData } = useApiData<{
-    liquidityUSD: number;
-    dataPoints: { timestamp: string; value: number }[];
-  } | null>(
-    () => (params.address ? api.tokenLiquidity(params.address) : Promise.resolve(null)),
-    null,
-    [params.address],
-  );
+  const researchSignals: AlphaSignal[] = (detail?.signals ?? []).slice(0, 3);
+  const researchInsight: AiInsight | null = detail?.aiInsight ?? null;
+  const liveLiquidity = detail?.liquidityUSD ?? token?.totalLiquidityUSD ?? 0;
 
-  if (loading) {
+  if (isLoading && !token) {
     return (
       <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-white">
         <TopBar title="Token" back={() => router.back()} />
@@ -75,9 +61,6 @@ export default function TokenDetailPage() {
   }
 
   const isPositive = (token.change24h ?? 0) >= 0;
-  const liveLiquidity = liquidityData?.liquidityUSD ?? token.totalLiquidityUSD ?? 0;
-  const researchSignals = research?.signals?.slice(0, 3) ?? [];
-  const researchInsight = research?.insight ?? null;
 
   return (
     <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-white">
@@ -93,7 +76,7 @@ export default function TokenDetailPage() {
           </div>
           <p className="text-[0.875rem] text-ios-text-secondary">{token.name}</p>
           <p className="text-[2rem] font-mono tabular-nums font-medium text-ios-text mt-2">
-            ${token.priceUSD?.toFixed(token.priceUSD >= 1 ? 2 : 4) ?? "—"}
+            ${token.priceUSD?.toFixed((token.priceUSD ?? 0) >= 1 ? 2 : 4) ?? "—"}
           </p>
           <p
             className={`text-[0.875rem] font-mono tabular-nums mt-1 ${

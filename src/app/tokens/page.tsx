@@ -5,32 +5,29 @@ import { FilterChips } from "@/components/FilterChips";
 import { TabBar } from "@/components/TabBar";
 import { TokenRow } from "@/components/TokenRow";
 import { TopBar } from "@/components/TopBar";
-import { useApiData } from "@/hooks/useApiData";
-import { api } from "@/lib/api";
+import { useTokens } from "@/hooks/useTokens";
 import { MOCK_TOKENS } from "@/lib/mock-data";
+import type { Token } from "@/lib/types";
 
 const SORT_OPTIONS = ["Volume", "Price", "Change", "Liquidity"];
+
+const SORT_KEY_MAP: Record<string, keyof Token> = {
+  Volume: "volume24hUSD",
+  Price: "priceUSD",
+  Change: "change24h",
+  Liquidity: "totalLiquidityUSD",
+};
 
 export default function TokensPage() {
   const [sortBy, setSortBy] = useState("Volume");
 
-  const { data: tokens, loading } = useApiData(() => api.newTokens(), MOCK_TOKENS);
+  const { data: tokens, isLoading } = useTokens({ sort: sortBy.toLowerCase() });
+  const displayTokens = tokens ?? MOCK_TOKENS;
 
   const sortedTokens = useMemo(() => {
-    const list = [...tokens];
-    switch (sortBy) {
-      case "Volume":
-        return list.sort((a, b) => (b.volume24hUSD ?? 0) - (a.volume24hUSD ?? 0));
-      case "Price":
-        return list.sort((a, b) => (b.priceUSD ?? 0) - (a.priceUSD ?? 0));
-      case "Change":
-        return list.sort((a, b) => (b.change24h ?? 0) - (a.change24h ?? 0));
-      case "Liquidity":
-        return list.sort((a, b) => (b.totalLiquidityUSD ?? 0) - (a.totalLiquidityUSD ?? 0));
-      default:
-        return list;
-    }
-  }, [sortBy, tokens]);
+    const key = SORT_KEY_MAP[sortBy] ?? "volume24hUSD";
+    return [...displayTokens].sort((a, b) => ((b[key] as number) ?? 0) - ((a[key] as number) ?? 0));
+  }, [sortBy, displayTokens]);
 
   return (
     <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-white">
@@ -40,7 +37,7 @@ export default function TokensPage() {
 
       <div className="flex-1 pb-24">
         <div className="divide-y divide-ios-separator">
-          {loading
+          {isLoading
             ? Array.from({ length: 6 }).map((_, i) => (
                 // biome-ignore lint/suspicious/noArrayIndexKey: skeleton placeholders
                 <div key={i} className="px-4 py-3 h-[64px] animate-pulse bg-ios-bg-secondary/50" />
