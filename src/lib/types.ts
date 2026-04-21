@@ -41,6 +41,7 @@ export interface SmartWallet {
   labels?: string[];
   totalVolumeUSD?: number;
   tradeCount?: number;
+  winRate?: number; // 0-1 fraction
 }
 
 export interface WalletDetail extends SmartWallet {
@@ -70,6 +71,8 @@ export interface Token {
   change24h?: number;
   volume24hUSD?: number;
   txCount?: number;
+  marketCapUSD?: number;
+  holders?: number;
 }
 
 export interface AlertSubscription {
@@ -144,7 +147,6 @@ export interface UserProfile {
 /** Extended Token with real-time fields from database */
 export interface TokenDetail extends Token {
   liquidityUSD?: number;
-  marketCapUSD?: number;
   isClanker?: boolean;
   poolAddress?: string;
   signals?: AlphaSignal[];

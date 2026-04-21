@@ -38,7 +38,7 @@ export default function WalletPage() {
   const formattedBalance = balance ? parseFloat(formatEther(balance.value)).toFixed(4) : "0.0000";
 
   return (
-    <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-white">
+    <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-ios-bg">
       <TopBar title="Wallet" />
 
       <div className="flex-1 px-4 pb-24">

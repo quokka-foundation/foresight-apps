@@ -44,7 +44,7 @@ export default function SignalDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-white">
+      <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-ios-bg">
         <TopBar title="Signal" back={() => router.back()} />
         <div className="flex-1 px-4 py-4 space-y-4">
           <div className="h-6 w-32 rounded-lg bg-ios-bg-secondary animate-pulse" />
@@ -62,7 +62,7 @@ export default function SignalDetailPage() {
 
   if (!signal) {
     return (
-      <div className="flex items-center justify-center min-h-screen max-w-[430px] mx-auto bg-white">
+      <div className="flex items-center justify-center min-h-screen max-w-[430px] mx-auto bg-ios-bg">
         <div className="text-center p-8">
           <p className="text-[1rem] font-medium text-ios-text mb-3">Signal not found</p>
           <button onClick={() => router.push("/")} className="text-ios-blue text-sm font-medium">
@@ -74,7 +74,7 @@ export default function SignalDetailPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-white">
+    <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-ios-bg">
       <TopBar title="Signal" back={() => router.back()} />
 
       <div className="flex-1 px-4 py-4 space-y-6">

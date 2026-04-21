@@ -1,34 +1,15 @@
 "use client";
 
 // ============================================================
-// useSignalFeed — Supabase Realtime live signal subscription
+// useSignalFeed — TanStack Query polling for live signals
 // ============================================================
-// Subscribes to INSERT events on the alpha_signals table.
+// Polls /api/signals every 10 seconds.
 // New signals are prepended to the list (max 100 kept in memory).
-// Falls back to a periodic poll when Supabase is not configured.
 
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { MOCK_SIGNALS } from "@/lib/mock-data";
-import { supabase } from "@/lib/supabase";
 import type { AlphaSignal } from "@/lib/types";
-
-function dbRowToSignal(r: Record<string, unknown>): AlphaSignal {
-  return {
-    id: r.id as string,
-    signalType: r.signal_type as AlphaSignal["signalType"],
-    tokenAddress: r.token_address as string,
-    tokenSymbol: (r.token_symbol as string | null) ?? undefined,
-    confidenceScore: r.confidence_score as number,
-    walletAddresses: (r.wallet_addresses as string[]) ?? [],
-    blockNumber: r.block_number as number,
-    valueUSD: (r.value_usd as number | null) ?? undefined,
-    description: (r.description as string | null) ?? undefined,
-    aiSummary: (r.ai_summary as string | null) ?? undefined,
-    socialMentions: (r.social_mentions as number | null) ?? 0,
-    metadata: (r.metadata as Record<string, unknown>) ?? {},
-    detectedAt: r.detected_at as string,
-  };
-}
 
 export interface UseSignalFeedOptions {
   /** Only receive signals of these types. Empty = all. */
@@ -42,61 +23,34 @@ export interface UseSignalFeedOptions {
 export function useSignalFeed(options: UseSignalFeedOptions = {}) {
   const { signalTypes = [], minConfidence = 0, maxItems = 100 } = options;
 
-  const isConfigured = !!process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const isMockMode = !process.env.NEXT_PUBLIC_API_URL;
 
-  const [signals, setSignals] = useState<AlphaSignal[]>(isConfigured ? [] : MOCK_SIGNALS);
-  const [connected, setConnected] = useState(false);
-  const channelRef = useRef<ReturnType<typeof supabase.channel> | null>(null);
+  const [signals, setSignals] = useState<AlphaSignal[]>(isMockMode ? MOCK_SIGNALS : []);
+  const seenIds = useRef(new Set<string>());
+
+  const params = new URLSearchParams();
+  params.set("limit", String(maxItems));
+  if (signalTypes.length) params.set("type", signalTypes[0]);
+  if (minConfidence) params.set("minConfidence", String(minConfidence));
+
+  const { data } = useQuery<AlphaSignal[]>({
+    queryKey: ["signals", "feed", signalTypes.join(","), minConfidence],
+    queryFn: async () => {
+      const res = await fetch(`/api/signals?${params}`);
+      if (!res.ok) throw new Error("Failed to fetch signals");
+      return res.json();
+    },
+    refetchInterval: 10_000,
+    enabled: !isMockMode,
+  });
 
   useEffect(() => {
-    if (!isConfigured) return;
+    if (!data) return;
+    const fresh = data.filter((s) => !seenIds.current.has(s.id));
+    if (fresh.length === 0) return;
+    for (const s of fresh) seenIds.current.add(s.id);
+    setSignals((prev) => [...fresh, ...prev].slice(0, maxItems));
+  }, [data, maxItems]);
 
-    // Initial fetch
-    const fetchInitial = async () => {
-      let query = supabase
-        .from("alpha_signals")
-        .select("*")
-        .order("detected_at", { ascending: false })
-        .limit(maxItems);
-
-      if (signalTypes.length) query = query.in("signal_type", signalTypes);
-      if (minConfidence) query = query.gte("confidence_score", minConfidence);
-
-      const { data } = await query;
-      if (data) setSignals(data.map(dbRowToSignal));
-    };
-
-    fetchInitial();
-
-    // Subscribe to real-time INSERTs
-    const channel = supabase
-      .channel("alpha_signals_feed")
-      .on(
-        "postgres_changes",
-        { event: "INSERT", schema: "public", table: "alpha_signals" },
-        (payload) => {
-          const newSignal = dbRowToSignal(payload.new as Record<string, unknown>);
-
-          // Apply client-side filters
-          if (signalTypes.length && !signalTypes.includes(newSignal.signalType)) return;
-          if (newSignal.confidenceScore < minConfidence) return;
-
-          setSignals((prev) => [newSignal, ...prev].slice(0, maxItems));
-        },
-      )
-      .subscribe((status) => {
-        setConnected(status === "SUBSCRIBED");
-      });
-
-    channelRef.current = channel;
-
-    return () => {
-      supabase.removeChannel(channel);
-      channelRef.current = null;
-      setConnected(false);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isConfigured, signalTypes.join(","), minConfidence, maxItems]);
-
-  return { signals, connected };
+  return { signals, connected: !isMockMode };
 }

@@ -12,18 +12,18 @@ const TABS: { id: TabId; label: string; href: string; icon: React.ReactNode }[] 
     href: "/",
     icon: (
       <svg
-        width="22"
-        height="22"
+        width="20"
+        height="20"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="1.5"
+        strokeWidth="1.75"
         strokeLinecap="round"
         strokeLinejoin="round"
       >
         <path d="M4 11a9 9 0 0 1 9 9" />
         <path d="M4 4a16 16 0 0 1 16 16" />
-        <circle cx="5" cy="19" r="1" />
+        <circle cx="5" cy="19" r="1" fill="currentColor" stroke="none" />
       </svg>
     ),
   },
@@ -33,12 +33,12 @@ const TABS: { id: TabId; label: string; href: string; icon: React.ReactNode }[] 
     href: "/wallets",
     icon: (
       <svg
-        width="22"
-        height="22"
+        width="20"
+        height="20"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="1.5"
+        strokeWidth="1.75"
         strokeLinecap="round"
         strokeLinejoin="round"
       >
@@ -54,17 +54,18 @@ const TABS: { id: TabId; label: string; href: string; icon: React.ReactNode }[] 
     href: "/tokens",
     icon: (
       <svg
-        width="22"
-        height="22"
+        width="20"
+        height="20"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="1.5"
+        strokeWidth="1.75"
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 6v12M6 12h12" />
+        <path d="M12 2L2 7l10 5 10-5-10-5z" />
+        <path d="M2 17l10 5 10-5" />
+        <path d="M2 12l10 5 10-5" />
       </svg>
     ),
   },
@@ -74,12 +75,12 @@ const TABS: { id: TabId; label: string; href: string; icon: React.ReactNode }[] 
     href: "/alerts",
     icon: (
       <svg
-        width="22"
-        height="22"
+        width="20"
+        height="20"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="1.5"
+        strokeWidth="1.75"
         strokeLinecap="round"
         strokeLinejoin="round"
       >
@@ -94,12 +95,12 @@ const TABS: { id: TabId; label: string; href: string; icon: React.ReactNode }[] 
     href: "/profile",
     icon: (
       <svg
-        width="22"
-        height="22"
+        width="20"
+        height="20"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="1.5"
+        strokeWidth="1.75"
         strokeLinecap="round"
         strokeLinejoin="round"
       >
@@ -124,8 +125,15 @@ export function TabBar() {
   const activeTab = getActiveTab();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg border-t border-ios-separator safe-area-bottom">
-      <div className="flex items-center justify-around max-w-[430px] mx-auto h-14">
+    <nav
+      className="fixed bottom-0 left-0 right-0 z-50 border-t border-ios-separator safe-area-bottom"
+      style={{
+        background: "rgba(7, 9, 15, 0.95)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+      }}
+    >
+      <div className="flex items-center justify-around max-w-[430px] mx-auto h-[60px]">
         {TABS.map((tab) => {
           const isActive = activeTab === tab.id;
           return (
@@ -133,13 +141,25 @@ export function TabBar() {
               key={tab.id}
               href={tab.href}
               className={cn(
-                "flex flex-col items-center justify-center gap-0.5 p-2 transition-all duration-200",
+                "flex flex-col items-center justify-center gap-[3px] px-4 py-2 rounded-xl transition-all duration-200",
                 isActive ? "text-ios-blue" : "text-ios-text-tertiary hover:text-ios-text-secondary",
               )}
               aria-label={tab.label}
             >
-              <div>{tab.icon}</div>
-              <span className="text-[0.625rem] font-medium">{tab.label}</span>
+              <div className={cn("transition-transform duration-200", isActive && "scale-110")}>
+                {tab.icon}
+              </div>
+              <span
+                className={cn(
+                  "text-[0.5625rem] font-medium tracking-wide transition-all duration-200",
+                  isActive ? "text-ios-blue opacity-100" : "opacity-60",
+                )}
+              >
+                {tab.label}
+              </span>
+              {isActive && (
+                <span className="absolute bottom-0 w-1 h-1 rounded-full bg-ios-blue opacity-0" />
+              )}
             </Link>
           );
         })}

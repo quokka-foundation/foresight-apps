@@ -13,7 +13,7 @@ export default function AlertsPage() {
   const { data: alerts = [], isLoading } = useAlertHistory(userId);
 
   return (
-    <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-white">
+    <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-ios-bg">
       <TopBar title="Alerts" />
 
       <div className="flex-1 pb-24">

@@ -19,7 +19,9 @@ export function TopBar({ title, back, action, className }: TopBarProps) {
       )}
     >
       <div className="w-8">{back && <BackArrow onClick={back} />}</div>
-      <h5 className="font-sans text-[1rem] font-medium leading-[120%] text-ios-text">{title}</h5>
+      <h5 className="font-display text-[1rem] font-medium leading-[120%] text-ios-text tracking-tight">
+        {title}
+      </h5>
       <div className="w-8 flex justify-end">{action}</div>
     </div>
   );

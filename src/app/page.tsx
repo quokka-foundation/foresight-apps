@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AiChatWidget } from "@/components/AiChatWidget";
 import { FilterChips } from "@/components/FilterChips";
 import { InsightCard } from "@/components/InsightCard";
 import { Section } from "@/components/Section";
@@ -42,7 +43,7 @@ export default function FeedPage() {
 
   return (
     <div
-      className={`flex flex-col min-h-screen max-w-[430px] mx-auto bg-white ${shaking ? "animate-earthquake" : ""}`}
+      className={`flex flex-col min-h-screen max-w-[430px] mx-auto bg-ios-bg ${shaking ? "animate-earthquake" : ""}`}
     >
       <TopBar title="Foresight" />
 
@@ -64,6 +65,7 @@ export default function FeedPage() {
       </div>
 
       <TabBar />
+      <AiChatWidget />
     </div>
   );
 }

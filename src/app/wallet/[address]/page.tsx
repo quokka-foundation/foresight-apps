@@ -22,7 +22,7 @@ export default function WalletDetailPage() {
 
   if (isLoading && !displayWallet) {
     return (
-      <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-white">
+      <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-ios-bg">
         <TopBar title="Wallet" back={() => router.back()} />
         <div className="flex-1 px-4 py-4 space-y-6">
           <div className="flex flex-col items-center gap-3">
@@ -42,7 +42,7 @@ export default function WalletDetailPage() {
 
   if (!displayWallet) {
     return (
-      <div className="flex items-center justify-center min-h-screen max-w-[430px] mx-auto bg-white">
+      <div className="flex items-center justify-center min-h-screen max-w-[430px] mx-auto bg-ios-bg">
         <div className="text-center p-8">
           <p className="text-[1rem] font-medium text-ios-text mb-3">Wallet not found</p>
           <button
@@ -57,7 +57,7 @@ export default function WalletDetailPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-white">
+    <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-ios-bg">
       <TopBar title="Wallet" back={() => router.back()} />
 
       <div className="flex-1 px-4 py-4 space-y-6">

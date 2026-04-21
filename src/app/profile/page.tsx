@@ -78,7 +78,7 @@ export default function ProfilePage() {
   const displayAddress = walletAddress ?? address;
 
   return (
-    <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-white">
+    <div className="flex flex-col min-h-screen max-w-[430px] mx-auto bg-ios-bg">
       <TopBar title="Profile" />
 
       <div className="flex-1 pb-24 px-4">

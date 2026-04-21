@@ -11,42 +11,43 @@
   --ios-purple: #bf5af2;
   --ios-pink: #ff375f;
   --ios-teal: #30d5c8;
-  --ios-bg: #ffffff;
-  --ios-bg-secondary: #f5f8fa;
-  --ios-bg-tertiary: #f0f2f5;
-  --ios-card: #0a0b0d;
-  --ios-card-border: #2a2b2f;
+  /* ── Dark theme ── */
+  --ios-bg: #07090f;
+  --ios-bg-secondary: #0d1018;
+  --ios-bg-tertiary: #141822;
+  --ios-card: #0d1018;
+  --ios-card-border: #1c2538;
   --ios-card-light: #f5f8fa;
   --ios-card-light-border: #e8ecf0;
-  --ios-text: #000000;
-  --ios-text-secondary: #6b7280;
-  --ios-text-tertiary: #9ca3af;
+  --ios-text: #ebf0fa;
+  --ios-text-secondary: #7a8da6;
+  --ios-text-tertiary: #485a70;
   --ios-text-on-dark: #ffffff;
   --ios-text-on-dark-secondary: #9ca3af;
-  --ios-separator: #e8ecf0;
+  --ios-separator: #192030;
   /* Legacy aliases */
   --base-blue: #0052ff;
-  --foresight-bg: #ffffff;
-  --foresight-bg-alt: #f5f8fa;
-  --foresight-surface: #ffffff;
-  --foresight-border: #e8ecf0;
-  --foresight-text: #000000;
-  --foresight-text-secondary: #6b7280;
-  --foresight-text-tertiary: #9ca3af;
+  --foresight-bg: #07090f;
+  --foresight-bg-alt: #0d1018;
+  --foresight-surface: #0d1018;
+  --foresight-border: #1c2538;
+  --foresight-text: #ebf0fa;
+  --foresight-text-secondary: #7a8da6;
+  --foresight-text-tertiary: #485a70;
   --foresight-success: #00d395;
   --foresight-danger: #ff6b6b;
   --foresight-warning: #ff9f0a;
   --foresight-accent: #0052ff;
-  --foresight-card-dark: #0a0b0d;
-  --foresight-card-dark-border: #2a2b2f;
+  --foresight-card-dark: #0d1018;
+  --foresight-card-dark-border: #1c2538;
 }
 
-/* Base body styles — Premium light */
+/* Base body styles — Premium dark */
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #ffffff;
-  color: #000000;
+  background-color: #07090f;
+  color: #ebf0fa;
   overscroll-behavior: none;
   overflow-x: hidden;
 }
@@ -54,10 +55,10 @@ body {
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
-  background-color: #ffffff;
+  background-color: #07090f;
 }
 
-/* Custom scrollbar — minimal */
+/* Custom scrollbar — dark minimal */
 ::-webkit-scrollbar {
   width: 3px;
 }
@@ -65,8 +66,11 @@ html {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d1d5db;
+  background: #1c2538;
   border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2a3a54;
 }
 
 /* Hide scrollbar for tabs/chips */
@@ -125,9 +129,9 @@ input[type="range"]::-moz-range-thumb {
     0 0 0 2px rgba(0, 82, 255, 0.1);
 }
 
-/* Date input light mode */
+/* Date input dark mode */
 input[type="date"] {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 /* Animation utilities */
@@ -206,9 +210,9 @@ input[type="date"] {
   }
 }
 
-/* Glass morphism — subtle */
+/* Glass morphism — dark */
 .glass {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(7, 9, 15, 0.85);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
 }
@@ -225,13 +229,13 @@ input[type="date"] {
 
 /* Dark card text utilities */
 .dark-card-text {
-  color: #ffffff;
+  color: #ebf0fa;
 }
 .dark-card-text-secondary {
-  color: #9ca3af;
+  color: #7a8da6;
 }
 .dark-card-text-tertiary {
-  color: #6b7280;
+  color: #485a70;
 }
 
 /* Dot glow effect */
